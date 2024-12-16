@@ -14,7 +14,7 @@ export default function NotFound() {
       </div>
       <div className="flex flex-row items-center gap-12">
         <Button onClick={() => router.replace('/')}>Go back home</Button>
-        <Button className="bg-ceruba-100 shrink-0 text-lg font-medium" variant={'link'}>
+        <Button className="bg-ceruba-100 shrink-0 text-lg font-medium" variant="link">
           Contact Support
         </Button>
       </div>
