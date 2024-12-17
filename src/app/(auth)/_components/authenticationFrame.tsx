@@ -8,11 +8,13 @@ type AuthenticationFrameProps = {
   children: ReactNode;
   imageSlide: StaticImageData;
   imagePosition?: 'right' | 'left';
+  imageAlt: string;
 };
 export default function AuthenticationFrame({
   children,
   imageSlide,
   imagePosition = 'right',
+  imageAlt,
 }: AuthenticationFrameProps) {
   const flexDirection = imagePosition === 'right' ? 'flex-row' : 'flex-row-reverse';
   return (
@@ -21,7 +23,7 @@ export default function AuthenticationFrame({
         <Image
           src={imageSlide}
           className="absolute z-0 h-full w-full object-cover object-center"
-          alt={'login slide'}
+          alt={imageAlt}
         />
         <div className="bg-transparentPrimaryGradient z-10 w-full space-y-4 px-7 py-20 text-white 2xl:px-10 2xl:py-24">
           <Text variant="h3" variantStyle="h3">
