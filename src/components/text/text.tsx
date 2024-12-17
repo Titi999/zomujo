@@ -12,7 +12,7 @@ type CustomTextProps = HTMLAttributes<HTMLHeadingElement | HTMLParagraphElement>
 };
 
 const textStyles: Record<TextVariantStyle, string> = {
-  h3: 'text-2xl font-bold leading-[2.8rem] sm:text-[38px]',
+  h3: 'text-2xl leading-[2.8rem] sm:text-[38px]',
   'body-small': 'text-[16px]',
 } as const;
 

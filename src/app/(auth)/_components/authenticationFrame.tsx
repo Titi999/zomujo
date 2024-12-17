@@ -33,7 +33,6 @@ export default function AuthenticationFrame({
             Effortlessly manage patient data, appointments, and communications online, giving you
             control and convenience.
           </Text>
-          <p></p>
         </div>
       </div>
       <div className="flex h-full flex-1 flex-col">
