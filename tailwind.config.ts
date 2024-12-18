@@ -56,6 +56,10 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      backgroundImage: {
+        transparentPrimaryGradient:
+          'linear-gradient(to bottom, #033A2C00 7%, #033A2CFF 70%, #033A2C 75%)',
+      },
     },
   },
   // eslint-disable-next-line @typescript-eslint/no-require-imports
