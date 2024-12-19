@@ -60,6 +60,9 @@ export default {
         transparentPrimaryGradient:
           'linear-gradient(to bottom, #033A2C00 7%, #033A2CFF 70%, #033A2C 75%)',
       },
+      boxShadow: {
+        base: '0 1px 2px 4px rgba(15, 23, 42, 0.059)',
+      },
     },
   },
   // eslint-disable-next-line @typescript-eslint/no-require-imports
