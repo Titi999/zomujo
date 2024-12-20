@@ -50,6 +50,16 @@ export default {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
+        grayscale: {
+          '50': '#F9FAFB',
+          '75': '#F7F9FC',
+          '100': '#F0F2F5',
+          '200': '#E4E7EC',
+          '300': '#D0D5DD',
+          '400': '#98A2B3',
+          '500': '#667185',
+          '600': '#334155',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',
