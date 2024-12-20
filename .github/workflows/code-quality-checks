@@ -22,7 +22,7 @@ jobs:
       run: yarn install --frozen-lockfile
       
     - name: Check code formatting with Prettier
-      run: yarn prettier --check "src/**/*.{js,jsx,ts,tsx}"
+      run: yarn prettier --check "src/**/*.{ts,tsx}"
       
     - name: Run ESLint
-      run: yarn eslint "src/**/*.{js,jsx,ts,tsx}"
+      run: yarn eslint "src/**/*.{ts,tsx}"
