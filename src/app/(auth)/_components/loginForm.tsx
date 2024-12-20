@@ -21,7 +21,7 @@ const LoginSchema = z.object({
   password: passwordSchema,
 });
 
-export const LoginForm = () => {
+const LoginForm = () => {
   const {
     register,
     handleSubmit,
@@ -74,3 +74,5 @@ export const LoginForm = () => {
     </form>
   );
 };
+
+export default LoginForm;
