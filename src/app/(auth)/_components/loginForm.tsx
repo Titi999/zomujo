@@ -10,6 +10,10 @@ import { z } from 'zod';
 import { emailSchema, passwordSchema } from '@/schemas/zod.schemas';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { AlertCircle } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { login } from '@/lib/features/auth/authThunk';
 
 export interface ILogin {
   email: string;
@@ -27,10 +31,12 @@ const LoginForm = () => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<ILogin>({ resolver: zodResolver(LoginSchema), mode: 'onTouched' });
+  const dispatch = useAppDispatch();
 
-  const onSubmit = async (loginCredentials: ILogin) => {
-    console.log('SUCCESS', loginCredentials); // TODO: Implement login logic
-  };
+  const errorMessage = useAppSelector(({ authentication }) => authentication.errorMessage);
+  const isLoading = useAppSelector(({ authentication }) => authentication.isLoading);
+
+  const onSubmit = async (loginCredentials: ILogin) => dispatch(login(loginCredentials));
   return (
     <form className="flex w-full flex-col items-center" onSubmit={handleSubmit(onSubmit)}>
       <Image src={Logo} width={44} height={44} alt="Zyptyk-logo" />
@@ -44,6 +50,12 @@ const LoginForm = () => {
           </Text>
         </div>
         <div className="flex w-full flex-col items-center gap-8">
+          {errorMessage && (
+            <Alert className="max-w-sm" variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{errorMessage}</AlertDescription>
+            </Alert>
+          )}
           <Input
             labelName="Email"
             type="email"
@@ -59,9 +71,12 @@ const LoginForm = () => {
             error={errors.password?.message || ''}
             {...register('password')}
           />
-          <Button disabled={!isValid} className="w-full max-w-sm">
-            Login
-          </Button>
+          <Button
+            isLoading={isLoading}
+            child="Login"
+            disabled={!isValid || isLoading}
+            className="w-full max-w-sm"
+          />
           <div className="flex w-full max-w-sm justify-between">
             <Checkbox labelClassName="font-normal leading-none text-base" labelName="Remember me" />
 
