@@ -1,7 +1,7 @@
-'use client';
-import React from 'react';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+"use client";
+import React from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
   const router = useRouter();
@@ -13,10 +13,12 @@ export default function NotFound() {
         <p className="pt-4 font-medium">Sorry, we couldn’t find the page you’re looking for.</p>
       </div>
       <div className="flex flex-row items-center gap-12">
-        <Button onClick={() => router.replace('/')}>Go back home</Button>
-        <Button className="bg-ceruba-100 shrink-0 text-lg font-medium" variant="link">
-          Contact Support
-        </Button>
+        <Button onClick={() => router.replace("/")} child="Go back home" />
+        <Button
+          className="bg-ceruba-100 shrink-0 text-lg font-medium"
+          variant="link"
+          child="Contact Support"
+        />
       </div>
     </main>
   );
