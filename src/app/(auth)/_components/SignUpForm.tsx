@@ -1,0 +1,202 @@
+'use client';
+import { Button } from '@/components/ui/button';
+import { MODE } from '@/constants/contants';
+import {
+  emailSchema,
+  nameSchema,
+  passwordSchema,
+  requiredStringSchema,
+} from '@/schemas/zod.schemas';
+import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useState } from 'react';
+import { useForm, FieldValues, UseFormRegister, FieldErrors } from 'react-hook-form';
+import { z } from 'zod';
+import { Input } from '@/components/ui/input';
+
+enum FormType {
+  organization = 'organization',
+  patient = 'patient',
+  doctor = 'doctor',
+}
+const unMatchingPasswords = 'Passwords do not match';
+
+const SignUpForm = () => {
+  const [selectedForm, setSelectedForm] = useState<FormType>(FormType.patient);
+
+  const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedForm(event.target.value as FormType);
+  };
+
+  const DoctorsSchema = z
+    .object({
+      firstName: nameSchema,
+      lastName: nameSchema,
+      email: emailSchema(),
+      password: passwordSchema,
+      confirmPassword: passwordSchema,
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: unMatchingPasswords,
+      path: ['confirmPassword'],
+    });
+
+  const OrganizationsSchema = z.object({
+    hospitalsName: nameSchema,
+    email: emailSchema(),
+    location: requiredStringSchema(),
+  });
+
+  const PatientSchema = z
+    .object({
+      firstName: nameSchema,
+      lastName: nameSchema,
+      email: emailSchema(),
+      password: passwordSchema,
+      confirmPassword: passwordSchema,
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: unMatchingPasswords,
+      path: ['confirmPassword'],
+    });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm({
+    resolver: zodResolver(
+      selectedForm === FormType.doctor
+        ? DoctorsSchema
+        : selectedForm === FormType.organization
+          ? OrganizationsSchema
+          : PatientSchema,
+    ),
+    mode: MODE.ON_TOUCH,
+  });
+
+  const onSubmit = (data: FieldValues) => {
+    console.log('Form Data:', data);
+  };
+
+  return (
+    <div className="mx-auto w-full max-w-sm">
+      <div className="mb-5 mt-4 flex justify-center space-x-6">
+        <label className="flex items-center space-x-2">
+          <input
+            type="radio"
+            value="patient"
+            checked={selectedForm === FormType.patient}
+            onChange={handleFormChange}
+            className="h-4 w-4 accent-primary"
+          />
+          <span>Patient</span>
+        </label>
+        <label className="flex items-center space-x-2">
+          <input
+            type="radio"
+            value="doctor"
+            checked={selectedForm === FormType.doctor}
+            onChange={handleFormChange}
+            className="h-4 w-4 accent-primary"
+          />
+          <span>Doctor</span>
+        </label>
+        <label className="flex items-center space-x-2">
+          <input
+            type="radio"
+            value="organization"
+            checked={selectedForm === FormType.organization}
+            onChange={handleFormChange}
+            className="h-4 w-4 accent-primary"
+          />
+          <span>Organization</span>
+        </label>
+      </div>
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        {selectedForm === FormType.doctor && <NameFields register={register} errors={errors} />}
+
+        {selectedForm === FormType.organization && (
+          <>
+            <Input
+              labelName="Hospital's Name"
+              error={errors.hospitalsName?.message?.toString() || ''}
+              placeholder="Zyptyk Hospital"
+              {...register('hospitalsName')}
+            />
+
+            <Input
+              labelName="Location"
+              error={errors.location?.message?.toString() || ''}
+              type="text"
+              placeholder="Liberation Road, Accra"
+              {...register('hospitalsName')}
+            />
+          </>
+        )}
+
+        {selectedForm === FormType.patient && <NameFields register={register} errors={errors} />}
+
+        <Input
+          labelName="Email"
+          error={errors.email?.message?.toString() || ''}
+          placeholder="johndoe@gmail.com"
+          {...register('email')}
+        />
+        {selectedForm !== FormType.organization && (
+          <>
+            <Input
+              labelName="Password"
+              type="password"
+              error={errors.password?.message?.toString() || ''}
+              placeholder="***********************"
+              enablePasswordToggle={true}
+              {...register('password')}
+            />
+            <Input
+              labelName="Confirm Password"
+              type="password"
+              error={errors.confirmPassword?.message?.toString() || ''}
+              placeholder="***********************"
+              enablePasswordToggle={true}
+              {...register('confirmPassword')}
+            />
+          </>
+        )}
+
+        <Button type="submit" disabled={!isValid} className="mt-4 w-full">
+          {selectedForm === 'doctor'
+            ? 'Sign Up as Doctor'
+            : selectedForm === 'organization'
+              ? 'Request Organizational Access'
+              : 'Sign Up as Patient'}
+        </Button>
+      </form>
+    </div>
+  );
+};
+
+export default SignUpForm;
+
+interface NameFieldsProps {
+  register: UseFormRegister<FieldValues>;
+  errors: FieldErrors<FieldValues>;
+}
+const NameFields = ({ register, errors }: NameFieldsProps) => {
+  return (
+    <div className="mt-8 flex w-full flex-col items-baseline justify-center gap-8 md:w-[96.5%] md:flex-row md:gap-2">
+      <Input
+        labelName="First Name"
+        error={errors.firstName?.message?.toString() || ''}
+        placeholder="John"
+        {...register('firstName')}
+      />
+      <Input
+        labelName="Last Name"
+        error={errors.lastName?.message?.toString() || ''}
+        placeholder="Doe"
+        {...register('lastName')}
+      />
+    </div>
+  );
+};

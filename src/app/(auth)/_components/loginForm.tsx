@@ -10,6 +10,7 @@ import { z } from 'zod';
 import { emailSchema, passwordSchema } from '@/schemas/zod.schemas';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { MODE } from '@/constants/contants';
 
 export interface ILogin {
   email: string;
@@ -26,7 +27,7 @@ const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<ILogin>({ resolver: zodResolver(LoginSchema), mode: 'onTouched' });
+  } = useForm<ILogin>({ resolver: zodResolver(LoginSchema), mode: MODE.ON_TOUCH });
 
   const onSubmit = async (loginCredentials: ILogin) => {
     console.log('SUCCESS', loginCredentials); // TODO: Implement login logic

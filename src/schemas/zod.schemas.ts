@@ -17,3 +17,11 @@ export const requiredStringSchema = (isRequired = true) => {
   const schema = z.string();
   return isRequired ? schema.nonempty('Field is required') : schema;
 };
+
+export const nameSchema = z
+  .string()
+  .nonempty('Field is required')
+  .min(3, 'Field should be more than 3 characters');
+
+
+  
