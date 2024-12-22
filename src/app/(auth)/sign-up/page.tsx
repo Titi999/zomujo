@@ -1,5 +1,5 @@
 import { LoginSlide } from '@/assets/images';
-import AuthenticationFrame from '../_components/authenticationFrame';
+import AuthenticationFrame, { ImagePosition } from '../_components/authenticationFrame';
 import Text from '@/components/text/text';
 import Image from 'next/image';
 import { Logo } from '@/assets/images';
@@ -7,7 +7,11 @@ import SignUpForm from '../_components/SignUpForm';
 
 const SignUp = () => {
   return (
-    <AuthenticationFrame imageSlide={LoginSlide} imageAlt="Login">
+    <AuthenticationFrame
+      imageSlide={LoginSlide}
+      imageAlt="Login"
+      imagePosition={ImagePosition.left}
+    >
       <div>
         <Image src={Logo} width={44} height={44} alt="Zyptyk-logo" className="m-auto" />
         <div className="mt-5 flex w-full flex-col items-center space-y-3 2xl:space-y-3.5">

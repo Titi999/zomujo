@@ -12,6 +12,8 @@ import React, { useState } from 'react';
 import { useForm, FieldValues, UseFormRegister, FieldErrors } from 'react-hook-form';
 import { z } from 'zod';
 import { Input } from '@/components/ui/input';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
 
 enum FormType {
   organization = 'organization',
@@ -112,8 +114,17 @@ const SignUpForm = () => {
           <span>Organization</span>
         </label>
       </div>
-
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      {selectedForm === FormType.organization && (
+        <Alert className="border-primary">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle className="font-semibold text-primary">Importance Notice</AlertTitle>
+          <AlertDescription>
+            This selection doesn&rsquo;t create an account automatically. We&rsquo;ll contact you after
+            processing your request.
+          </AlertDescription>
+        </Alert>
+      )}
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-8">
         {selectedForm === FormType.doctor && <NameFields register={register} errors={errors} />}
 
         {selectedForm === FormType.organization && (
@@ -164,13 +175,18 @@ const SignUpForm = () => {
           </>
         )}
 
-        <Button type="submit" disabled={!isValid} className="mt-4 w-full">
-          {selectedForm === 'doctor'
-            ? 'Sign Up as Doctor'
-            : selectedForm === 'organization'
-              ? 'Request Organizational Access'
-              : 'Sign Up as Patient'}
-        </Button>
+        <Button
+          type="submit"
+          disabled={!isValid}
+          className="mt-4 w-full"
+          child={
+            selectedForm === 'doctor'
+              ? 'Sign Up as Doctor'
+              : selectedForm === 'organization'
+                ? 'Request Organizational Access'
+                : 'Sign Up as Patient'
+          }
+        />
       </form>
     </div>
   );
