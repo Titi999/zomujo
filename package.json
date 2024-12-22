@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write '**/*.{ts,html,scss,css}'",
+    "format": "prettier --write '**/*.{ts,tsx,html,scss,css}'",
     "test": "jest",
     "test:watch": "jest --watch"
   },

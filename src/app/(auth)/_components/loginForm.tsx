@@ -10,6 +10,7 @@ import { z } from 'zod';
 import { emailSchema, passwordSchema } from '@/schemas/zod.schemas';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { MODE } from '@/constants/contants';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -30,7 +31,7 @@ const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<ILogin>({ resolver: zodResolver(LoginSchema), mode: 'onTouched' });
+  } = useForm<ILogin>({ resolver: zodResolver(LoginSchema), mode: MODE.ON_TOUCH });
   const dispatch = useAppDispatch();
 
   const errorMessage = useAppSelector(({ authentication }) => authentication.errorMessage);

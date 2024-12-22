@@ -4,19 +4,24 @@ import { ReactNode } from 'react';
 import { getCurrentYear } from '@/lib/date';
 import Text from '@/components/text/text';
 
+export enum ImagePosition {
+  Left = 'left',
+  Right = 'right',
+}
+
 type AuthenticationFrameProps = {
   children: ReactNode;
   imageSlide: StaticImageData;
-  imagePosition?: 'right' | 'left';
+  imagePosition?: ImagePosition;
   imageAlt: string;
 };
 export default function AuthenticationFrame({
   children,
   imageSlide,
-  imagePosition = 'right',
+  imagePosition = ImagePosition.Right,
   imageAlt,
 }: AuthenticationFrameProps) {
-  const flexDirection = imagePosition === 'right' ? 'flex-row' : 'flex-row-reverse';
+  const flexDirection = imagePosition === ImagePosition.Right ? 'flex-row-reverse' : 'flex-row';
   return (
     <main className={`flex h-screen w-full ${flexDirection} p-5`}>
       <div className="relative hidden h-full w-1/2 flex-col justify-end overflow-clip rounded-[22px] bg-gray-400 lg:flex">
