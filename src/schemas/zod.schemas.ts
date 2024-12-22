@@ -21,7 +21,5 @@ export const requiredStringSchema = (isRequired = true) => {
 export const nameSchema = z
   .string()
   .nonempty('Field is required')
-  .min(3, 'Field should be more than 3 characters');
-
-
-  
+  .min(3, 'Field should be more than 3 characters')
+  .regex(/^[A-Za-z]+$/, 'Field should only contain alphabets');

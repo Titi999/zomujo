@@ -16,18 +16,31 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertCircle } from 'lucide-react';
 
 enum FormType {
-  organization = 'organization',
-  patient = 'patient',
-  doctor = 'doctor',
+  Organization = 'organization',
+  Patient = 'patient',
+  Doctor = 'doctor',
 }
+
+interface ISignUpFields {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  hospitalsName: string
+  location: string;
+  firstName: string;
+  lastName: string;
+}
+
+
 const unMatchingPasswords = 'Passwords do not match';
 
 const SignUpForm = () => {
-  const [selectedForm, setSelectedForm] = useState<FormType>(FormType.patient);
+  const [selectedForm, setSelectedForm] = useState<FormType>(FormType.Patient);
 
   const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedForm(event.target.value as FormType);
   };
+  
 
   const DoctorsSchema = z
     .object({
@@ -65,11 +78,11 @@ const SignUpForm = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm({
+  } = useForm<ISignUpFields>({
     resolver: zodResolver(
-      selectedForm === FormType.doctor
+      selectedForm === FormType.Doctor
         ? DoctorsSchema
-        : selectedForm === FormType.organization
+        : selectedForm === FormType.Organization
           ? OrganizationsSchema
           : PatientSchema,
     ),
@@ -77,7 +90,7 @@ const SignUpForm = () => {
   });
 
   const onSubmit = (data: FieldValues) => {
-    console.log('Form Data:', data);
+    console.log('Form Data:', data); //Todo: integrating it with the backend API
   };
 
   return (
@@ -87,7 +100,7 @@ const SignUpForm = () => {
           <input
             type="radio"
             value="patient"
-            checked={selectedForm === FormType.patient}
+            checked={selectedForm === FormType.Patient}
             onChange={handleFormChange}
             className="h-4 w-4 accent-primary"
           />
@@ -97,7 +110,7 @@ const SignUpForm = () => {
           <input
             type="radio"
             value="doctor"
-            checked={selectedForm === FormType.doctor}
+            checked={selectedForm === FormType.Doctor}
             onChange={handleFormChange}
             className="h-4 w-4 accent-primary"
           />
@@ -107,46 +120,46 @@ const SignUpForm = () => {
           <input
             type="radio"
             value="organization"
-            checked={selectedForm === FormType.organization}
+            checked={selectedForm === FormType.Organization}
             onChange={handleFormChange}
             className="h-4 w-4 accent-primary"
           />
           <span>Organization</span>
         </label>
       </div>
-      {selectedForm === FormType.organization && (
+      {selectedForm === FormType.Organization && (
         <Alert className="border-primary">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle className="font-semibold text-primary">Importance Notice</AlertTitle>
           <AlertDescription>
-            This selection doesn&rsquo;t create an account automatically. We&rsquo;ll contact you after
-            processing your request.
+            This selection doesn&rsquo;t create an account automatically. We&rsquo;ll contact you
+            after processing your request.
           </AlertDescription>
         </Alert>
       )}
       <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-8">
-        {selectedForm === FormType.doctor && <NameFields register={register} errors={errors} />}
+        {selectedForm === FormType.Doctor && <NameFields register={register} errors={errors} />}
 
-        {selectedForm === FormType.organization && (
+        {selectedForm === FormType.Organization && (
           <>
             <Input
               labelName="Hospital's Name"
-              error={errors.hospitalsName?.message?.toString() || ''}
+              error={errors.hospitalsName?.message || ''}
               placeholder="Zyptyk Hospital"
               {...register('hospitalsName')}
             />
 
             <Input
               labelName="Location"
-              error={errors.location?.message?.toString() || ''}
+              error={errors.location?.message || ''}
               type="text"
               placeholder="Liberation Road, Accra"
-              {...register('hospitalsName')}
+              {...register('location')}
             />
           </>
         )}
 
-        {selectedForm === FormType.patient && <NameFields register={register} errors={errors} />}
+        {selectedForm === FormType.Patient && <NameFields register={register} errors={errors} />}
 
         <Input
           labelName="Email"
@@ -154,12 +167,12 @@ const SignUpForm = () => {
           placeholder="johndoe@gmail.com"
           {...register('email')}
         />
-        {selectedForm !== FormType.organization && (
+        {selectedForm !== FormType.Organization && (
           <>
             <Input
               labelName="Password"
               type="password"
-              error={errors.password?.message?.toString() || ''}
+              error={errors.password?.message || ''}
               placeholder="***********************"
               enablePasswordToggle={true}
               {...register('password')}
@@ -167,7 +180,7 @@ const SignUpForm = () => {
             <Input
               labelName="Confirm Password"
               type="password"
-              error={errors.confirmPassword?.message?.toString() || ''}
+              error={errors.confirmPassword?.message || ''}
               placeholder="***********************"
               enablePasswordToggle={true}
               {...register('confirmPassword')}
@@ -195,7 +208,7 @@ const SignUpForm = () => {
 export default SignUpForm;
 
 interface NameFieldsProps {
-  register: UseFormRegister<FieldValues>;
+  register: UseFormRegister<ISignUpFields>;
   errors: FieldErrors<FieldValues>;
 }
 const NameFields = ({ register, errors }: NameFieldsProps) => {
