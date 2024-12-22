@@ -10,7 +10,7 @@ const SignUp = () => {
     <AuthenticationFrame
       imageSlide={LoginSlide}
       imageAlt="Login"
-      imagePosition={ImagePosition.left}
+      imagePosition={ImagePosition.Left}
     >
       <div>
         <Image src={Logo} width={44} height={44} alt="Zyptyk-logo" className="m-auto" />

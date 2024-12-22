@@ -5,8 +5,8 @@ import { getCurrentYear } from '@/lib/date';
 import Text from '@/components/text/text';
 
 export enum ImagePosition {
-  left = 'left',
-  right ='right'
+  Left = 'left',
+  Right ='right'
 }
 
 type AuthenticationFrameProps = {
@@ -18,10 +18,10 @@ type AuthenticationFrameProps = {
 export default function AuthenticationFrame({
   children,
   imageSlide,
-  imagePosition = ImagePosition.right,
+  imagePosition = ImagePosition.Right,
   imageAlt,
 }: AuthenticationFrameProps) {
-  const flexDirection = imagePosition === ImagePosition.right ? 'flex-row-reverse' : 'flex-row';
+  const flexDirection = imagePosition === ImagePosition.Right ? 'flex-row-reverse' : 'flex-row';
   return (
     <main className={`flex h-screen w-full ${flexDirection} p-5`}>
       <div className="relative hidden h-full w-1/2 flex-col justify-end overflow-clip rounded-[22px] bg-gray-400 lg:flex">

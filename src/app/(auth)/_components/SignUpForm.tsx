@@ -25,12 +25,11 @@ interface ISignUpFields {
   email: string;
   password: string;
   confirmPassword: string;
-  hospitalsName: string
+  hospitalName: string;
   location: string;
   firstName: string;
   lastName: string;
 }
-
 
 const unMatchingPasswords = 'Passwords do not match';
 
@@ -40,7 +39,6 @@ const SignUpForm = () => {
   const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedForm(event.target.value as FormType);
   };
-  
 
   const DoctorsSchema = z
     .object({
@@ -56,7 +54,7 @@ const SignUpForm = () => {
     });
 
   const OrganizationsSchema = z.object({
-    hospitalsName: nameSchema,
+    hospitalName: nameSchema,
     email: emailSchema(),
     location: requiredStringSchema(),
   });
@@ -69,7 +67,7 @@ const SignUpForm = () => {
       password: passwordSchema,
       confirmPassword: passwordSchema,
     })
-    .refine((data) => data.password === data.confirmPassword, {
+    .refine(({ password, confirmPassword }) => password === confirmPassword, {
       message: unMatchingPasswords,
       path: ['confirmPassword'],
     });
@@ -88,6 +86,17 @@ const SignUpForm = () => {
     ),
     mode: MODE.ON_TOUCH,
   });
+
+  const getFormTitle = (selectedForm: FormType): string => {
+    switch (selectedForm) {
+      case FormType.Doctor:
+        return 'Sign Up as Doctor';
+      case FormType.Organization:
+        return 'Request Organizational Access';
+      default:
+        return 'Sign Up as Patient';
+    }
+  };
 
   const onSubmit = (data: FieldValues) => {
     console.log('Form Data:', data); //Todo: integrating it with the backend API
@@ -144,9 +153,9 @@ const SignUpForm = () => {
           <>
             <Input
               labelName="Hospital's Name"
-              error={errors.hospitalsName?.message || ''}
+              error={errors.hospitalName?.message || ''}
               placeholder="Zyptyk Hospital"
-              {...register('hospitalsName')}
+              {...register('hospitalName')}
             />
 
             <Input
@@ -192,13 +201,7 @@ const SignUpForm = () => {
           type="submit"
           disabled={!isValid}
           className="mt-4 w-full"
-          child={
-            selectedForm === 'doctor'
-              ? 'Sign Up as Doctor'
-              : selectedForm === 'organization'
-                ? 'Request Organizational Access'
-                : 'Sign Up as Patient'
-          }
+          child={getFormTitle(selectedForm)}
         />
       </form>
     </div>
