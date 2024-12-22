@@ -4,7 +4,11 @@ import { LoginForm } from '@/app/(auth)/_components/loginForm';
 
 function Login() {
   return (
-    <AuthenticationFrame imageSlide={LoginSlide} imageAlt="Login" imagePosition={ImagePosition.Left}>
+    <AuthenticationFrame
+      imageSlide={LoginSlide}
+      imageAlt="Login"
+      imagePosition={ImagePosition.Left}
+    >
       <LoginForm />
     </AuthenticationFrame>
   );

@@ -6,7 +6,7 @@ import Text from '@/components/text/text';
 
 export enum ImagePosition {
   Left = 'left',
-  Right ='right'
+  Right = 'right',
 }
 
 type AuthenticationFrameProps = {
