@@ -4,6 +4,25 @@ import { Check, ChevronDown, ChevronUp } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { ComponentPropsWithoutRef, ComponentRef, forwardRef } from 'react';
+import { Control, Controller } from 'react-hook-form';
+import { Label } from './label';
+
+interface SelectOption {
+  label: string;
+  value: string;
+}
+
+type SelectInputProps = {
+  name: string;
+  options: SelectOption[];
+  error?: string;
+  ref: React.Ref<HTMLButtonElement>;
+  label?: string;
+  placeholder?: string;
+  // Any is used here because the type of control is known at the instance this property is passed in as prop
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  control: Control<any>;
+};
 
 const Select = SelectPrimitive.Root;
 
@@ -13,12 +32,13 @@ const SelectValue = SelectPrimitive.Value;
 
 const SelectTrigger = forwardRef<
   ComponentRef<typeof SelectPrimitive.Trigger>,
-  ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
+  ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & Pick<SelectInputProps, 'error'>
+>(({ className, children, error, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      'flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:border-2 focus:border-primary focus:shadow-base focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
+      'flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:border-2 focus:border-primary focus:shadow-base focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 data-[placeholder]:text-[#71717a] [&>span]:line-clamp-1',
+      { 'border-red-500': error, 'focus:border-red-500': error },
       className,
     )}
     {...props}
@@ -138,6 +158,39 @@ const SelectSeparator = forwardRef<
 ));
 SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
 
+const SelectInput = ({
+  control,
+  ref,
+  options,
+  error,
+  name,
+  label,
+  placeholder = '',
+}: SelectInputProps) => {
+  return (
+    <Controller
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <Select {...field} onValueChange={(value) => field.onChange(value)}>
+          {label && <Label>{label}</Label>}
+          <SelectTrigger className="w-[100vw] max-w-sm" ref={ref} error={error}>
+            <SelectValue placeholder={placeholder} />
+          </SelectTrigger>
+          <SelectContent>
+            {options.map(({ value, label }) => (
+              <SelectItem key={value} value={value}>
+                {label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+          {error && <small className="-mt-1 text-xs font-medium text-red-500">{error}</small>}
+        </Select>
+      )}
+    />
+  );
+};
+
 export {
   Select,
   SelectGroup,
@@ -149,4 +202,5 @@ export {
   SelectSeparator,
   SelectScrollUpButton,
   SelectScrollDownButton,
+  SelectInput,
 };
