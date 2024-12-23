@@ -3,11 +3,11 @@ import * as SelectPrimitive from '@radix-ui/react-select';
 import { Check, ChevronDown, ChevronUp } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { ComponentPropsWithoutRef, ComponentRef, forwardRef } from 'react';
+import React, { ComponentPropsWithoutRef, ComponentRef, forwardRef } from 'react';
 import { Control, Controller } from 'react-hook-form';
 import { Label } from './label';
 
-interface SelectOption {
+export interface SelectOption {
   label: string;
   value: string;
 }
@@ -166,30 +166,28 @@ const SelectInput = ({
   name,
   label,
   placeholder = '',
-}: SelectInputProps) => {
-  return (
-    <Controller
-      control={control}
-      name={name}
-      render={({ field }) => (
-        <Select {...field} onValueChange={(value) => field.onChange(value)}>
-          {label && <Label>{label}</Label>}
-          <SelectTrigger className="w-[100vw] max-w-sm" ref={ref} error={error}>
-            <SelectValue placeholder={placeholder} />
-          </SelectTrigger>
-          <SelectContent>
-            {options.map(({ value, label }) => (
-              <SelectItem key={value} value={value}>
-                {label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-          {error && <small className="-mt-1 text-xs font-medium text-red-500">{error}</small>}
-        </Select>
-      )}
-    />
-  );
-};
+}: SelectInputProps) => (
+  <Controller
+    control={control}
+    name={name}
+    render={({ field }) => (
+      <Select {...field} onValueChange={(value) => field.onChange(value)}>
+        {label && <Label>{label}</Label>}
+        <SelectTrigger className="max-w-sm" ref={ref} error={error}>
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map(({ value, label }) => (
+            <SelectItem key={value} value={value}>
+              {label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+        {error && <small className="-mt-1 text-xs font-medium text-red-500">{error}</small>}
+      </Select>
+    )}
+  />
+);
 
 export {
   Select,
