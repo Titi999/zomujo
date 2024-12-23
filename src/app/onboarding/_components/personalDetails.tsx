@@ -7,9 +7,10 @@ import { mdcNumberSchema, phoneNumberSchema, requiredStringSchema } from '@/sche
 import { z } from 'zod';
 import { Gender } from '@/types/shared.enum';
 import { SelectInput, SelectOption } from '@/components/ui/select';
-import { useAppDispatch } from '@/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { updatePersonalDetails } from '@/lib/features/auth/authSlice';
 import { IPersonalDetails } from '@/types/auth.interface';
+import { maxDate } from '@/lib/utils';
 
 const PersonalDetailsSchema = z.object({
   mdcRegistrationNumber: mdcNumberSchema,
@@ -25,6 +26,9 @@ const genderOptions: SelectOption[] = [
 ];
 
 const PersonalDetails = () => {
+  const personalDetails = useAppSelector(
+    ({ authentication }) => authentication.doctorPersonalDetails,
+  );
   const {
     register,
     control,
@@ -33,6 +37,7 @@ const PersonalDetails = () => {
   } = useForm<IPersonalDetails>({
     resolver: zodResolver(PersonalDetailsSchema),
     mode: 'onTouched',
+    defaultValues: personalDetails ?? undefined,
   });
   const dispatch = useAppDispatch();
 
@@ -69,6 +74,7 @@ const PersonalDetails = () => {
             labelName="Date of Birth"
             type="date"
             error={errors.dateOfBirth?.message || ''}
+            max={maxDate()}
             placeholder="MDC/PN/12345"
             {...register('dateOfBirth')}
           />

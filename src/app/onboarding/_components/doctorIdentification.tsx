@@ -7,8 +7,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { requiredStringSchema } from '@/schemas/zod.schemas';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
-import { useAppDispatch } from '@/lib/hooks';
-import { updateDoctorIdentification } from '@/lib/features/auth/authSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { updateCurrentStep, updateDoctorIdentification } from '@/lib/features/auth/authSlice';
 import { IDoctorIdentification } from '@/types/auth.interface';
 
 const DoctorIdentificationSchema = z.object({
@@ -17,10 +17,13 @@ const DoctorIdentificationSchema = z.object({
 });
 
 const DoctorIdentification = () => {
+  const doctorIdentification = useAppSelector(
+    ({ authentication }) => authentication.doctorIdentification,
+  );
   const [confirm, setConfirm] = useState(false);
   const { register, setValue, watch, getValues } = useForm<IDoctorIdentification>({
     resolver: zodResolver(DoctorIdentificationSchema),
-    mode: 'onTouched',
+    defaultValues: doctorIdentification ?? undefined,
   });
   const dispatch = useAppDispatch();
 
@@ -43,36 +46,20 @@ const DoctorIdentification = () => {
       <div className="flex flex-col justify-between gap-4">
         <div className="flex flex-row justify-between">
           <SingleImageDropzone
-            dropzoneOptions={{
-              maxFiles: 1,
-              accept: {
-                'image/jpeg': ['.jpg', '.jpeg'],
-                'image/png': ['.png'],
-              },
-              maxSize: 5 * 1024 * 1024,
-            }}
             height={280}
             width={300}
             label="Front"
             value={watch('front')}
             {...register('front')}
-            onChange={(file) => setValue('front', file!)}
+            onChange={(file) => file && setValue('front', file)}
           />
           <SingleImageDropzone
-            dropzoneOptions={{
-              maxFiles: 1,
-              accept: {
-                'image/jpeg': ['.jpg', '.jpeg'],
-                'image/png': ['.png'],
-              },
-              maxSize: 5 * 1024 * 1024,
-            }}
             height={280}
             width={300}
             label="Back"
             value={watch('back')}
             {...register('back')}
-            onChange={(file) => setValue('back', file!)}
+            onChange={(file) => file && setValue('back', file)}
           />
         </div>
         <div className="flex flex-row">
@@ -84,11 +71,21 @@ const DoctorIdentification = () => {
           />
         </div>
       </div>
-      <Button
-        disabled={watch('front') === undefined || watch('back') === undefined || !confirm}
-        type="submit"
-        child={'Continue'}
-      />
+      <div className="flex w-full items-center justify-center gap-8">
+        <Button
+          onClick={() => dispatch(updateCurrentStep(1))}
+          variant="secondary"
+          className="w-full bg-accent-foreground text-white"
+          type="button"
+          child={'Back'}
+        />
+        <Button
+          className="w-full"
+          disabled={watch('front') === undefined || watch('back') === undefined || !confirm}
+          type="submit"
+          child={'Continue'}
+        />
+      </div>
     </form>
   );
 };

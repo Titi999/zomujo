@@ -33,6 +33,9 @@ const authSlice = createSlice({
       state.doctorIdentification = payload;
       state.currentStep = 3;
     },
+    updateCurrentStep: (state, { payload }) => {
+      state.currentStep = payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -52,6 +55,10 @@ const authSlice = createSlice({
   },
 });
 
-export const { setErrorMessage, updatePersonalDetails, updateDoctorIdentification } =
-  authSlice.actions;
+export const {
+  setErrorMessage,
+  updatePersonalDetails,
+  updateDoctorIdentification,
+  updateCurrentStep,
+} = authSlice.actions;
 export default authSlice.reducer;

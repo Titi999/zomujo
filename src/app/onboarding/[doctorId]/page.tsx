@@ -11,7 +11,7 @@ import DoctorPhotoUpload from '@/app/onboarding/_components/doctorPhotoUpload';
 const DoctorOnboarding = () => {
   const currentStep = useAppSelector(({ authentication }) => authentication.currentStep);
 
-  const CurrentView = {
+  const currentView = {
     1: <PersonalDetails />,
     2: <DoctorIdentification />,
     3: <DoctorPhotoUpload />,
@@ -37,13 +37,13 @@ const DoctorOnboarding = () => {
                   key={`progress-${i}`}
                   className={cn(
                     'h-1 w-full duration-150',
-                    1 >= i + 1 ? 'bg-primary' : 'bg-gray-200',
+                    currentStep >= i + 1 ? 'bg-primary' : 'bg-gray-200',
                   )}
                 />
               ))}
           </div>
         </div>
-        {CurrentView}
+        {currentView}
       </div>
     </div>
   );

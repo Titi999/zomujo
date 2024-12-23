@@ -4,7 +4,9 @@ import { X } from 'lucide-react';
 import * as React from 'react';
 import { useDropzone, type DropzoneOptions } from 'react-dropzone';
 import { twMerge } from 'tailwind-merge';
+import Image from 'next/image';
 
+const defaultMaxSize = 5 * 1024 * 1024; // 5MB
 const variants = {
   base: 'c-border-dashed flex h-[280px] w-[300px] flex-col items-center justify-center gap-2 rounded-2xl border-gray-200 bg-white p-1.5',
   image: '',
@@ -43,7 +45,14 @@ const ERROR_MESSAGES = {
 const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
-      dropzoneOptions,
+      dropzoneOptions = {
+        maxFiles: 1,
+        maxSize: defaultMaxSize,
+        accept: {
+          'image/jpeg': ['.jpg', '.jpeg'],
+          'image/png': ['.png'],
+        },
+      },
       width,
       height,
       value,
@@ -57,16 +66,13 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
   ) => {
     const imageUrl = React.useMemo(() => {
       if (typeof value === 'string') {
-        // in case a url is passed in, use it to display the image
         return value;
       } else if (value) {
-        // in case a file is passed in, create a base64 url to display the image
         return URL.createObjectURL(value);
       }
       return null;
     }, [value]);
 
-    // dropzone configuration
     const {
       getRootProps,
       getInputProps,
@@ -88,7 +94,6 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
       ...dropzoneOptions,
     });
 
-    // styling
     const dropZoneClassName = React.useMemo(
       () =>
         twMerge(
@@ -103,7 +108,6 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
       [isFocused, imageUrl, fileRejections, isDragAccept, isDragReject, disabled, className],
     );
 
-    // error validation messages
     const errorMessage = React.useMemo(() => {
       if (fileRejections[0]) {
         const { errors } = fileRejections[0];
@@ -130,15 +134,15 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
             },
           })}
         >
-          {/* Main File Input */}
           <input ref={ref} {...getInputProps()} {...props} />
 
           {imageUrl ? (
-            // Image Preview
-            <img
+            <Image
               className="h-full w-full rounded-xl object-contain"
               src={imageUrl}
-              alt={acceptedFiles[0]?.name}
+              width={width}
+              height={height}
+              alt={acceptedFiles[0]?.name ?? label}
             />
           ) : (
             // Upload Icon
@@ -149,8 +153,6 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
               <p className="leading-4 text-gray-500">Supports PNG, JPG, JPEG</p>
             </div>
           )}
-
-          {/* Remove Image Icon */}
           {imageUrl && !disabled && (
             <div
               className="group absolute right-0 top-0 -translate-y-1/4 translate-x-1/4 transform"
@@ -165,8 +167,6 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
             </div>
           )}
         </div>
-
-        {/* Error Text */}
         <div className="mt-1 text-xs text-red-500">{errorMessage}</div>
       </div>
     );

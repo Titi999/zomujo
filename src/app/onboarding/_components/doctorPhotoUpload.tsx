@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { IDoctorPhotoUpload } from '@/types/auth.interface';
 import { Modal } from '@/components/ui/dialog';
 import { doctorOnboarding } from '@/lib/features/auth/authThunk';
+import { updateCurrentStep } from '@/lib/features/auth/authSlice';
 
 const DoctorPhotoUploadScheme = z.object({
   passportPhoto: requiredStringSchema(),
@@ -22,7 +23,6 @@ const DoctorPhotoUpload = () => {
   const [openModal, setOpenModal] = useState(false);
   const { register, setValue, watch, getValues } = useForm<IDoctorPhotoUpload>({
     resolver: zodResolver(DoctorPhotoUploadScheme),
-    mode: 'onTouched',
   });
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(({ authentication }) => authentication.isLoading);
@@ -50,14 +50,6 @@ const DoctorPhotoUpload = () => {
       <div className="flex flex-col justify-between gap-4">
         <div className="flex flex-row justify-between">
           <SingleImageDropzone
-            dropzoneOptions={{
-              maxFiles: 1,
-              accept: {
-                'image/jpeg': ['.jpg', '.jpeg'],
-                'image/png': ['.png'],
-              },
-              maxSize: 5 * 1024 * 1024,
-            }}
             height={200}
             width={610}
             label="Passport Photo"
@@ -75,12 +67,22 @@ const DoctorPhotoUpload = () => {
           />
         </div>
       </div>
-      <Button
-        child="Finish"
-        isLoading={isLoading}
-        disabled={watch('passportPhoto') === undefined || !confirm}
-        type="submit"
-      />
+      <div className="flex w-full items-center justify-center gap-8">
+        <Button
+          onClick={() => dispatch(updateCurrentStep(2))}
+          variant="secondary"
+          className="w-full bg-accent-foreground text-white"
+          type="button"
+          child={'Back'}
+        />
+        <Button
+          className="w-full"
+          child="Finish"
+          isLoading={isLoading}
+          disabled={watch('passportPhoto') === undefined || !confirm}
+          type="submit"
+        />
+      </div>
     </form>
   );
 };
