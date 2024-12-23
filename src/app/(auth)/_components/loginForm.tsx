@@ -31,8 +31,7 @@ const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-
-} = useForm<ILogin>({resolver: zodResolver(LoginSchema),  mode: MODE.ON_TOUCH  });
+  } = useForm<ILogin>({ resolver: zodResolver(LoginSchema), mode: MODE.ON_TOUCH });
   const dispatch = useAppDispatch();
 
   const errorMessage = useAppSelector(({ authentication }) => authentication.errorMessage);
