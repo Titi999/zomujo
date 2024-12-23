@@ -3,7 +3,7 @@ import * as SelectPrimitive from '@radix-ui/react-select';
 import { Check, ChevronDown, ChevronUp } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import React, { ComponentPropsWithoutRef, ComponentRef, forwardRef } from 'react';
+import { ComponentPropsWithoutRef, ComponentRef, forwardRef, Ref } from 'react';
 import { Control, Controller } from 'react-hook-form';
 import { Label } from './label';
 
@@ -16,7 +16,7 @@ type SelectInputProps = {
   name: string;
   options: SelectOption[];
   error?: string;
-  ref: React.Ref<HTMLButtonElement>;
+  ref: Ref<HTMLButtonElement>;
   label?: string;
   placeholder?: string;
   // Any is used here because the type of control is known at the instance this property is passed in as prop
