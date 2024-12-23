@@ -1,16 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { login } from '@/lib/features/auth/authThunk';
+import { doctorOnboarding, login } from '@/lib/features/auth/authThunk';
+import { IDoctorIdentification, IPersonalDetails } from '@/types/auth.interface';
 
 interface AuthenticationState {
   errorMessage: string;
   isLoading: boolean;
   currentStep: number;
+  doctorPersonalDetails: IPersonalDetails | null;
+  doctorIdentification: IDoctorIdentification | null;
 }
 
 const initialState: AuthenticationState = {
   errorMessage: '',
   isLoading: false,
   currentStep: 1,
+  doctorPersonalDetails: null,
+  doctorIdentification: null,
 };
 
 const authSlice = createSlice({
@@ -20,8 +25,13 @@ const authSlice = createSlice({
     setErrorMessage: (state, { payload }) => {
       state.errorMessage = payload;
     },
-    updateCurrentStep: (state, { payload }) => {
-      state.currentStep = payload;
+    updatePersonalDetails: (state, { payload }) => {
+      state.doctorPersonalDetails = payload;
+      state.currentStep = 2;
+    },
+    updateDoctorIdentification: (state, { payload }) => {
+      state.doctorIdentification = payload;
+      state.currentStep = 3;
     },
   },
   extraReducers: (builder) => {
@@ -32,8 +42,16 @@ const authSlice = createSlice({
       .addCase(login.fulfilled || login.rejected, (state) => {
         state.isLoading = false;
       });
+    builder
+      .addCase(doctorOnboarding.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(doctorOnboarding.fulfilled || login.rejected, (state) => {
+        state.isLoading = false;
+      });
   },
 });
 
-export const { setErrorMessage, updateCurrentStep } = authSlice.actions;
+export const { setErrorMessage, updatePersonalDetails, updateDoctorIdentification } =
+  authSlice.actions;
 export default authSlice.reducer;

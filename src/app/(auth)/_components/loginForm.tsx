@@ -37,7 +37,12 @@ const LoginForm = () => {
   const errorMessage = useAppSelector(({ authentication }) => authentication.errorMessage);
   const isLoading = useAppSelector(({ authentication }) => authentication.isLoading);
 
-  const onSubmit = async (loginCredentials: ILogin) => dispatch(login(loginCredentials));
+  const onSubmit = async (loginCredentials: ILogin) => {
+    const { payload } = await dispatch(login(loginCredentials));
+    if (payload) {
+      // Redirect to dashboard
+    }
+  };
   return (
     <form className="flex w-full flex-col items-center" onSubmit={handleSubmit(onSubmit)}>
       <Image src={Logo} width={44} height={44} alt="Zyptyk-logo" />
