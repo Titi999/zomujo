@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { login } from '@/lib/features/auth/authThunk';
+import { useRouter } from 'next/navigation';
 
 export interface ILogin {
   email: string;
@@ -33,6 +34,7 @@ const LoginForm = () => {
     formState: { errors, isValid },
   } = useForm<ILogin>({ resolver: zodResolver(LoginSchema), mode: MODE.ON_TOUCH });
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const errorMessage = useAppSelector(({ authentication }) => authentication.errorMessage);
   const isLoading = useAppSelector(({ authentication }) => authentication.isLoading);
@@ -40,7 +42,7 @@ const LoginForm = () => {
   const onSubmit = async (loginCredentials: ILogin) => {
     const { payload } = await dispatch(login(loginCredentials));
     if (payload) {
-      // Redirect to dashboard
+      router.push('/dashboard');
     }
   };
   return (

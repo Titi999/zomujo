@@ -1,6 +1,6 @@
 import SingleImageDropzone from '@/components/ui/singleFileDropzone';
 import { InfoIcon } from 'lucide-react';
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -23,7 +23,7 @@ const DoctorIdentification = () => {
   const [confirm, setConfirm] = useState(false);
   const { register, setValue, watch, getValues } = useForm<IDoctorIdentification>({
     resolver: zodResolver(DoctorIdentificationSchema),
-    defaultValues: doctorIdentification ?? undefined,
+    defaultValues: doctorIdentification,
   });
   const dispatch = useAppDispatch();
 
@@ -31,6 +31,12 @@ const DoctorIdentification = () => {
     event.preventDefault();
     dispatch(updateDoctorIdentification(getValues()));
   };
+
+  useEffect(() => {
+    if (doctorIdentification) {
+      setConfirm(true);
+    }
+  }, [doctorIdentification]);
 
   return (
     <form className="flex w-full flex-col gap-10" onSubmit={($event) => onSubmit($event)}>
@@ -77,13 +83,13 @@ const DoctorIdentification = () => {
           variant="secondary"
           className="w-full bg-accent-foreground text-white"
           type="button"
-          child={'Back'}
+          child="Back"
         />
         <Button
           className="w-full"
-          disabled={watch('front') === undefined || watch('back') === undefined || !confirm}
+          disabled={!watch('front') || !watch('back') || !confirm}
           type="submit"
-          child={'Continue'}
+          child="Continue"
         />
       </div>
     </form>

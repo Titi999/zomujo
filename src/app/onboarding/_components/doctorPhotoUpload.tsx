@@ -55,7 +55,7 @@ const DoctorPhotoUpload = () => {
             label="Passport Photo"
             value={watch('passportPhoto')}
             {...register('passportPhoto')}
-            onChange={(file) => setValue('passportPhoto', file!)}
+            onChange={(file) => file && setValue('passportPhoto', file)}
           />
         </div>
         <div className="flex flex-row">
@@ -73,13 +73,13 @@ const DoctorPhotoUpload = () => {
           variant="secondary"
           className="w-full bg-accent-foreground text-white"
           type="button"
-          child={'Back'}
+          child="Back"
         />
         <Button
           className="w-full"
           child="Finish"
           isLoading={isLoading}
-          disabled={watch('passportPhoto') === undefined || !confirm}
+          disabled={!watch('passportPhoto') || !confirm}
           type="submit"
         />
       </div>
@@ -94,7 +94,7 @@ const OnboardingSuccessful = () => {
   return (
     <div className="relative flex flex-col items-center gap-12 p-8 pt-16">
       <div className="absolute left-1/2 top-0 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-gray-50">
-        <div className="from-primaryLightBase to-primaryDark flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-b">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-b from-primaryLightBase to-primaryDark">
           <Check size={32} strokeWidth={3} className="text-white" />
         </div>
       </div>
@@ -107,7 +107,7 @@ const OnboardingSuccessful = () => {
         </p>
       </div>
       <div className="flex w-full flex-col items-center gap-4">
-        <Button child="Go to Dashboard" type={'button'} onClick={() => router.push('/login')} />
+        <Button child="Go to Dashboard" type="button" onClick={() => router.push('/dashboard')} />
       </div>
     </div>
   );

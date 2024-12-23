@@ -37,7 +37,7 @@ const PersonalDetails = () => {
   } = useForm<IPersonalDetails>({
     resolver: zodResolver(PersonalDetailsSchema),
     mode: 'onTouched',
-    defaultValues: personalDetails ?? undefined,
+    defaultValues: personalDetails,
   });
   const dispatch = useAppDispatch();
 

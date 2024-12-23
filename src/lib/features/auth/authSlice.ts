@@ -6,16 +6,16 @@ interface AuthenticationState {
   errorMessage: string;
   isLoading: boolean;
   currentStep: number;
-  doctorPersonalDetails: IPersonalDetails | null;
-  doctorIdentification: IDoctorIdentification | null;
+  doctorPersonalDetails: IPersonalDetails | undefined;
+  doctorIdentification: IDoctorIdentification | undefined;
 }
 
 const initialState: AuthenticationState = {
   errorMessage: '',
   isLoading: false,
   currentStep: 1,
-  doctorPersonalDetails: null,
-  doctorIdentification: null,
+  doctorPersonalDetails: undefined,
+  doctorIdentification: undefined,
 };
 
 const authSlice = createSlice({
