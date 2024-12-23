@@ -166,30 +166,28 @@ const SelectInput = ({
   name,
   label,
   placeholder = '',
-}: SelectInputProps) => {
-  return (
-    <Controller
-      control={control}
-      name={name}
-      render={({ field }) => (
-        <Select {...field} onValueChange={(value) => field.onChange(value)}>
-          {label && <Label>{label}</Label>}
-          <SelectTrigger className="w-[100vw] max-w-sm" ref={ref} error={error}>
-            <SelectValue placeholder={placeholder} />
-          </SelectTrigger>
-          <SelectContent>
-            {options.map(({ value, label }) => (
-              <SelectItem key={value} value={value}>
-                {label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-          {error && <small className="-mt-1 text-xs font-medium text-red-500">{error}</small>}
-        </Select>
-      )}
-    />
-  );
-};
+}: SelectInputProps) => (
+  <Controller
+    control={control}
+    name={name}
+    render={({ field }) => (
+      <Select {...field} onValueChange={(value) => field.onChange(value)}>
+        {label && <Label>{label}</Label>}
+        <SelectTrigger className="w-[100vw] max-w-sm" ref={ref} error={error}>
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map(({ value, label }) => (
+            <SelectItem key={value} value={value}>
+              {label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+        {error && <small className="-mt-1 text-xs font-medium text-red-500">{error}</small>}
+      </Select>
+    )}
+  />
+);
 
 export {
   Select,
