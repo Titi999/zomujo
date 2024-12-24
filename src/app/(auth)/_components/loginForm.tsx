@@ -10,7 +10,7 @@ import { z } from 'zod';
 import { emailSchema, passwordSchema } from '@/schemas/zod.schemas';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { MODE } from '@/constants/contants';
+import { MODE } from '@/constants/constants';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -81,8 +81,14 @@ const LoginForm = () => {
           <div className="flex w-full max-w-sm justify-between">
             <Checkbox labelClassName="font-normal leading-none text-base" labelName="Remember me" />
 
-            <Link href="/" className="text-primary">
+            <Link href="/forgot-password" className="text-primary">
               Forgot password?
+            </Link>
+          </div>
+          <div>
+            <span> Don&rsquo;t have an account ? </span>
+            <Link href="/sign-up" className="pl-1 text-primary">
+              Sign Up
             </Link>
           </div>
         </div>
