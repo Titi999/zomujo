@@ -60,14 +60,12 @@ export const AlertMessage = ({
   className,
   titleClassName,
   variant = 'default',
-}: AlertMessageProps) => {
-  return (
-    <Alert variant={variant} className={cn(className)}>
-      <AlertCircle className="h-4 w-4" />
-      {title && <AlertTitle className={cn(titleClassName)}>{title}</AlertTitle>}
-      <AlertDescription>{message}</AlertDescription>
-    </Alert>
-  );
-};
+}: AlertMessageProps) => (
+  <Alert variant={variant} className={cn(className)}>
+    <AlertCircle className="h-4 w-4" />
+    {title && <AlertTitle className={cn(titleClassName)}>{title}</AlertTitle>}
+    <AlertDescription>{message}</AlertDescription>
+  </Alert>
+);
 
 export { Alert, AlertTitle, AlertDescription };
