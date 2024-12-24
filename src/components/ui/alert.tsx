@@ -2,6 +2,7 @@ import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
+import { AlertCircle } from 'lucide-react';
 
 const alertVariants = cva(
   'relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground',
@@ -45,5 +46,26 @@ const AlertDescription = React.forwardRef<
   <div ref={ref} className={cn('text-sm [&_p]:leading-relaxed', className)} {...props} />
 ));
 AlertDescription.displayName = 'AlertDescription';
+
+type AlertMessageProps = {
+  title?: string;
+  message: string;
+  className?: string;
+  titleClassName?: string;
+  variant?: 'default' | 'destructive';
+};
+export const AlertMessage = ({
+  message,
+  title,
+  className,
+  titleClassName,
+  variant = 'default',
+}: AlertMessageProps) => (
+  <Alert variant={variant} className={cn(className)}>
+    <AlertCircle className="h-4 w-4" />
+    {title && <AlertTitle className={cn(titleClassName)}>{title}</AlertTitle>}
+    <AlertDescription>{message}</AlertDescription>
+  </Alert>
+);
 
 export { Alert, AlertTitle, AlertDescription };
