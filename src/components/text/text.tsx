@@ -30,8 +30,8 @@ const Text = ({
   children,
   className,
   ...props
-}: CustomTextProps) => {
-  return createElement(
+}: CustomTextProps) =>
+  createElement(
     variant,
     {
       className: cn(textStyles[variantStyle], boldStyles[boldness], className),
@@ -39,6 +39,5 @@ const Text = ({
     },
     children,
   );
-};
 
 export default Text;
