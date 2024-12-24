@@ -6,6 +6,16 @@ export const makeStore = () =>
     reducer: {
       authentication: authReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoredActions: ['authentication/updateDoctorIdentification'],
+          ignoredPaths: [
+            'authentication.doctorIdentification.front',
+            'authentication.doctorIdentification.back',
+          ],
+        },
+      }),
   });
 
 // Infer the type of makeStore

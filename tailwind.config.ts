@@ -57,9 +57,14 @@ export default {
           '200': '#E4E7EC',
           '300': '#D0D5DD',
           '400': '#98A2B3',
+          medium: '#6B7280',
           '500': '#667185',
           '600': '#334155',
         },
+        primaryDark: '#067458',
+        primaryLight: '#F0F9F7',
+        primaryLightBase: '#08AF85',
+        primaryLightLight: '#F4FBF9',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -69,6 +74,9 @@ export default {
       backgroundImage: {
         transparentPrimaryGradient:
           'linear-gradient(to bottom, #033A2C00 7%, #033A2CFF 70%, #033A2C 75%)',
+        primaryGradient: 'linear-gradient(3.01deg, #3A6C82 7.18%, #3FAB85 97.48%)',
+        primaryGradient2: 'linear-gradient(to bottom, #08AF85 7.18%, #256A5C 97.48%)',
+        primaryGradientUndo: 'linear-gradient(3.01deg, #033A2C 7.18%, #033A2C 97.48%)',
       },
       boxShadow: {
         base: '0 1px 2px 4px rgba(15, 23, 42, 0.059)',

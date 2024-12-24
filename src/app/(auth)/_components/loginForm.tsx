@@ -12,9 +12,10 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { MODE } from '@/constants/contants';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { AlertCircle } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertMessage } from '@/components/ui/alert';
 import { login } from '@/lib/features/auth/authThunk';
+import { useRouter } from 'next/navigation';
+import React from 'react';
 
 export interface ILogin {
   email: string;
@@ -33,11 +34,17 @@ const LoginForm = () => {
     formState: { errors, isValid },
   } = useForm<ILogin>({ resolver: zodResolver(LoginSchema), mode: MODE.ON_TOUCH });
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const errorMessage = useAppSelector(({ authentication }) => authentication.errorMessage);
   const isLoading = useAppSelector(({ authentication }) => authentication.isLoading);
 
-  const onSubmit = async (loginCredentials: ILogin) => dispatch(login(loginCredentials));
+  const onSubmit = async (loginCredentials: ILogin) => {
+    const { payload } = await dispatch(login(loginCredentials));
+    if (payload) {
+      router.push('/dashboard');
+    }
+  };
   return (
     <form className="flex w-full flex-col items-center" onSubmit={handleSubmit(onSubmit)}>
       <Image src={Logo} width={44} height={44} alt="Zyptyk-logo" />
@@ -52,10 +59,7 @@ const LoginForm = () => {
         </div>
         <div className="flex w-full flex-col items-center gap-8">
           {errorMessage && (
-            <Alert className="max-w-sm" variant="destructive">
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>{errorMessage}</AlertDescription>
-            </Alert>
+            <AlertMessage message={errorMessage} className="max-w-sm" variant="destructive" />
           )}
           <Input
             labelName="Email"

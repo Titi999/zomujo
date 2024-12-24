@@ -12,8 +12,7 @@ import React, { useState } from 'react';
 import { useForm, FieldValues, UseFormRegister, FieldErrors } from 'react-hook-form';
 import { z } from 'zod';
 import { Input } from '@/components/ui/input';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { AlertCircle } from 'lucide-react';
+import { AlertMessage } from '@/components/ui/alert';
 
 enum FormType {
   Organization = 'organization',
@@ -137,14 +136,13 @@ const SignUpForm = () => {
         </label>
       </div>
       {selectedForm === FormType.Organization && (
-        <Alert className="border-primary">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle className="font-semibold text-primary">Importance Notice</AlertTitle>
-          <AlertDescription>
-            This selection doesn&rsquo;t create an account automatically. We&rsquo;ll contact you
-            after processing your request.
-          </AlertDescription>
-        </Alert>
+        <AlertMessage
+          message="This selection doesn&rsquo;t create an account automatically. We&rsquo;ll contact you
+            after processing your request."
+          title="Importance Notice"
+          className="border-primary"
+          titleClassName="font-semibold text-primary"
+        />
       )}
       <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-8">
         {selectedForm === FormType.Doctor && <NameFields register={register} errors={errors} />}
