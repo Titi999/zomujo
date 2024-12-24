@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { MODE } from '@/constants/contants';
+import { MODE } from '@/constants/constants';
 import {
   emailSchema,
   nameSchema,
@@ -12,6 +12,7 @@ import React, { useState } from 'react';
 import { useForm, FieldValues, UseFormRegister, FieldErrors } from 'react-hook-form';
 import { z } from 'zod';
 import { Input } from '@/components/ui/input';
+import Link from 'next/link';
 import { AlertMessage } from '@/components/ui/alert';
 
 enum FormType {
@@ -201,6 +202,12 @@ const SignUpForm = () => {
           className="mt-4 w-full"
           child={getFormTitle(selectedForm)}
         />
+        <div className="text-center">
+          <span>Already have an account?</span>
+          <Link href="/login" className="pl-1 text-primary">
+            Login
+          </Link>
+        </div>
       </form>
     </div>
   );

@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { updatePersonalDetails } from '@/lib/features/auth/authSlice';
 import { IPersonalDetails } from '@/types/auth.interface';
 import { maxDate } from '@/lib/utils';
-import { MODE } from '@/constants/contants';
+import { MODE } from '@/constants/constants';
 
 const PersonalDetailsSchema = z.object({
   mdcRegistrationNumber: mdcNumberSchema,
