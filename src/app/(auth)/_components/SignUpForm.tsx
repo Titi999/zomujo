@@ -219,23 +219,21 @@ export default SignUpForm;
 
 interface NameFieldsProps {
   register: UseFormRegister<ISignUpFields>;
-  errors: FieldErrors<FieldValues>;
+  errors: FieldErrors;
 }
-const NameFields = ({ register, errors }: NameFieldsProps) => {
-  return (
-    <div className="mt-8 flex w-full flex-col items-baseline justify-center gap-8 md:w-[96.5%] md:flex-row md:gap-2">
-      <Input
-        labelName="First Name"
-        error={errors.firstName?.message?.toString() || ''}
-        placeholder="John"
-        {...register('firstName')}
-      />
-      <Input
-        labelName="Last Name"
-        error={errors.lastName?.message?.toString() || ''}
-        placeholder="Doe"
-        {...register('lastName')}
-      />
-    </div>
-  );
-};
+const NameFields = ({ register, errors }: NameFieldsProps) => (
+  <div className="mt-8 flex w-full flex-col items-baseline justify-center gap-8 md:w-[96.5%] md:flex-row md:gap-2">
+    <Input
+      labelName="First Name"
+      error={errors.firstName?.message?.toString() || ''}
+      placeholder="John"
+      {...register('firstName')}
+    />
+    <Input
+      labelName="Last Name"
+      error={errors.lastName?.message?.toString() || ''}
+      placeholder="Doe"
+      {...register('lastName')}
+    />
+  </div>
+);
