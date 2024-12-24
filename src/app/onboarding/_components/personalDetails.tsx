@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { updatePersonalDetails } from '@/lib/features/auth/authSlice';
 import { IPersonalDetails } from '@/types/auth.interface';
 import { maxDate } from '@/lib/utils';
+import { MODE } from '@/constants/contants';
 
 const PersonalDetailsSchema = z.object({
   mdcRegistrationNumber: mdcNumberSchema,
@@ -36,7 +37,7 @@ const PersonalDetails = () => {
     formState: { errors, isValid },
   } = useForm<IPersonalDetails>({
     resolver: zodResolver(PersonalDetailsSchema),
-    mode: 'onTouched',
+    mode: MODE.ON_TOUCH,
     defaultValues: personalDetails,
   });
   const dispatch = useAppDispatch();
@@ -54,7 +55,7 @@ const PersonalDetails = () => {
             <InfoIcon size={16} />
           </span>
         </p>
-        <p className="leading-6 text-[#6B7280]">
+        <p className="text-grayscale-medium leading-6">
           Provide your personal details for a personalized Zyptyk experience tailored to your
           preferences.
         </p>

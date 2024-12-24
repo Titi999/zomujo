@@ -45,7 +45,7 @@ const DoctorPhotoUpload = () => {
             <InfoIcon size={16} />
           </span>
         </p>
-        <p className="leading-6 text-[#6B7280]">Upload a photo for verification purposes.</p>
+        <p className="text-grayscale-medium leading-6">Upload a photo for verification purposes.</p>
       </div>
       <div className="flex flex-col justify-between gap-4">
         <div className="flex flex-row justify-between">
@@ -94,7 +94,7 @@ const OnboardingSuccessful = () => {
   return (
     <div className="relative flex flex-col items-center gap-12 p-8 pt-16">
       <div className="absolute left-1/2 top-0 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-gray-50">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-b from-primaryLightBase to-primaryDark">
+        <div className="from-primaryLightBase to-primaryDark flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-b">
           <Check size={32} strokeWidth={3} className="text-white" />
         </div>
       </div>

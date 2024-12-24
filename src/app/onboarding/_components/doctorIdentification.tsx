@@ -47,7 +47,7 @@ const DoctorIdentification = () => {
             <InfoIcon size={16} />
           </span>
         </p>
-        <p className="leading-6 text-[#6B7280]">We require both sides of ID Card</p>
+        <p className="text-grayscale-medium leading-6">We require both sides of ID Card</p>
       </div>
       <div className="flex flex-col justify-between gap-4">
         <div className="flex flex-row justify-between">
