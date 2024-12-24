@@ -57,7 +57,7 @@ const DoctorIdentification = () => {
             label="Front"
             value={watch('front')}
             {...register('front')}
-            onChange={(file) => file && setValue('front', file)}
+            onChange={(file) => setValue('front', file!)}
           />
           <SingleImageDropzone
             height={280}
@@ -65,7 +65,7 @@ const DoctorIdentification = () => {
             label="Back"
             value={watch('back')}
             {...register('back')}
-            onChange={(file) => file && setValue('back', file)}
+            onChange={(file) => setValue('back', file!)}
           />
         </div>
         <div className="flex flex-row">

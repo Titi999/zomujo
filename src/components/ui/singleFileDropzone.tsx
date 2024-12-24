@@ -1,6 +1,6 @@
 'use client';
 
-import { X } from 'lucide-react';
+import { Trash } from 'lucide-react';
 import * as React from 'react';
 import { useDropzone, type DropzoneOptions } from 'react-dropzone';
 import { twMerge } from 'tailwind-merge';
@@ -124,7 +124,7 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
     }, [fileRejections, dropzoneOptions]);
 
     return (
-      <div className="cursor-pointer">
+      <div className="relative cursor-pointer">
         <div
           {...getRootProps({
             className: dropZoneClassName,
@@ -145,25 +145,22 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
               alt={acceptedFiles[0]?.name ?? label}
             />
           ) : (
-            // Upload Icon
             <div className="flex flex-col items-center">
               <p className="text-lg font-bold">
-                Upload {label} or <span className="cursor-pointer text-primaryDark">Browse</span>
+                Upload {label} or <span className="text-primaryDark cursor-pointer">Browse</span>
               </p>
               <p className="leading-4 text-gray-500">Supports PNG, JPG, JPEG</p>
             </div>
           )}
           {imageUrl && !disabled && (
             <div
-              className="group absolute right-0 top-0 -translate-y-1/4 translate-x-1/4 transform"
+              className="group absolute right-5 top-5 z-50 -translate-y-1/4 translate-x-1/4 transform"
               onClick={(e) => {
                 e.stopPropagation();
                 void onChange?.(undefined);
               }}
             >
-              <div className="flex h-5 w-5 items-center justify-center rounded-md border border-solid border-gray-500 bg-white transition-all duration-300 hover:h-6 hover:w-6 dark:border-gray-400 dark:bg-black">
-                <X className="text-gray-500 dark:text-gray-400" width={16} height={16} />
-              </div>
+              <Trash className="text-red-500 dark:text-gray-400" width={16} height={16} />
             </div>
           )}
         </div>
@@ -173,28 +170,6 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
   },
 );
 SingleImageDropzone.displayName = 'SingleImageDropzone';
-
-// const Button = React.forwardRef<
-//   HTMLButtonElement,
-//   React.ButtonHTMLAttributes<HTMLButtonElement> & React.HTMLAttributes<HTMLButtonElement>
-// >(({ className, ...props }, ref) => {
-//   return (
-//     <button
-//       className={twMerge(
-//         // base
-//         'inline-flex cursor-pointer items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
-//         // color
-//         'border border-gray-400 text-gray-400 shadow hover:bg-gray-100 hover:text-gray-500 dark:border-gray-600 dark:text-gray-100 dark:hover:bg-gray-700',
-//         // size
-//         'h-6 rounded-md px-2 text-xs',
-//         className,
-//       )}
-//       ref={ref}
-//       {...props}
-//     />
-//   );
-// });
-// Button.displayName = 'Button';
 
 function formatFileSize(bytes?: number) {
   if (!bytes) {

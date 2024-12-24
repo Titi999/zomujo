@@ -7,9 +7,11 @@ import PersonalDetails from '@/app/onboarding/_components/personalDetails';
 import { useAppSelector } from '@/lib/hooks';
 import DoctorIdentification from '@/app/onboarding/_components/doctorIdentification';
 import DoctorPhotoUpload from '@/app/onboarding/_components/doctorPhotoUpload';
+import { AlertMessage } from '@/components/ui/alert';
 
 const DoctorOnboarding = () => {
   const currentStep = useAppSelector(({ authentication }) => authentication.currentStep);
+  const errorMessage = useAppSelector(({ authentication }) => authentication.errorMessage);
 
   const currentView = {
     1: <PersonalDetails />,
@@ -43,6 +45,9 @@ const DoctorOnboarding = () => {
               ))}
           </div>
         </div>
+        {errorMessage && (
+          <AlertMessage message={errorMessage} className="max-w-sm" variant="destructive" />
+        )}
         {currentView}
       </div>
     </div>
