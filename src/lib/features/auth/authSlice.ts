@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { doctorOnboarding, login } from '@/lib/features/auth/authThunk';
-import { IDoctorIdentification, IPersonalDetails } from '@/types/auth.interface';
+import { IDoctorIdentification, IPersonalDetails, IUser } from '@/types/auth.interface';
 
 interface AuthenticationState {
   errorMessage: string;
@@ -8,6 +8,7 @@ interface AuthenticationState {
   currentStep: number;
   doctorPersonalDetails: IPersonalDetails | undefined;
   doctorIdentification: IDoctorIdentification | undefined;
+  user: IUser | undefined;
 }
 
 const initialState: AuthenticationState = {
@@ -16,6 +17,7 @@ const initialState: AuthenticationState = {
   currentStep: 1,
   doctorPersonalDetails: undefined,
   doctorIdentification: undefined,
+  user: undefined,
 };
 
 const authSlice = createSlice({
@@ -35,6 +37,9 @@ const authSlice = createSlice({
     },
     updateCurrentStep: (state, { payload }) => {
       state.currentStep = payload;
+    },
+    setUserInfo: (state, { payload }) => {
+      state.user = payload;
     },
   },
   extraReducers: (builder) => {
@@ -60,5 +65,6 @@ export const {
   updatePersonalDetails,
   updateDoctorIdentification,
   updateCurrentStep,
+  setUserInfo,
 } = authSlice.actions;
 export default authSlice.reducer;

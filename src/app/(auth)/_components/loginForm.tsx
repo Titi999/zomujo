@@ -16,6 +16,7 @@ import { AlertMessage } from '@/components/ui/alert';
 import { login } from '@/lib/features/auth/authThunk';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { selectErrorMessage, selectIsLoading } from '@/lib/features/auth/authSelector';
 
 export interface ILogin {
   email: string;
@@ -36,8 +37,8 @@ const LoginForm = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const errorMessage = useAppSelector(({ authentication }) => authentication.errorMessage);
-  const isLoading = useAppSelector(({ authentication }) => authentication.isLoading);
+  const errorMessage = useAppSelector(selectErrorMessage);
+  const isLoading = useAppSelector(selectIsLoading);
 
   const onSubmit = async (loginCredentials: ILogin) => {
     const { payload } = await dispatch(login(loginCredentials));

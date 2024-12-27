@@ -3,3 +3,15 @@ export enum Gender {
   Female = 'female',
   Other = 'other',
 }
+
+export enum Status {
+  Verified = 'verified',
+  Unverified = 'unverified',
+}
+
+export enum Role {
+  Admin = 'ADMIN',
+  SuperAdmin = 'SUPER_ADMIN',
+  Doctor = 'DOCTOR',
+  Patient = 'PATIENT',
+}
