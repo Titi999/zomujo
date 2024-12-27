@@ -10,8 +10,8 @@ import { SelectInput, SelectOption } from '@/components/ui/select';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { updatePersonalDetails } from '@/lib/features/auth/authSlice';
 import { IPersonalDetails } from '@/types/auth.interface';
-import { maxDate } from '@/lib/utils';
 import { MODE } from '@/constants/constants';
+import { maxDate } from '@/lib/date';
 
 const PersonalDetailsSchema = z.object({
   mdcRegistrationNumber: mdcNumberSchema,
@@ -55,7 +55,7 @@ const PersonalDetails = () => {
             <InfoIcon size={16} />
           </span>
         </p>
-        <p className="leading-6 text-grayscale-medium">
+        <p className="text-grayscale-medium leading-6">
           Provide your personal details for a personalized Zyptyk experience tailored to your
           preferences.
         </p>
