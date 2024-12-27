@@ -55,7 +55,7 @@ const PersonalDetails = () => {
             <InfoIcon size={16} />
           </span>
         </p>
-        <p className="text-grayscale-medium leading-6">
+        <p className="leading-6 text-grayscale-medium">
           Provide your personal details for a personalized Zyptyk experience tailored to your
           preferences.
         </p>
