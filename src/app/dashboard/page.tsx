@@ -1,8 +1,11 @@
+// import PatientHome from '@/app/dashboard/_components/patientHome/home';
+
 export default function Dashboard() {
+  const date = new Date();
   return (
     <div>
-      <h1>Dashboard</h1>
-      <span>Home will be here</span>
+      {date.toISOString()}
+      {/*<PatientHome />*/}
     </div>
   );
 }
