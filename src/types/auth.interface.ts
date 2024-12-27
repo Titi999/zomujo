@@ -18,6 +18,11 @@ export interface IDoctorIdentification {
 
 export type DoctorOnboarding = IPersonalDetails & IDoctorPhotoUpload & IDoctorIdentification;
 
+export interface ILoginResponse {
+  user: IUser;
+  extra: unknown;
+}
+
 export interface IUser {
   id: string;
   email: string;

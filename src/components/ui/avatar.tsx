@@ -3,7 +3,8 @@
 import * as React from 'react';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
 
-import { cn } from '@/lib/utils';
+import { cn, getInitials } from '@/lib/utils';
+import { useMemo } from 'react';
 
 const Avatar = React.forwardRef<
   React.ComponentRef<typeof AvatarPrimitive.Root>,
@@ -51,12 +52,13 @@ const AvatarFallback = React.forwardRef<
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
 
 type AvatarCompProps = {
-  initials: string;
-  imageSrc: string;
-  imageAlt: string;
+  name: string;
+  imageSrc?: string;
+  imageAlt?: string;
 };
 
-function AvatarComp({ imageSrc, initials, imageAlt }: AvatarCompProps) {
+function AvatarComp({ imageSrc, name, imageAlt }: AvatarCompProps) {
+  const initials = useMemo(() => getInitials(name), [name]);
   return (
     <Avatar>
       <AvatarImage src={imageSrc} alt={imageAlt} />

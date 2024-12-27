@@ -2,14 +2,14 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ILogin } from '@/app/(auth)/_components/loginForm';
 import axios, { axiosErrorHandler } from '@/lib/axios';
 import { setErrorMessage, setUserInfo } from '@/lib/features/auth/authSlice';
-import { IDoctorPhotoUpload, IUser } from '@/types/auth.interface';
+import { IDoctorPhotoUpload, ILoginResponse } from '@/types/auth.interface';
 import { IResponse } from '@/types/shared.interface';
 
 export const login = createAsyncThunk(
   'authentication/login',
   async (loginCredentials: ILogin, { dispatch }) => {
     try {
-      const { data } = await axios.post<IResponse<IUser>>('auth/login', loginCredentials);
+      const { data } = await axios.post<IResponse<ILoginResponse>>('auth/login', loginCredentials);
       dispatch(setUserInfo(data.data));
       return true;
     } catch (error) {

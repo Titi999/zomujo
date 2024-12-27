@@ -9,6 +9,7 @@ interface AuthenticationState {
   doctorPersonalDetails: IPersonalDetails | undefined;
   doctorIdentification: IDoctorIdentification | undefined;
   user: IUser | undefined;
+  extra: unknown;
 }
 
 const initialState: AuthenticationState = {
@@ -18,6 +19,7 @@ const initialState: AuthenticationState = {
   doctorPersonalDetails: undefined,
   doctorIdentification: undefined,
   user: undefined,
+  extra: undefined,
 };
 
 const authSlice = createSlice({
@@ -39,7 +41,8 @@ const authSlice = createSlice({
       state.currentStep = payload;
     },
     setUserInfo: (state, { payload }) => {
-      state.user = payload;
+      state.user = payload.user;
+      state.extra = payload.extra;
     },
   },
   extraReducers: (builder) => {

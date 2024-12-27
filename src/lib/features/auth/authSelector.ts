@@ -15,3 +15,8 @@ export const selectIsLoading = createSelector(
   ({ authentication }: RootState) => authentication.isLoading,
   (isLoading) => isLoading,
 );
+
+export const selectUserName = createSelector(
+  ({ authentication }: RootState) => authentication.user,
+  (user) => `${user?.firstName} ${user?.lastName}`,
+);
