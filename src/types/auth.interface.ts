@@ -1,4 +1,4 @@
-import { Gender } from '@/types/shared.enum';
+import { Gender, Role, Status } from '@/types/shared.enum';
 
 export interface IPersonalDetails {
   mdcRegistrationNumber: string;
@@ -17,3 +17,19 @@ export interface IDoctorIdentification {
 }
 
 export type DoctorOnboarding = IPersonalDetails & IDoctorPhotoUpload & IDoctorIdentification;
+
+export interface ILoginResponse {
+  user: IUser;
+  extra: unknown;
+}
+
+export interface IUser {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  status: Status;
+  isActive: boolean;
+  role: Role;
+  createdAt: Date;
+}

@@ -10,8 +10,8 @@ import { SelectInput, SelectOption } from '@/components/ui/select';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { updatePersonalDetails } from '@/lib/features/auth/authSlice';
 import { IPersonalDetails } from '@/types/auth.interface';
-import { maxDate } from '@/lib/utils';
 import { MODE } from '@/constants/constants';
+import { maxDate } from '@/lib/date';
 
 const PersonalDetailsSchema = z.object({
   mdcRegistrationNumber: mdcNumberSchema,

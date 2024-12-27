@@ -1,15 +1,16 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ILogin } from '@/app/(auth)/_components/loginForm';
 import axios, { axiosErrorHandler } from '@/lib/axios';
-import { setErrorMessage } from '@/lib/features/auth/authSlice';
-import { IDoctorPhotoUpload } from '@/types/auth.interface';
+import { setErrorMessage, setUserInfo } from '@/lib/features/auth/authSlice';
+import { IDoctorPhotoUpload, ILoginResponse } from '@/types/auth.interface';
+import { IResponse } from '@/types/shared.interface';
 
 export const login = createAsyncThunk(
   'authentication/login',
   async (loginCredentials: ILogin, { dispatch }) => {
     try {
-      const { data } = await axios.post('auth/login', loginCredentials);
-      console.log('Data', data); // TODO: Backend needs to adjust before we can handle this
+      const { data } = await axios.post<IResponse<ILoginResponse>>('auth/login', loginCredentials);
+      dispatch(setUserInfo(data.data));
       return true;
     } catch (error) {
       dispatch(setErrorMessage(axiosErrorHandler(error)));
