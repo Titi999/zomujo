@@ -109,7 +109,7 @@ DialogDescription.displayName = DialogPrimitive.Description.displayName;
 export enum ImageVariant {
   Success = 'success',
   Error = 'error',
-  Email ='email'
+  Email = 'email',
 }
 
 type ModalProps = {

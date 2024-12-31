@@ -116,7 +116,7 @@ const SignUpForm = () => {
   };
 
   const [openModal, setOpenModal] = useState(false);
-  const handleLocationValue = ({value}: Option) => {
+  const handleLocationValue = ({ value }: Option) => {
     setValue('location', value.description || '', {
       shouldValidate: true,
     });
