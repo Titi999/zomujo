@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { ImageVariant, Modal } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { MODE } from '@/constants/constants';
-import { selectErrorMessage, selectIsLoading } from '@/lib/features/auth/authSelector';
+import { selectThunkState } from '@/lib/features/auth/authSelector';
 import { forgotPassword } from '@/lib/features/auth/authThunk';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { emailSchema } from '@/schemas/zod.schemas';
@@ -34,8 +34,7 @@ const ForgetPasswordForm = () => {
   const [openModal, setOpenModal] = useState(false);
   const [successMessage, setMessage] = useState('');
   const dispatch = useAppDispatch();
-  const errorMessage = useAppSelector(selectErrorMessage);
-  const isLoading = useAppSelector(selectIsLoading);
+  const { isLoading, errorMessage } = useAppSelector(selectThunkState);
 
   const onSubmit = async ({ email }: IForgotPassword) => {
     const { payload } = await dispatch(forgotPassword(email));

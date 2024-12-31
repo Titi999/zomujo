@@ -21,3 +21,9 @@ export const selectUserName = createSelector(
 );
 
 export const selectUser = createSelector(selectAuthentication, ({ user }) => user);
+
+export const selectThunkState = createSelector(
+  selectIsLoading,
+  selectErrorMessage,
+  (isLoading, errorMessage) => ({ isLoading, errorMessage }),
+);

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { ImageVariant, Modal } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { MODE } from '@/constants/constants';
-import { selectErrorMessage, selectIsLoading } from '@/lib/features/auth/authSelector';
+import { selectThunkState } from '@/lib/features/auth/authSelector';
 import { resetPassword } from '@/lib/features/auth/authThunk';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { passwordSchema, requiredStringSchema } from '@/schemas/zod.schemas';
@@ -41,8 +41,7 @@ const ResetPasswordForm = () => {
   const dispatch = useAppDispatch();
   const [successMessage, setMessage] = useState('');
   const [openModal, setOpenModal] = useState(false);
-  const errorMessage = useAppSelector(selectErrorMessage);
-  const isLoading = useAppSelector(selectIsLoading);
+  const { isLoading, errorMessage } = useAppSelector(selectThunkState);
 
   const onSubmit = async (passwordCredentials: IResetPassword) => {
     const { payload } = await dispatch(resetPassword(passwordCredentials));

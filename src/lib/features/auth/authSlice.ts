@@ -6,6 +6,7 @@ import {
   requestOrganization,
   resetPassword,
   signUp,
+  verifyEmail,
 } from '@/lib/features/auth/authThunk';
 import { IDoctorIdentification, IPersonalDetails, IUser } from '@/types/auth.interface';
 
@@ -93,6 +94,13 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(resetPassword.fulfilled || resetPassword.rejected, (state) => {
+        state.isLoading = false;
+      });
+    builder
+      .addCase(verifyEmail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(verifyEmail.fulfilled || resetPassword.rejected, (state) => {
         state.isLoading = false;
       });
   },

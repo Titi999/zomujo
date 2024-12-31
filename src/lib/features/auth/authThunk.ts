@@ -85,6 +85,7 @@ export const forgotPassword = createAsyncThunk(
     }
   },
 );
+
 export const resetPassword = createAsyncThunk(
   'authentication/resetPassword',
   async (passwordCredentials: IResetPassword, { dispatch }) => {
@@ -94,6 +95,22 @@ export const resetPassword = createAsyncThunk(
         passwordCredentials,
       );
       return data.message;
+    } catch (error) {
+      dispatch(setErrorMessage(axiosErrorHandler(error)));
+      return false;
+    }
+  },
+);
+
+export const verifyEmail = createAsyncThunk(
+  'authentication/verifyEmail',
+  async (token: string, { dispatch }) => {
+    try {
+      const {
+        data: { data, message },
+      } = await axios.post<IResponse<ILoginResponse>>(`${authPath}verify-email/${token}`);
+      dispatch(setUserInfo(data));
+      return message;
     } catch (error) {
       dispatch(setErrorMessage(axiosErrorHandler(error)));
       return false;
