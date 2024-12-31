@@ -4,7 +4,6 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { verifyEmail } from '@/lib/features/auth/authThunk';
 import { Loader2 } from 'lucide-react';
-import * as React from 'react';
 import Image from 'next/image';
 import { ErrorIllustration, SuccessIllustration } from '@/assets/images';
 import { selectThunkState } from '@/lib/features/auth/authSelector';
