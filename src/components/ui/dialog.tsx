@@ -106,7 +106,12 @@ const DialogDescription = React.forwardRef<
   />
 ));
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
-type imageVariant = 'success' | 'error' | 'email';
+export enum ImageVariant {
+  Success = 'success',
+  Error = 'error',
+  Email ='email'
+}
+
 type ModalProps = {
   open: boolean;
   headerChild?: ReactNode;
@@ -115,7 +120,7 @@ type ModalProps = {
   content: ReactNode;
   footer?: ReactNode;
   showClose?: boolean;
-  imageVariant?: imageVariant;
+  imageVariant?: ImageVariant;
   showImage?: boolean;
   setState?: React.Dispatch<React.SetStateAction<boolean>>;
 };

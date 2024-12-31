@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { Modal } from '@/components/ui/dialog';
+import { ImageVariant, Modal } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { MODE } from '@/constants/constants';
 import { selectErrorMessage, selectIsLoading } from '@/lib/features/auth/authSelector';
@@ -69,7 +69,7 @@ const ResetPasswordForm = () => {
         open={openModal}
         content={successMessage ? <SuccessMessage message={successMessage} /> : errorMessage}
         showImage={true}
-        imageVariant={successMessage ? 'success' : 'error'}
+        imageVariant={successMessage ? ImageVariant.Success : ImageVariant.Error}
         showClose={true}
         setState={setOpenModal}
       />

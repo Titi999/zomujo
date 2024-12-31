@@ -3,6 +3,7 @@ import React from 'react';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { Label } from '../ui/label';
 import { Option } from 'react-google-places-autocomplete/build/types';
+import { cn } from '@/lib/utils';
 
 interface LocationProps {
   placeHolder: string;
@@ -18,12 +19,9 @@ const Location = ({
   error,
   handleLocationValue,
   onBlur,
-}: LocationProps) => {
-  const existingClass = 'w-[100%]';
-
-  return (
+}: LocationProps) =>  (
     <div>
-      <div className={existingClass + classStyle}>
+      <div className={cn('w-[100%]', classStyle)}>
         <Label>Location</Label>
         <GooglePlacesAutocomplete
           apiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY}
@@ -31,15 +29,14 @@ const Location = ({
             onChange: (place) => place && handleLocationValue(place),
             placeholder: placeHolder,
             onBlur: () => onBlur && onBlur(),
-
             styles: {
-              control: (provided, state) => ({
+              control: (provided, { isFocused }) => ({
                 ...provided,
-                borderColor: state.isFocused ? 'green' : error ? 'red' : 'none',
+                borderColor: isFocused ? 'green' : error ? 'red' : 'none',
                 '&:hover': {
                   borderColor: 'none',
                 },
-                boxShadow: state.isFocused ? '0 0 0 1px green' : 'none',
+                boxShadow: isFocused ? '0 0 0 1px green' : 'none',
                 fontSize: '14px',
               }),
             },
@@ -49,6 +46,5 @@ const Location = ({
       </div>
     </div>
   );
-};
 
 export default Location;

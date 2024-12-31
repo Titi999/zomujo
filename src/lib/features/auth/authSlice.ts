@@ -9,7 +9,7 @@ import {
 } from '@/lib/features/auth/authThunk';
 import { IDoctorIdentification, IPersonalDetails, IUser } from '@/types/auth.interface';
 
-export interface AuthenticationState {
+interface AuthenticationState {
   errorMessage: string;
   isLoading: boolean;
   currentStep: number;
@@ -17,7 +17,6 @@ export interface AuthenticationState {
   doctorIdentification: IDoctorIdentification | undefined;
   user: IUser | undefined;
   extra: unknown;
-  successMessage: string;
 }
 
 const initialState: AuthenticationState = {
@@ -28,7 +27,6 @@ const initialState: AuthenticationState = {
   doctorIdentification: undefined,
   user: undefined,
   extra: undefined,
-  successMessage: '',
 };
 
 const authSlice = createSlice({

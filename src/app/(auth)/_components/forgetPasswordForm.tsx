@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { Modal } from '@/components/ui/dialog';
+import { ImageVariant, Modal } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { MODE } from '@/constants/constants';
 import { selectErrorMessage, selectIsLoading } from '@/lib/features/auth/authSelector';
@@ -53,7 +53,7 @@ const ForgetPasswordForm = () => {
         open={openModal}
         content={successMessage || errorMessage}
         showImage={true}
-        imageVariant={successMessage ? 'email' : 'error'}
+        imageVariant={successMessage ? ImageVariant.Email : ImageVariant.Error}
         showClose={true}
         setState={setOpenModal}
       />
@@ -74,7 +74,7 @@ const ForgetPasswordForm = () => {
             disabled={!isValid || isLoading}
           />
 
-          <div className="">
+          <div>
             <Link href="/login" className="flex pl-2 text-primary">
               <ArrowLeft /> Back
             </Link>

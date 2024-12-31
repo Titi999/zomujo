@@ -10,7 +10,7 @@ import {
 } from '@/types/auth.interface';
 import { IResponse } from '@/types/shared.interface';
 
-const authPath = 'auth/';
+const authPath = 'auth/' as const;
 export const login = createAsyncThunk(
   'authentication/login',
   async (loginCredentials: ILogin, { dispatch }) => {
@@ -74,7 +74,7 @@ export const requestOrganization = createAsyncThunk(
 );
 
 export const forgotPassword = createAsyncThunk(
-  'authentication/forgot-password',
+  'authentication/forgotPassword',
   async (email: string, { dispatch }) => {
     try {
       const { data } = await axios.patch<IResponse>(`${authPath}forgot-password`, { email });
@@ -86,7 +86,7 @@ export const forgotPassword = createAsyncThunk(
   },
 );
 export const resetPassword = createAsyncThunk(
-  'authentication/reset-password',
+  'authentication/resetPassword',
   async (passwordCredentials: IResetPassword, { dispatch }) => {
     try {
       const { data } = await axios.patch<IResponse>(

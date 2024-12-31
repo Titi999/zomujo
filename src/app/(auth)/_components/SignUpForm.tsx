@@ -20,7 +20,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { requestOrganization, signUp } from '@/lib/features/auth/authThunk';
 import { selectErrorMessage, selectIsLoading } from '@/lib/features/auth/authSelector';
 import { Role } from '@/types/shared.enum';
-import { Modal } from '@/components/ui/dialog';
+import { ImageVariant, Modal } from '@/components/ui/dialog';
 import Location from '@/components/Location/Location';
 import { Option } from 'react-google-places-autocomplete/build/types';
 
@@ -116,13 +116,13 @@ const SignUpForm = () => {
   };
 
   const [openModal, setOpenModal] = useState(false);
-  const handleLocationValue = (location: Option) => {
-    setValue('location', location.value.description || '', {
+  const handleLocationValue = ({value}: Option) => {
+    setValue('location', value.description || '', {
       shouldValidate: true,
     });
 
     const service = new google.maps.places.PlacesService(document.createElement('div'));
-    const placeId = location.value.place_id;
+    const placeId = value.place_id;
 
     service.getDetails({ placeId }, (place, status) => {
       if (status !== 'OK' || !place?.geometry?.location) {
@@ -142,7 +142,7 @@ const SignUpForm = () => {
             open={openModal}
             content={successMessage}
             showImage={true}
-            imageVariant={role === Role.Admin ? 'success' : 'email'}
+            imageVariant={role === Role.Admin ? ImageVariant.Success : ImageVariant.Email}
             showClose={true}
             setState={setOpenModal}
           />
@@ -151,7 +151,7 @@ const SignUpForm = () => {
             open={openModal}
             content={errorMessage}
             showImage={true}
-            imageVariant="error"
+            imageVariant={ImageVariant.Error}
             showClose={true}
             setState={setOpenModal}
           />
