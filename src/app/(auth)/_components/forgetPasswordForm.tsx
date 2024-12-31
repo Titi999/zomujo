@@ -1,12 +1,16 @@
 'use client';
 import { Button } from '@/components/ui/button';
+import { Modal } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { MODE } from '@/constants/constants';
+import { selectErrorMessage, selectIsLoading } from '@/lib/features/auth/authSelector';
+import { forgotPassword } from '@/lib/features/auth/authThunk';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { emailSchema } from '@/schemas/zod.schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -21,35 +25,63 @@ const ForgetPasswordForm = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isValid },
   } = useForm<IForgotPassword>({
     resolver: zodResolver(ForgotPasswordSchema),
     mode: MODE.ON_TOUCH,
   });
+  const [openModal, setOpenModal] = useState(false);
+  const [successMessage, setMessage] = useState('');
+  const dispatch = useAppDispatch();
+  const errorMessage = useAppSelector(selectErrorMessage);
+  const isLoading = useAppSelector(selectIsLoading);
 
-  const onSubmit = (data: IForgotPassword) => {
-    console.log('Form Data:', data); //Todo: integrating it with the backend API
+  const onSubmit = async ({ email }: IForgotPassword) => {
+    const { payload } = await dispatch(forgotPassword(email));
+    if (payload) {
+      setMessage(String(payload));
+      reset();
+    }
+
+    setOpenModal(true);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="mt-8 flex flex-col gap-8">
-        <Input
-          labelName="Email"
-          type="email"
-          error={errors.email?.message || ''}
-          placeholder="johndoe@gmail.com"
-          {...register('email')}
-        />
-        <Button child="Continue" disabled={!isValid} className="w-full max-w-sm" />
+    <>
+      <Modal
+        open={openModal}
+        content={successMessage || errorMessage}
+        showImage={true}
+        imageVariant={successMessage ? 'email' : 'error'}
+        showClose={true}
+        setState={setOpenModal}
+      />
 
-        <div className="">
-          <Link href="/login" className="flex pl-2 text-primary">
-            <ArrowLeft /> Back
-          </Link>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="mt-8 flex flex-col items-center justify-center gap-8">
+          <Input
+            labelName="Email"
+            type="email"
+            error={errors.email?.message || ''}
+            placeholder="johndoe@gmail.com"
+            {...register('email')}
+          />
+          <Button
+            child="Continue"
+            className="w-full max-w-sm"
+            isLoading={isLoading}
+            disabled={!isValid || isLoading}
+          />
+
+          <div className="">
+            <Link href="/login" className="flex pl-2 text-primary">
+              <ArrowLeft /> Back
+            </Link>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </>
   );
 };
 

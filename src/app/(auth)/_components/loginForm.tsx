@@ -14,14 +14,11 @@ import { MODE } from '@/constants/constants';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { AlertMessage } from '@/components/ui/alert';
 import { login } from '@/lib/features/auth/authThunk';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 import { selectErrorMessage, selectIsLoading } from '@/lib/features/auth/authSelector';
-
-export interface ILogin {
-  email: string;
-  password: string;
-}
+import { useRouter } from 'next/navigation';
+import { ILogin } from '@/types/auth.interface';
+import { authenticationProvider } from './authenticationProvider';
 
 const LoginSchema = z.object({
   email: emailSchema(),
@@ -102,4 +99,4 @@ const LoginForm = () => {
   );
 };
 
-export { LoginForm };
+export default authenticationProvider(LoginForm);

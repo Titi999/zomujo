@@ -1,59 +1,116 @@
 'use client';
 import { Button } from '@/components/ui/button';
+import { Modal } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { MODE } from '@/constants/constants';
-import { passwordSchema } from '@/schemas/zod.schemas';
+import { selectErrorMessage, selectIsLoading } from '@/lib/features/auth/authSelector';
+import { resetPassword } from '@/lib/features/auth/authThunk';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { passwordSchema, requiredStringSchema } from '@/schemas/zod.schemas';
+import { IResetPassword } from '@/types/auth.interface';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-interface IResetPassword {
-  password: string;
-  confirmPassword: string;
-}
 const ResetPasswordForm = () => {
-  const ResetPasswordSchema = z.object({
-    password: passwordSchema,
-    confirmPassword: passwordSchema,
-  });
+  const ResetPasswordSchema = z
+    .object({
+      newPassword: passwordSchema,
+      confirmPassword: passwordSchema,
+      token: requiredStringSchema(),
+    })
+    .refine(({ newPassword, confirmPassword }) => newPassword === confirmPassword, {
+      message: 'Password does not match',
+      path: ['confirmPassword'],
+    });
 
   const {
     register,
     handleSubmit,
+    setValue,
+    reset,
     formState: { errors, isValid },
   } = useForm<IResetPassword>({
     resolver: zodResolver(ResetPasswordSchema),
     mode: MODE.ON_TOUCH,
   });
 
-  const onSubmit = (data: IResetPassword) => {
-    console.log('Form Data:', data); //Todo: integrating it with the backend API
+  const dispatch = useAppDispatch();
+  const [successMessage, setMessage] = useState('');
+  const [openModal, setOpenModal] = useState(false);
+  const errorMessage = useAppSelector(selectErrorMessage);
+  const isLoading = useAppSelector(selectIsLoading);
+
+  const onSubmit = async (passwordCredentials: IResetPassword) => {
+    const { payload } = await dispatch(resetPassword(passwordCredentials));
+    if (payload) {
+      setMessage(String(payload));
+      reset();
+    }
+
+    setOpenModal(true);
   };
 
+  const params = useParams();
+
+  useEffect(() => {
+    setValue('token', String(params.token), {
+      shouldValidate: true,
+      shouldTouch: true,
+    });
+  }, [params, setValue]);
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="mt-8 flex flex-col gap-8">
-        <Input
-          labelName="Password"
-          type="password"
-          error={errors.password?.message || ''}
-          placeholder="************************"
-          {...register('password')}
-          enablePasswordToggle={true}
-        />
-        <Input
-          labelName="Confirm Password"
-          type="password"
-          error={errors.confirmPassword?.message || ''}
-          placeholder="************************"
-          {...register('confirmPassword')}
-          enablePasswordToggle={true}
-        />
-        <Button child="Reset Password" disabled={!isValid} className="w-full max-w-sm" />
-      </div>
-    </form>
+    <>
+      <Modal
+        open={openModal}
+        content={successMessage ? <SuccessMessage message={successMessage} /> : errorMessage}
+        showImage={true}
+        imageVariant={successMessage ? 'success' : 'error'}
+        showClose={true}
+        setState={setOpenModal}
+      />
+
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="mt-8 flex flex-col items-center justify-center gap-8">
+          <Input
+            labelName="Password"
+            type="password"
+            error={errors.newPassword?.message || ''}
+            placeholder="************************"
+            {...register('newPassword')}
+            enablePasswordToggle={true}
+          />
+          <Input
+            labelName="Confirm Password"
+            type="password"
+            error={errors.confirmPassword?.message || ''}
+            placeholder="************************"
+            {...register('confirmPassword')}
+            enablePasswordToggle={true}
+          />
+          <Button
+            child="Reset Password"
+            disabled={!isValid || isLoading}
+            className="w-full max-w-sm"
+            isLoading={isLoading}
+          />
+        </div>
+      </form>
+    </>
   );
 };
 
 export default ResetPasswordForm;
+
+export const SuccessMessage = ({ message }: { message: string }) => (
+  <div className="flex flex-col gap-2">
+    {message}
+    <Link href="/login">
+      <Button child="Login"></Button>
+    </Link>
+  </div>
+);

@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { MODE } from '@/constants/constants';
 import {
+  coordinatesSchema,
   emailSchema,
   nameSchema,
   passwordSchema,
@@ -9,37 +10,23 @@ import {
 } from '@/schemas/zod.schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
-import { useForm, FieldValues, UseFormRegister, FieldErrors } from 'react-hook-form';
+import { useForm, UseFormRegister, FieldErrors } from 'react-hook-form';
 import { z } from 'zod';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { AlertMessage } from '@/components/ui/alert';
-
-enum FormType {
-  Organization = 'organization',
-  Patient = 'patient',
-  Doctor = 'doctor',
-}
-
-interface ISignUpFields {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  hospitalName: string;
-  location: string;
-  firstName: string;
-  lastName: string;
-}
+import { ISignUp } from '@/types/auth.interface';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { requestOrganization, signUp } from '@/lib/features/auth/authThunk';
+import { selectErrorMessage, selectIsLoading } from '@/lib/features/auth/authSelector';
+import { Role } from '@/types/shared.enum';
+import { Modal } from '@/components/ui/dialog';
+import Location from '@/components/Location/Location';
+import { Option } from 'react-google-places-autocomplete/build/types';
 
 const unMatchingPasswords = 'Passwords do not match';
 
 const SignUpForm = () => {
-  const [selectedForm, setSelectedForm] = useState<FormType>(FormType.Patient);
-
-  const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedForm(event.target.value as FormType);
-  };
-
   const DoctorsSchema = z
     .object({
       firstName: nameSchema,
@@ -47,6 +34,7 @@ const SignUpForm = () => {
       email: emailSchema(),
       password: passwordSchema,
       confirmPassword: passwordSchema,
+      role: requiredStringSchema(),
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: unMatchingPasswords,
@@ -54,9 +42,12 @@ const SignUpForm = () => {
     });
 
   const OrganizationsSchema = z.object({
-    hospitalName: nameSchema,
+    name: nameSchema,
     email: emailSchema(),
+    role: requiredStringSchema(),
     location: requiredStringSchema(),
+    long: coordinatesSchema,
+    lat: coordinatesSchema,
   });
 
   const PatientSchema = z
@@ -66,6 +57,7 @@ const SignUpForm = () => {
       email: emailSchema(),
       password: passwordSchema,
       confirmPassword: passwordSchema,
+      role: requiredStringSchema(),
     })
     .refine(({ password, confirmPassword }) => password === confirmPassword, {
       message: unMatchingPasswords,
@@ -75,52 +67,111 @@ const SignUpForm = () => {
   const {
     register,
     handleSubmit,
+    watch,
+    reset,
+    setValue,
     formState: { errors, isValid },
-  } = useForm<ISignUpFields>({
-    resolver: zodResolver(
-      selectedForm === FormType.Doctor
-        ? DoctorsSchema
-        : selectedForm === FormType.Organization
-          ? OrganizationsSchema
-          : PatientSchema,
-    ),
+  } = useForm<ISignUp>({
+    resolver: async (data, context, options) => {
+      const { role } = data;
+      const schema =
+        role === Role.Doctor
+          ? DoctorsSchema
+          : role === Role.Admin
+            ? OrganizationsSchema
+            : PatientSchema;
+      return zodResolver(schema)(data, context, options);
+    },
+    defaultValues: {
+      role: Role.Patient,
+    },
     mode: MODE.ON_TOUCH,
   });
+  const role = watch('role');
+  const location = watch('location');
 
-  const getFormTitle = (selectedForm: FormType): string => {
+  const getFormTitle = (selectedForm: Role): string => {
     switch (selectedForm) {
-      case FormType.Doctor:
+      case Role.Doctor:
         return 'Sign Up as Doctor';
-      case FormType.Organization:
+      case Role.Admin:
         return 'Request Organizational Access';
       default:
         return 'Sign Up as Patient';
     }
   };
+  const dispatch = useAppDispatch();
+  const [successMessage, setMessage] = useState('');
+  const errorMessage = useAppSelector(selectErrorMessage);
+  const isLoading = useAppSelector(selectIsLoading);
+  const onSubmit = async (userCredentials: ISignUp) => {
+    const action = userCredentials.role === Role.Admin ? requestOrganization : signUp;
+    const { payload } = await dispatch(action(userCredentials));
+    if (payload) {
+      setMessage(String(payload));
+      reset();
+    }
 
-  const onSubmit = (data: FieldValues) => {
-    console.log('Form Data:', data); //Todo: integrating it with the backend API
+    setOpenModal(true);
+  };
+
+  const [openModal, setOpenModal] = useState(false);
+  const handleLocationValue = (location: Option) => {
+    setValue('location', location.value.description || '', {
+      shouldValidate: true,
+    });
+
+    const service = new google.maps.places.PlacesService(document.createElement('div'));
+    const placeId = location.value.place_id;
+
+    service.getDetails({ placeId }, (place, status) => {
+      if (status !== 'OK' || !place?.geometry?.location) {
+        return;
+      }
+
+      setValue('lat', place.geometry.location.lat());
+      setValue('long', place.geometry.location.lng());
+    });
   };
 
   return (
     <div className="mx-auto w-full max-w-sm">
+      <div className="mt-4">
+        {successMessage ? (
+          <Modal
+            open={openModal}
+            content={successMessage}
+            showImage={true}
+            imageVariant={role === Role.Admin ? 'success' : 'email'}
+            showClose={true}
+            setState={setOpenModal}
+          />
+        ) : (
+          <Modal
+            open={openModal}
+            content={errorMessage}
+            showImage={true}
+            imageVariant="error"
+            showClose={true}
+            setState={setOpenModal}
+          />
+        )}
+      </div>
       <div className="mb-5 mt-4 flex justify-center space-x-6">
         <label className="flex items-center space-x-2">
           <input
             type="radio"
-            value="patient"
-            checked={selectedForm === FormType.Patient}
-            onChange={handleFormChange}
+            value={Role.Patient}
             className="h-4 w-4 accent-primary"
+            {...register('role')}
           />
           <span>Patient</span>
         </label>
         <label className="flex items-center space-x-2">
           <input
             type="radio"
-            value="doctor"
-            checked={selectedForm === FormType.Doctor}
-            onChange={handleFormChange}
+            value={Role.Doctor}
+            {...register('role')}
             className="h-4 w-4 accent-primary"
           />
           <span>Doctor</span>
@@ -128,15 +179,14 @@ const SignUpForm = () => {
         <label className="flex items-center space-x-2">
           <input
             type="radio"
-            value="organization"
-            checked={selectedForm === FormType.Organization}
-            onChange={handleFormChange}
+            value={Role.Admin}
+            {...register('role')}
             className="h-4 w-4 accent-primary"
           />
           <span>Organization</span>
         </label>
       </div>
-      {selectedForm === FormType.Organization && (
+      {role === Role.Admin && (
         <AlertMessage
           message="This selection doesn&rsquo;t create an account automatically. We&rsquo;ll contact you
             after processing your request."
@@ -146,28 +196,29 @@ const SignUpForm = () => {
         />
       )}
       <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-8">
-        {selectedForm === FormType.Doctor && <NameFields register={register} errors={errors} />}
+        {role === Role.Doctor && <NameFields register={register} errors={errors} />}
 
-        {selectedForm === FormType.Organization && (
+        {role === Role.Admin && (
           <>
             <Input
               labelName="Hospital's Name"
-              error={errors.hospitalName?.message || ''}
+              error={errors.name?.message || ''}
               placeholder="Zyptyk Hospital"
-              {...register('hospitalName')}
+              {...register('name')}
             />
 
-            <Input
-              labelName="Location"
+            <Location
+              placeHolder="Liberation Road, Accra"
               error={errors.location?.message || ''}
-              type="text"
-              placeholder="Liberation Road, Accra"
-              {...register('location')}
+              handleLocationValue={handleLocationValue}
+              onBlur={() =>
+                !location && setValue('location', '', { shouldTouch: true, shouldValidate: true })
+              }
             />
           </>
         )}
 
-        {selectedForm === FormType.Patient && <NameFields register={register} errors={errors} />}
+        {role === Role.Patient && <NameFields register={register} errors={errors} />}
 
         <Input
           labelName="Email"
@@ -175,7 +226,7 @@ const SignUpForm = () => {
           placeholder="johndoe@gmail.com"
           {...register('email')}
         />
-        {selectedForm !== FormType.Organization && (
+        {role !== Role.Admin && (
           <>
             <Input
               labelName="Password"
@@ -198,9 +249,10 @@ const SignUpForm = () => {
 
         <Button
           type="submit"
-          disabled={!isValid}
           className="mt-4 w-full"
-          child={getFormTitle(selectedForm)}
+          child={getFormTitle(role)}
+          disabled={!isValid || isLoading}
+          isLoading={isLoading}
         />
         <div className="text-center">
           <span>Already have an account?</span>
@@ -216,7 +268,7 @@ const SignUpForm = () => {
 export default SignUpForm;
 
 interface NameFieldsProps {
-  register: UseFormRegister<ISignUpFields>;
+  register: UseFormRegister<ISignUp>;
   errors: FieldErrors;
 }
 const NameFields = ({ register, errors }: NameFieldsProps) => (

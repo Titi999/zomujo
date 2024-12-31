@@ -30,3 +30,5 @@ export const mdcNumberSchema = requiredStringSchema().regex(
 );
 
 export const phoneNumberSchema = requiredStringSchema().regex(/^\d{10}$/, 'Invalid phone number');
+
+export const coordinatesSchema = z.number().optional();

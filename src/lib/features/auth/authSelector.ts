@@ -1,22 +1,23 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '@/lib/store';
 
+const selectAuthentication = (state: RootState) => state.authentication;
+
 export const selectUserRole = createSelector(
-  ({ authentication }: RootState) => authentication.user,
-  (user) => user?.role,
+  selectAuthentication,
+  ({ user }) => user?.role || null,
 );
 
 export const selectErrorMessage = createSelector(
-  ({ authentication }: RootState) => authentication.errorMessage,
-  (errorMessage) => errorMessage,
+  selectAuthentication,
+  ({ errorMessage }) => errorMessage || '',
 );
 
-export const selectIsLoading = createSelector(
-  ({ authentication }: RootState) => authentication.isLoading,
-  (isLoading) => isLoading,
-);
+export const selectIsLoading = createSelector(selectAuthentication, ({ isLoading }) => isLoading);
 
 export const selectUserName = createSelector(
-  ({ authentication }: RootState) => authentication.user,
-  (user) => `${user?.firstName} ${user?.lastName}`,
+  selectAuthentication,
+  ({ user }) => `${user?.firstName} ${user?.lastName}`,
 );
+
+export const selectUser = createSelector(selectAuthentication, ({ user }) => user);
