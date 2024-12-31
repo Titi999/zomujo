@@ -33,3 +33,27 @@ export interface IUser {
   role: Role;
   createdAt: Date;
 }
+
+export interface ISignUp {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  name: string;
+  location: string;
+  firstName: string;
+  lastName: string;
+  role: Role;
+  lat: number;
+  long: number;
+}
+
+export interface ILogin {
+  email: string;
+  password: string;
+}
+
+export interface IResetPassword {
+  newPassword: string;
+  confirmPassword: string;
+  token: string;
+}

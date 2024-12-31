@@ -22,5 +22,7 @@ module.exports = {
     'no-useless-catch': 'error',
     'no-useless-escape': 'error',
     'no-unreachable': 'error',
+    'import/no-cycle': 2,
   },
+  overrides: [{ files: ['*Slice.ts', '*Thunk.ts'], rules: { 'import/no-cycle': 'off' } }],
 };

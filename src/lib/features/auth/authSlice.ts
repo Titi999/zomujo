@@ -1,5 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { doctorOnboarding, login } from '@/lib/features/auth/authThunk';
+import {
+  doctorOnboarding,
+  forgotPassword,
+  login,
+  requestOrganization,
+  resetPassword,
+  signUp,
+} from '@/lib/features/auth/authThunk';
 import { IDoctorIdentification, IPersonalDetails, IUser } from '@/types/auth.interface';
 
 interface AuthenticationState {
@@ -57,7 +64,35 @@ const authSlice = createSlice({
       .addCase(doctorOnboarding.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(doctorOnboarding.fulfilled || login.rejected, (state) => {
+      .addCase(doctorOnboarding.fulfilled || doctorOnboarding.rejected, (state) => {
+        state.isLoading = false;
+      });
+    builder
+      .addCase(signUp.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(signUp.fulfilled || signUp.rejected, (state) => {
+        state.isLoading = false;
+      });
+    builder
+      .addCase(requestOrganization.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(requestOrganization.fulfilled || requestOrganization.rejected, (state) => {
+        state.isLoading = false;
+      });
+    builder
+      .addCase(forgotPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(forgotPassword.fulfilled || forgotPassword.rejected, (state) => {
+        state.isLoading = false;
+      });
+    builder
+      .addCase(resetPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(resetPassword.fulfilled || resetPassword.rejected, (state) => {
         state.isLoading = false;
       });
   },
