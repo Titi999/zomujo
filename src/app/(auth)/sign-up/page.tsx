@@ -3,7 +3,7 @@ import AuthenticationFrame, { ImagePosition } from '../_components/authenticatio
 import Text from '@/components/text/text';
 import Image from 'next/image';
 import { Logo } from '@/assets/images';
-import SignUpForm from '../_components/SignUpForm';
+import SignUpForm from '../_components/signUpForm';
 
 const SignUp = () => (
   <AuthenticationFrame

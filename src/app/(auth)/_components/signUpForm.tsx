@@ -18,7 +18,7 @@ import { AlertMessage } from '@/components/ui/alert';
 import { ISignUp } from '@/types/auth.interface';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { requestOrganization, signUp } from '@/lib/features/auth/authThunk';
-import { selectErrorMessage, selectIsLoading } from '@/lib/features/auth/authSelector';
+import { selectThunkState } from '@/lib/features/auth/authSelector';
 import { Role } from '@/types/shared.enum';
 import { ImageVariant, Modal } from '@/components/ui/dialog';
 import Location from '@/components/Location/Location';
@@ -102,8 +102,7 @@ const SignUpForm = () => {
   };
   const dispatch = useAppDispatch();
   const [successMessage, setMessage] = useState('');
-  const errorMessage = useAppSelector(selectErrorMessage);
-  const isLoading = useAppSelector(selectIsLoading);
+  const { isLoading, errorMessage } = useAppSelector(selectThunkState);
   const onSubmit = async (userCredentials: ISignUp) => {
     const action = userCredentials.role === Role.Admin ? requestOrganization : signUp;
     const { payload } = await dispatch(action(userCredentials));
