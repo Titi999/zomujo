@@ -9,6 +9,9 @@ export default {
   ],
   theme: {
     extend: {
+      screens: {
+        me: '900px',
+      },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
@@ -40,6 +43,13 @@ export default {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',
         },
+        badge: {
+          DEFAULT: 'hsla(21, 70%, 29%, 1)',
+          foreground: 'hsla(21, 70%, 94%, 1)',
+        },
+        sidebarLabel: '#8C96A5',
+        sidebarMenu: '#667185',
+
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -58,9 +68,9 @@ export default {
           '200': '#E4E7EC',
           '300': '#D0D5DD',
           '400': '#98A2B3',
-          medium: '#6B7280',
           '500': '#667185',
           '600': '#334155',
+          medium: '#6B7280',
         },
         success: {
           '50': '#F0FDF4',
@@ -96,6 +106,16 @@ export default {
         primaryLight: '#F0F9F7',
         primaryLightBase: '#08AF85',
         primaryLightLight: '#F4FBF9',
+        sidebar: {
+          DEFAULT: 'hsl(var(--sidebar-background))',
+          foreground: 'hsl(var(--sidebar-foreground))',
+          primary: 'hsl(var(--sidebar-primary))',
+          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+          accent: 'hsl(var(--sidebar-accent))',
+          'accent-foreground': 'hsl(var(--primary))',
+          border: 'hsl(var(--sidebar-border))',
+          ring: 'hsl(var(--sidebar-ring))',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',
