@@ -13,7 +13,7 @@ interface ISidebarGroup {
 interface ISidebarMenu {
   title: string;
   url: string;
-  icon?: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
+  Icon?: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
   subMenu?: ISidebarMenu[];
   phoneTitle?: string;
 }

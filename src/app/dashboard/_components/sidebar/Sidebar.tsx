@@ -33,16 +33,14 @@ import { Avatar } from '@/components/ui/avatar';
 import { useAppSelector } from '@/lib/hooks';
 import { selectUserName, selectUserRole } from '@/lib/features/auth/authSelector';
 import { Role } from '@/types/shared.enum';
-import { useCallback } from 'react';
 
 export const SidebarLayout = () => {
   const userName = useAppSelector(selectUserName);
   const role = useAppSelector(selectUserRole);
   const pathName = usePathname();
-  const getSidebarByRole = useGetSidebarByRole();
 
   return (
-    <Sidebar className="hidden me:block">
+    <Sidebar className="me:block hidden">
       <SidebarHeader className="pb-[50px] pt-3.5">
         <SidebarTrigger child={<Image src={Logo} alt="Zyptyk-logo" />} className="h-10 w-10" />
       </SidebarHeader>
@@ -52,22 +50,22 @@ export const SidebarLayout = () => {
             <SidebarGroupLabel>{category.groupTitle}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {category.menu.map((tab) =>
-                  tab.subMenu ? (
-                    <Collapsible className="group/collapsible" key={tab.title}>
+                {category.menu.map(({ title, url, Icon, subMenu }) =>
+                  subMenu ? (
+                    <Collapsible className="group/collapsible" key={title}>
                       <SidebarMenuItem>
                         <CollapsibleTrigger asChild>
                           <SidebarMenuButton>
-                            {tab.icon && <tab.icon />} {tab.title}
+                            {Icon && <Icon />} {title}
                             <ChevronDown className="ml-auto mr-1" />
                           </SidebarMenuButton>
                         </CollapsibleTrigger>
 
                         <CollapsibleContent>
                           <SidebarMenuSub>
-                            {tab.subMenu.map((subMenu) => (
+                            {subMenu.map((subMenu) => (
                               <SidebarMenuButton key={subMenu.title} title={subMenu.title}>
-                                <Link href={tab.url}> {subMenu.title}</Link>
+                                <Link href={url}> {subMenu.title}</Link>
                               </SidebarMenuButton>
                             ))}
                           </SidebarMenuSub>
@@ -75,10 +73,10 @@ export const SidebarLayout = () => {
                       </SidebarMenuItem>
                     </Collapsible>
                   ) : (
-                    <SidebarMenuItem key={tab.title}>
-                      <SidebarMenuButton asChild isActive={pathName === tab.url} title={tab.title}>
-                        <Link href={tab.url}>
-                          {tab.icon && <tab.icon />} {tab.title}
+                    <SidebarMenuItem key={title}>
+                      <SidebarMenuButton asChild isActive={pathName === url} title={title}>
+                        <Link href={url}>
+                          {Icon && <Icon />} {title}
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -97,7 +95,7 @@ export const SidebarLayout = () => {
               <Avatar />
               <div className="flex flex-col text-xs font-medium">
                 <span>{userName}</span>
-                <span className="rounded-lg py-1.5 text-badge">{role}</span>
+                <span className="text-badge rounded-lg py-1.5">{role}</span>
               </div>
               <EllipsisVertical className="ml-auto" />
             </SidebarMenuButton>
@@ -119,26 +117,25 @@ export const SidebarLayout = () => {
 export const PhoneNavbar = () => {
   const role = useAppSelector(selectUserRole);
   const pathName = usePathname();
-  const getSidebarByRole = useGetSidebarByRole();
   const flattenedMenu = getSidebarByRole(role).sidebarGroup.flatMap((group) => group.menu);
   const style =
     'h-full p-2 hover:bg-transparent data-[active=true]:bg-transparent relative before:absolute before:left-1/2 before:top-0 before:-translate-x-1/2 before:transform rounded-lg before:h-[3px] before:w-[30px] before:rounded before:bg-primary before:opacity-0 data-[active=true]/menu-action:before:opacity-100';
 
   return (
-    <div className="absolute bottom-0 flex h-[69px] w-full items-center justify-evenly gap-6 overflow-x-scroll bg-white pl-2 me:hidden">
-      {flattenedMenu.map((tabs) => (
-        <div key={tabs.title} title={tabs.title}>
-          <SidebarMenuButton isActive={pathName === tabs.url} title={tabs.title} className={style}>
-            <Link href={tabs.url} className="flex flex-col items-center justify-center">
-              {tabs.icon && <tabs.icon size={24} />}
+    <div className="me:hidden absolute bottom-0 flex h-[69px] w-full items-center justify-evenly gap-6 overflow-x-scroll bg-white pl-2">
+      {flattenedMenu.map(({ title, Icon, phoneTitle, url }) => (
+        <div key={title} title={title}>
+          <SidebarMenuButton isActive={pathName === url} title={title} className={style}>
+            <Link href={url} className="flex flex-col items-center justify-center">
+              {Icon && <Icon size={24} />}
               <div>
                 <span
                   className={cn(
                     'w-5 truncate text-xs font-bold',
-                    pathName === tabs.url && 'text-primary',
+                    pathName === url && 'text-primary',
                   )}
                 >
-                  {tabs.phoneTitle ?? tabs.title}
+                  {phoneTitle ?? title}
                 </span>
               </div>
             </Link>
@@ -164,18 +161,13 @@ export const PhoneNavbar = () => {
   );
 };
 
-const useGetSidebarByRole = () => {
-  const getSidebarByRole = useCallback((role: Role | null) => {
-    switch (role) {
-      case Role.Admin:
-        return ADMIN_SIDE_BAR;
-      case Role.Doctor:
-        return DOCTOR_SIDE_BAR;
-
-      default:
-        return PATIENT_SIDE_BAR;
-    }
-  }, []);
-
-  return getSidebarByRole;
+const getSidebarByRole = (role: Role | null) => {
+  switch (role) {
+    case Role.Admin:
+      return ADMIN_SIDE_BAR;
+    case Role.Doctor:
+      return DOCTOR_SIDE_BAR;
+    default:
+      return PATIENT_SIDE_BAR;
+  }
 };

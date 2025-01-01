@@ -5,7 +5,7 @@ import React from 'react';
 
 const ProfileCompletionCard = () => {
   const router = useRouter();
-  const filledPercent = (50 / 100) * 100;
+  const filledPercent = (10 / 100) * 100;
 
   return (
     <div
@@ -17,7 +17,7 @@ const ProfileCompletionCard = () => {
       <div className="z-20 flex h-14 w-full flex-col items-start justify-start gap-2">
         <div className="flex w-full flex-row items-center justify-between">
           <p className="text-base font-medium text-white">Getting Started</p>
-          <p className="text-sm font-bold text-white">{Math.floor(filledPercent ?? 30)}%</p>
+          <p className="text-sm font-bold text-white">{Math.floor(filledPercent)}%</p>
         </div>
         <div className="text-xs font-normal text-white">
           Complete profile to unlock other superb features
@@ -26,7 +26,7 @@ const ProfileCompletionCard = () => {
       <div className="z-20 h-1 w-full rounded-full bg-white/10">
         <div
           style={{
-            width: `${filledPercent ?? 30}%`,
+            width: `${filledPercent}%`,
           }}
           className="h-1 rounded-full bg-white"
         ></div>

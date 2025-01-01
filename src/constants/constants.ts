@@ -27,34 +27,34 @@ export const PATIENT_SIDE_BAR: ISidebar = {
         {
           title: 'Home',
           url: '/dashboard',
-          icon: Home,
+          Icon: Home,
         },
         {
           title: 'Find Doctors',
           url: '#',
-          icon: Compass,
+          Icon: Compass,
           phoneTitle: 'Doctors',
         },
         {
           title: 'Appointments',
           url: '#',
-          icon: CalendarDays,
+          Icon: CalendarDays,
         },
         {
           title: 'Records',
           url: '#',
-          icon: Archive,
+          Icon: Archive,
         },
         {
           title: 'Favorite Doctors',
           url: '#',
-          icon: Heart,
-          phoneTitle: 'Doctors',
+          Icon: Heart,
+          phoneTitle: 'Favorite',
         },
         {
           title: 'Message',
           url: '#',
-          icon: MessageCircleMore,
+          Icon: MessageCircleMore,
         },
       ],
     },
@@ -65,13 +65,13 @@ export const PATIENT_SIDE_BAR: ISidebar = {
         {
           title: 'Help & Support',
           url: '#',
-          icon: CircleHelp,
+          Icon: CircleHelp,
           phoneTitle: 'Help',
         },
         {
           title: 'Settings',
           url: '#',
-          icon: Settings,
+          Icon: Settings,
         },
       ],
     },
@@ -86,22 +86,22 @@ export const DOCTOR_SIDE_BAR: ISidebar = {
         {
           title: 'Home',
           url: '/dashboard',
-          icon: Home,
+          Icon: Home,
         },
         {
           title: 'Appointments',
           url: '#',
-          icon: CalendarDays,
+          Icon: CalendarDays,
         },
         {
           title: 'Patients',
           url: '#',
-          icon: User,
+          Icon: User,
         },
         {
           title: 'Message',
           url: '#',
-          icon: MessageCircleMore,
+          Icon: MessageCircleMore,
         },
       ],
     },
@@ -112,13 +112,13 @@ export const DOCTOR_SIDE_BAR: ISidebar = {
         {
           title: 'Help & Support',
           url: '#',
-          icon: CircleHelp,
+          Icon: CircleHelp,
           phoneTitle: 'Help',
         },
         {
           title: 'Settings',
           url: '#',
-          icon: Settings,
+          Icon: Settings,
         },
       ],
     },
@@ -133,22 +133,22 @@ export const ADMIN_SIDE_BAR: ISidebar = {
         {
           title: 'Overview',
           url: '/dashboard',
-          icon: Home,
+          Icon: Home,
         },
         {
           title: 'Analytics',
           url: '#',
-          icon: ChartNoAxesCombined,
+          Icon: ChartNoAxesCombined,
         },
         {
           title: 'Appointments',
           url: '#',
-          icon: CalendarDays,
+          Icon: CalendarDays,
         },
         {
           title: 'User',
           url: '#',
-          icon: User,
+          Icon: User,
           subMenu: [
             {
               title: 'Patient',
@@ -163,17 +163,17 @@ export const ADMIN_SIDE_BAR: ISidebar = {
         {
           title: 'Transactions',
           url: '#',
-          icon: Banknote,
+          Icon: Banknote,
         },
         {
           title: 'Manage S,M,I',
           url: '#',
-          icon: Cross,
+          Icon: Cross,
         },
         {
           title: 'Customer Support',
           url: '#',
-          icon: UserSearch,
+          Icon: UserSearch,
           phoneTitle: 'Support',
         },
       ],
@@ -185,7 +185,7 @@ export const ADMIN_SIDE_BAR: ISidebar = {
         {
           title: 'Settings',
           url: '#',
-          icon: Settings,
+          Icon: Settings,
         },
       ],
     },
