@@ -40,7 +40,7 @@ export const SidebarLayout = () => {
   const pathName = usePathname();
 
   return (
-    <Sidebar className="me:block hidden">
+    <Sidebar className="hidden me:block">
       <SidebarHeader className="pb-[50px] pt-3.5">
         <SidebarTrigger child={<Image src={Logo} alt="Zyptyk-logo" />} className="h-10 w-10" />
       </SidebarHeader>
@@ -95,7 +95,7 @@ export const SidebarLayout = () => {
               <Avatar />
               <div className="flex flex-col text-xs font-medium">
                 <span>{userName}</span>
-                <span className="text-badge rounded-lg py-1.5">{role}</span>
+                <span className="rounded-lg py-1.5 text-badge">{role}</span>
               </div>
               <EllipsisVertical className="ml-auto" />
             </SidebarMenuButton>
@@ -122,7 +122,7 @@ export const PhoneNavbar = () => {
     'h-full p-2 hover:bg-transparent data-[active=true]:bg-transparent relative before:absolute before:left-1/2 before:top-0 before:-translate-x-1/2 before:transform rounded-lg before:h-[3px] before:w-[30px] before:rounded before:bg-primary before:opacity-0 data-[active=true]/menu-action:before:opacity-100';
 
   return (
-    <div className="me:hidden absolute bottom-0 flex h-[69px] w-full items-center justify-evenly gap-6 overflow-x-scroll bg-white pl-2">
+    <div className="absolute bottom-0 flex h-[69px] w-full items-center justify-evenly gap-6 overflow-x-scroll bg-white pl-2 me:hidden">
       {flattenedMenu.map(({ title, Icon, phoneTitle, url }) => (
         <div key={title} title={title}>
           <SidebarMenuButton isActive={pathName === url} title={title} className={style}>
