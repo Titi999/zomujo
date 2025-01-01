@@ -14,9 +14,9 @@ import {
   SidebarMenuSub,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { ADMIN_SIDE_BAR, PATIENT_SIDE_BAR } from '@/constants/constants';
+import { ADMIN_SIDE_BAR, DOCTOR_SIDE_BAR, PATIENT_SIDE_BAR } from '@/constants/constants';
 import { CollapsibleTrigger } from '@radix-ui/react-collapsible';
-import { ChevronDown, EllipsisVertical, User } from 'lucide-react';
+import { ChevronDown, EllipsisVertical } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -29,17 +29,25 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Logo } from '@/assets/images';
 import { cn } from '@/lib/utils';
+import { Avatar } from '@/components/ui/avatar';
+import { useAppSelector } from '@/lib/hooks';
+import { selectUserName, selectUserRole } from '@/lib/features/auth/authSelector';
+import { Role } from '@/types/shared.enum';
+import { useCallback } from 'react';
 
 export const SidebarLayout = () => {
+  const userName = useAppSelector(selectUserName);
+  const role = useAppSelector(selectUserRole);
   const pathName = usePathname();
+  const getSidebarByRole = useGetSidebarByRole();
 
   return (
-    <Sidebar className="hidden me:block">
+    <Sidebar className="me:block hidden">
       <SidebarHeader className="pb-[50px] pt-3.5">
         <SidebarTrigger child={<Image src={Logo} alt="Zyptyk-logo" />} className="h-10 w-10" />
       </SidebarHeader>
       <SidebarContent>
-        {ADMIN_SIDE_BAR.sidebarGroup.map((category) => (
+        {getSidebarByRole(role).sidebarGroup.map((category) => (
           <SidebarGroup key={category.groupTitle}>
             <SidebarGroupLabel>{category.groupTitle}</SidebarGroupLabel>
             <SidebarGroupContent>
@@ -86,12 +94,10 @@ export const SidebarLayout = () => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton>
-              <User />
-              <div className="flex flex-col">
-                <span>User name</span>
-                <span className="rounded-lg px-2.5 py-1.5 text-xs font-medium text-badge">
-                  Role
-                </span>
+              <Avatar />
+              <div className="flex flex-col text-xs font-medium">
+                <span>{userName}</span>
+                <span className="text-badge rounded-lg py-1.5">{role}</span>
               </div>
               <EllipsisVertical className="ml-auto" />
             </SidebarMenuButton>
@@ -111,13 +117,15 @@ export const SidebarLayout = () => {
 };
 
 export const PhoneNavbar = () => {
+  const role = useAppSelector(selectUserRole);
   const pathName = usePathname();
-  const flattenedMenu = PATIENT_SIDE_BAR.sidebarGroup.flatMap((group) => group.menu);
+  const getSidebarByRole = useGetSidebarByRole();
+  const flattenedMenu = getSidebarByRole(role).sidebarGroup.flatMap((group) => group.menu);
   const style =
     'h-full p-2 hover:bg-transparent data-[active=true]:bg-transparent relative before:absolute before:left-1/2 before:top-0 before:-translate-x-1/2 before:transform rounded-lg before:h-[3px] before:w-[30px] before:rounded before:bg-primary before:opacity-0 data-[active=true]/menu-action:before:opacity-100';
 
   return (
-    <div className="absolute bottom-0 flex h-[69px] w-full items-center justify-evenly gap-6 overflow-x-scroll bg-white pl-2 me:hidden">
+    <div className="me:hidden absolute bottom-0 flex h-[69px] w-full items-center justify-evenly gap-6 overflow-x-scroll bg-white pl-2">
       {flattenedMenu.map((tabs) => (
         <div key={tabs.title} title={tabs.title}>
           <SidebarMenuButton isActive={pathName === tabs.url} title={tabs.title} className={style}>
@@ -137,9 +145,9 @@ export const PhoneNavbar = () => {
           </SidebarMenuButton>
         </div>
       ))}
-      <SidebarMenuButton title="your profile" className={cn(style, 'min-w-11 max-w-11')}>
+      <SidebarMenuButton title="your profile" className={cn(style, 'min-w-16 max-w-16')}>
         <Link href="#" className="flex flex-col items-center justify-center">
-          <User size={24} />
+          <Avatar className="h-6" />
           <div>
             <span
               className={cn(
@@ -154,4 +162,20 @@ export const PhoneNavbar = () => {
       </SidebarMenuButton>
     </div>
   );
+};
+
+const useGetSidebarByRole = () => {
+  const getSidebarByRole = useCallback((role: Role | null) => {
+    switch (role) {
+      case Role.Admin:
+        return ADMIN_SIDE_BAR;
+      case Role.Doctor:
+        return DOCTOR_SIDE_BAR;
+
+      default:
+        return PATIENT_SIDE_BAR;
+    }
+  }, []);
+
+  return getSidebarByRole;
 };
