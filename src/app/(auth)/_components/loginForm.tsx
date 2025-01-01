@@ -15,7 +15,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { AlertMessage } from '@/components/ui/alert';
 import { login } from '@/lib/features/auth/authThunk';
 import React from 'react';
-import { selectErrorMessage, selectIsLoading } from '@/lib/features/auth/authSelector';
+import { selectThunkState } from '@/lib/features/auth/authSelector';
 import { useRouter } from 'next/navigation';
 import { ILogin } from '@/types/auth.interface';
 import { authenticationProvider } from './authenticationProvider';
@@ -34,8 +34,7 @@ const LoginForm = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const errorMessage = useAppSelector(selectErrorMessage);
-  const isLoading = useAppSelector(selectIsLoading);
+  const { isLoading, errorMessage } = useAppSelector(selectThunkState);
 
   const onSubmit = async (loginCredentials: ILogin) => {
     const { payload } = await dispatch(login(loginCredentials));
