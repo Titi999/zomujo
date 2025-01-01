@@ -1,7 +1,7 @@
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { ReactNode } from 'react';
 import { cookies } from 'next/headers';
-import { SidebarLayout } from './_components/sidebar/Sidebar';
+import { PhoneNavbar, SidebarLayout } from './_components/sidebar/Sidebar';
 
 export default async function Layout({
   children,
@@ -13,7 +13,10 @@ export default async function Layout({
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
       <SidebarLayout />
-      <main className="my-3.5 ml-4 mr-4 w-full rounded-lg border bg-[#F0F2F5]">{children}</main>
+      <PhoneNavbar />
+      <main className="w-full bg-[#F0F2F5] me:my-3.5 me:ml-4 me:mr-4 me:rounded-lg me:border">
+        {children}
+      </main>
     </SidebarProvider>
   );
 }

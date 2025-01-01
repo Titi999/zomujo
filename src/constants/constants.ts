@@ -33,6 +33,7 @@ export const PATIENT_SIDE_BAR: ISidebar = {
           title: 'Find Doctors',
           url: '#',
           icon: Compass,
+          phoneTitle: 'Doctors',
         },
         {
           title: 'Appointments',
@@ -48,6 +49,7 @@ export const PATIENT_SIDE_BAR: ISidebar = {
           title: 'Favorite Doctors',
           url: '#',
           icon: Heart,
+          phoneTitle: 'Doctors',
         },
         {
           title: 'Message',
@@ -64,6 +66,7 @@ export const PATIENT_SIDE_BAR: ISidebar = {
           title: 'Help & Support',
           url: '#',
           icon: CircleHelp,
+          phoneTitle: 'Help',
         },
         {
           title: 'Settings',
@@ -110,6 +113,7 @@ export const DOCTOR_SIDE_BAR: ISidebar = {
           title: 'Help & Support',
           url: '#',
           icon: CircleHelp,
+          phoneTitle: 'Help',
         },
         {
           title: 'Settings',
@@ -170,6 +174,7 @@ export const ADMIN_SIDE_BAR: ISidebar = {
           title: 'Customer Support',
           url: '#',
           icon: UserSearch,
+          phoneTitle: 'Support',
         },
       ],
     },
