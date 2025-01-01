@@ -3,9 +3,10 @@
 import * as React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
-
 import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
+import Image from 'next/image';
+import { EmailIllustration, ErrorIllustration, SuccessIllustration } from '@/assets/images';
 
 const Dialog = DialogPrimitive.Root;
 
@@ -35,8 +36,8 @@ const DialogContent = React.forwardRef<
   React.ComponentRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> &
     React.HTMLAttributes<typeof DialogPrimitive.Content> &
-    Pick<ModalProps, 'showClose'>
->(({ className, children, showClose, ...props }, ref) => (
+    Pick<ModalProps, 'showClose' | 'setState'>
+>(({ className, children, showClose, setState, ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
     <DialogPrimitive.Content
@@ -49,7 +50,15 @@ const DialogContent = React.forwardRef<
     >
       {children}
       {showClose && (
-        <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+        <DialogPrimitive.Close
+          className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (setState) {
+              setState(!open);
+            }
+          }}
+        >
           <X className="h-4 w-4" />
           <span className="sr-only">Close</span>
         </DialogPrimitive.Close>
@@ -97,6 +106,11 @@ const DialogDescription = React.forwardRef<
   />
 ));
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
+export enum ImageVariant {
+  Success = 'success',
+  Error = 'error',
+  Email = 'email',
+}
 
 type ModalProps = {
   open: boolean;
@@ -106,6 +120,9 @@ type ModalProps = {
   content: ReactNode;
   footer?: ReactNode;
   showClose?: boolean;
+  imageVariant?: ImageVariant;
+  showImage?: boolean;
+  setState?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Modal = ({
@@ -116,9 +133,46 @@ const Modal = ({
   footer,
   open,
   showClose,
+  imageVariant,
+  showImage = false,
+  setState,
 }: ModalProps) => (
   <Dialog open={open} modal={true}>
-    <DialogContent showClose={showClose}>
+    <DialogContent showClose={showClose} setState={setState}>
+      {showImage && (
+        <div>
+          {imageVariant === 'success' && (
+            <>
+              <Image
+                src={SuccessIllustration}
+                alt={imageVariant}
+                className="m-auto h-[200px] w-[200px]"
+              />
+              <h2 className="-mb-6 mt-3 font-semibold text-primary">Success</h2>
+            </>
+          )}
+          {imageVariant === 'email' && (
+            <>
+              <Image
+                src={EmailIllustration}
+                alt={imageVariant}
+                className="m-auto h-[200px] w-[200px]"
+              />
+              <h2 className="-mb-6 mt-3 font-semibold text-primary">Email Verification</h2>
+            </>
+          )}
+          {imageVariant === 'error' && (
+            <>
+              <Image
+                src={ErrorIllustration}
+                alt={imageVariant}
+                className="m-auto h-[200px] w-[200px]"
+              />
+              <h2 className="-mb-6 mt-3 font-semibold text-red-500">Error</h2>
+            </>
+          )}
+        </div>
+      )}
       <DialogHeader>
         {headerChild ? (
           headerChild
