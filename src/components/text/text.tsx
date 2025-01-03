@@ -1,8 +1,8 @@
 import { cn } from '@/lib/utils';
 import { HTMLAttributes, createElement } from 'react';
 
-type TextVariantStyle = 'h3' | 'body-small' | 'h4';
-type TextVariant = 'h3' | 'p' | 'h4';
+type TextVariantStyle = 'h3' | 'body-small' | 'h4' | 'h2';
+type TextVariant = 'h3' | 'p' | 'h4' | 'span';
 type BoldVariant = 'bold' | 'regular' | 'medium';
 
 type CustomTextProps = HTMLAttributes<HTMLHeadingElement | HTMLParagraphElement> & {
@@ -14,6 +14,7 @@ type CustomTextProps = HTMLAttributes<HTMLHeadingElement | HTMLParagraphElement>
 const textStyles: Record<TextVariantStyle, string> = {
   h3: 'text-2xl leading-[2.8rem] sm:text-[38px]',
   'body-small': 'text-base',
+  h2: 'text-xl sm:text-2xl leading-[2rem]',
   h4: 'sm:text-[32px] text-2xl leading-[3rem]',
 } as const;
 
