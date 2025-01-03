@@ -1,14 +1,14 @@
 import { Gender, Role, Status } from '@/types/shared.enum';
 
 export interface IPersonalDetails {
-  mdcRegistrationNumber: string;
-  dateOfBirth: Date;
-  phoneNumber: string;
+  MDCRegistration: string;
+  dob: Date;
+  contact: string;
   gender: Gender;
 }
 
 export interface IDoctorPhotoUpload {
-  passportPhoto: File;
+  profilePicture: File;
 }
 
 export interface IDoctorIdentification {
@@ -32,6 +32,7 @@ export interface IUser {
   isActive: boolean;
   role: Role;
   createdAt: Date;
+  extra: unknown; // we will replace this with the appropriate types based on roles
 }
 
 export interface ISignUp {

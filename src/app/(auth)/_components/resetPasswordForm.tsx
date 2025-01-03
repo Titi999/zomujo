@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { ImageVariant, Modal } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { MODE } from '@/constants/constants';
+import { MODE, unMatchingPasswords } from '@/constants/constants';
 import { selectThunkState } from '@/lib/features/auth/authSelector';
 import { resetPassword } from '@/lib/features/auth/authThunk';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -23,7 +23,7 @@ const ResetPasswordForm = () => {
       token: requiredStringSchema(),
     })
     .refine(({ newPassword, confirmPassword }) => newPassword === confirmPassword, {
-      message: 'Password does not match',
+      message: unMatchingPasswords,
       path: ['confirmPassword'],
     });
 

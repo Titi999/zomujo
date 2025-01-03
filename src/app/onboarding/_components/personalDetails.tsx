@@ -14,9 +14,9 @@ import { MODE } from '@/constants/constants';
 import { maxDate } from '@/lib/date';
 
 const PersonalDetailsSchema = z.object({
-  mdcRegistrationNumber: mdcNumberSchema,
-  dateOfBirth: requiredStringSchema(),
-  phoneNumber: phoneNumberSchema,
+  MDCRegistration: mdcNumberSchema,
+  dob: requiredStringSchema(),
+  contact: phoneNumberSchema,
   gender: requiredStringSchema(),
 });
 
@@ -65,28 +65,28 @@ const PersonalDetails = () => {
           <Input
             labelName="MDC Registration Number"
             type="text"
-            error={errors.mdcRegistrationNumber?.message || ''}
+            error={errors.MDCRegistration?.message || ''}
             placeholder="MDC/PN/12345"
-            {...register('mdcRegistrationNumber')}
+            {...register('MDCRegistration')}
           />
         </div>
         <div>
           <Input
             labelName="Date of Birth"
             type="date"
-            error={errors.dateOfBirth?.message || ''}
+            error={errors.dob?.message || ''}
             max={maxDate()}
             placeholder="MDC/PN/12345"
-            {...register('dateOfBirth')}
+            {...register('dob')}
           />
         </div>
         <div>
           <Input
             labelName="Phone Number"
             type="tel"
-            error={errors.phoneNumber?.message || ''}
+            error={errors.contact?.message || ''}
             placeholder="0555345678"
-            {...register('phoneNumber')}
+            {...register('contact')}
           />
         </div>
         <div className="max-w-sm">

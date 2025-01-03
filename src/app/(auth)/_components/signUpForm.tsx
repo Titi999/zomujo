@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { MODE } from '@/constants/constants';
+import { MODE, unMatchingPasswords } from '@/constants/constants';
 import {
   coordinatesSchema,
   emailSchema,
@@ -23,8 +23,6 @@ import { Role } from '@/types/shared.enum';
 import { ImageVariant, Modal } from '@/components/ui/dialog';
 import Location from '@/components/Location/Location';
 import { Option } from 'react-google-places-autocomplete/build/types';
-
-const unMatchingPasswords = 'Passwords do not match';
 
 const SignUpForm = () => {
   const DoctorsSchema = z
