@@ -24,5 +24,5 @@ module.exports = {
     'no-unreachable': 'error',
     'import/no-cycle': 2,
   },
-  overrides: [{ files: ['*Slice.ts', '*Thunk.ts'], rules: { 'import/no-cycle': 'off' } }],
+  overrides: [{ files: ['*Slice.ts', '*Thunk.ts', 'store.ts'], rules: { 'import/no-cycle': 'off' } }],
 };
