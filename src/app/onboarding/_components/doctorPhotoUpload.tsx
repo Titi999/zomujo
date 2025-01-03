@@ -15,7 +15,7 @@ import { doctorOnboarding } from '@/lib/features/auth/authThunk';
 import { updateCurrentStep } from '@/lib/features/auth/authSlice';
 
 const DoctorPhotoUploadScheme = z.object({
-  passportPhoto: requiredStringSchema(),
+  profilePicture: requiredStringSchema(),
 });
 
 const DoctorPhotoUpload = () => {
@@ -53,9 +53,9 @@ const DoctorPhotoUpload = () => {
             height={200}
             width={610}
             label="Passport Photo"
-            value={watch('passportPhoto')}
-            {...register('passportPhoto')}
-            onChange={(file) => file && setValue('passportPhoto', file)}
+            value={watch('profilePicture')}
+            {...register('profilePicture')}
+            onChange={(file) => file && setValue('profilePicture', file)}
           />
         </div>
         <div className="flex flex-row">
@@ -79,7 +79,7 @@ const DoctorPhotoUpload = () => {
           className="w-full"
           child="Finish"
           isLoading={isLoading}
-          disabled={!watch('passportPhoto') || !confirm}
+          disabled={!watch('profilePicture') || !confirm}
           type="submit"
         />
       </div>

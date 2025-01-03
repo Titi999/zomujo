@@ -191,3 +191,5 @@ export const ADMIN_SIDE_BAR: ISidebar = {
     },
   ],
 } as const;
+
+export const unMatchingPasswords = 'Passwords do not match';

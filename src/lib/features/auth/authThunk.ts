@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { axiosErrorHandler } from '@/lib/axios';
 import { setErrorMessage, setUserInfo } from '@/lib/features/auth/authSlice';
 import {
+  DoctorOnboarding,
   IDoctorPhotoUpload,
   ILogin,
   ILoginResponse,
@@ -9,6 +10,7 @@ import {
   ISignUp,
 } from '@/types/auth.interface';
 import { IResponse } from '@/types/shared.interface';
+import { RootState } from '@/lib/store';
 
 const authPath = 'auth/' as const;
 export const login = createAsyncThunk(
@@ -31,11 +33,24 @@ export const login = createAsyncThunk(
 export const doctorOnboarding = createAsyncThunk(
   'authentication/doctorOnboarding',
   async (doctorPhotoUpload: IDoctorPhotoUpload, { dispatch, getState }) => {
-    const state = getState();
-    console.log('Current State:', state); // will add info from other stages
+    const {
+      authentication: { doctorIdentification, doctorPersonalDetails },
+    } = getState() as RootState;
+    if (!doctorPersonalDetails || !doctorIdentification) {
+      return;
+    }
+
+    const doctorDetails: DoctorOnboarding = {
+      ...doctorPersonalDetails,
+      ...doctorIdentification,
+      ...doctorPhotoUpload,
+    };
     try {
-      const { data } = await axios.post('', doctorPhotoUpload);
-      console.log('Data', data); // TODO: Backend needs to adjust before we can handle this
+      await axios.patch(`${authPath}complete-doctor-registration`, doctorDetails, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       return true;
     } catch (error) {
       dispatch(setErrorMessage(axiosErrorHandler(error)));
