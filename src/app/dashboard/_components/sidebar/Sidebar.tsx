@@ -161,7 +161,7 @@ export const PhoneNavbar = () => {
   );
 };
 
-const getSidebarByRole = (role: Role | null) => {
+const getSidebarByRole = (role?: Role) => {
   switch (role) {
     case Role.Admin:
       return ADMIN_SIDE_BAR;
