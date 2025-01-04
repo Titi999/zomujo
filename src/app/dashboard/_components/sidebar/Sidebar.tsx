@@ -122,7 +122,7 @@ export const PhoneNavbar = () => {
     'h-full p-2 hover:bg-transparent data-[active=true]:bg-transparent relative before:absolute before:left-1/2 before:top-0 before:-translate-x-1/2 before:transform rounded-lg before:h-[3px] before:w-[30px] before:rounded before:bg-primary before:opacity-0 data-[active=true]/menu-action:before:opacity-100';
 
   return (
-    <div className="absolute bottom-0 flex h-[69px] w-full items-center justify-evenly gap-6 overflow-x-scroll bg-white pl-2 me:hidden">
+    <div className="fixed bottom-0 z-50 flex h-[69px] w-full items-center justify-evenly gap-6 overflow-x-scroll bg-white me:hidden">
       {flattenedMenu.map(({ title, Icon, phoneTitle, url }) => (
         <div key={title} title={title}>
           <SidebarMenuButton isActive={pathName === url} title={title} className={style}>

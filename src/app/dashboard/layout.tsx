@@ -14,9 +14,7 @@ export default async function Layout({
     <SidebarProvider defaultOpen={defaultOpen}>
       <SidebarLayout />
       <PhoneNavbar />
-      <main className="w-full bg-[#F0F2F5] me:my-3.5 me:ml-4 me:mr-4 me:rounded-lg me:border">
-        {children}
-      </main>
+      <main className="w-full bg-[#F0F2F5] me:border">{children}</main>
     </SidebarProvider>
   );
 }
