@@ -8,6 +8,7 @@ import { AvatarGreetings } from '@/app/dashboard/_components/avatarGreetings';
 import HospitalCard from '@/app/dashboard/_components/patientHome/_component/hospitalCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ReactNode, useMemo } from 'react';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 
 // TODO: We will replace this with real requests
 const mockDoctors = [
@@ -82,6 +83,36 @@ const PatientHome = () => {
     [],
   );
 
+  const suggestSmallerScreen = useMemo(
+    () => (
+      <>
+        <Suggested title={'Suggested Hospitals'}>
+          <Carousel>
+            <CarouselContent>
+              {mockHospitals.map((hospital) => (
+                <CarouselItem key={hospital.id}>
+                  <HospitalCard key={hospital.id} hospital={hospital} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        </Suggested>
+        <Suggested title={'Suggested Doctors'}>
+          <Carousel className="w-full">
+            <CarouselContent>
+              {mockDoctors.map((doctor) => (
+                <CarouselItem key={doctor.id}>
+                  <DoctorCard key={doctor.id} doctor={doctor} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        </Suggested>
+      </>
+    ),
+    [],
+  );
+
   const upcomingAppointments = useMemo(
     () => (
       <div className="space-y-6">
@@ -107,7 +138,7 @@ const PatientHome = () => {
                 <TabsTrigger value="upcomingAppointments">Upcoming Appointments 2</TabsTrigger>
               </TabsList>
               <TabsContent className="mt-6" value="home">
-                {suggest}
+                {suggestSmallerScreen}
               </TabsContent>
               <TabsContent className="mt-6" value="upcomingAppointments">
                 {upcomingAppointments}
@@ -135,7 +166,7 @@ const Suggested = ({ title, children }: SuggestedProps) => (
         View All <ChevronRight size={16} />
       </Link>
     </div>
-    <div className="flex flex-row flex-wrap gap-6">{children}</div>
+    <div className="flex-row flex-wrap gap-6 md:flex">{children}</div>
   </div>
 );
 

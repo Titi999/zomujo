@@ -21,9 +21,7 @@ const HospitalCard = ({
   const router = useRouter();
   const [showPreview, setShowPreview] = useState(false);
 
-  const handleOpenMap = (url: string) => {
-    window.open(url, '_blank');
-  };
+  const handleOpenMap = (url: string) => window.open(url, '_blank');
 
   return (
     <>
