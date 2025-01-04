@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import React, { ReactNode } from "react";
+import { motion } from 'framer-motion';
+import React, { ReactNode } from 'react';
 
 type halfCircleProgressProps = {
   progress?: number;
@@ -11,36 +11,36 @@ type halfCircleProgressProps = {
 };
 
 const HalfCircleProgress = ({
-                              progress = 0.2,
-                              size = 80,
-                              stroke = 5,
-                              color = "#08AF85",
-                              secondaryColor = "#F0F2F5",
-                              bottomComponent,
-                            }: halfCircleProgressProps) => (
-    <div className="relative float-left m-1 text-center">
-      <div
+  progress = 0.2,
+  size = 80,
+  stroke = 5,
+  color = '#08AF85',
+  secondaryColor = '#F0F2F5',
+  bottomComponent,
+}: halfCircleProgressProps) => (
+  <div className="relative float-left m-1 text-center">
+    <div
+      style={{
+        width: size,
+        height: size / 2,
+      }}
+      className="relative overflow-hidden"
+    >
+      <motion.div
         style={{
           width: size,
-          height: size / 2,
+          height: size,
+          transform: 'rotate(' + (45 + progress * 100 * 1.8) + 'deg)',
+          borderWidth: stroke,
+          borderColor: secondaryColor,
+          borderBottomColor: color,
+          borderRightColor: color,
         }}
-        className="relative overflow-hidden"
-      >
-        <motion.div
-          style={{
-            width: size,
-            height: size,
-            transform: "rotate(" + (45 + progress * 100 * 1.8) + "deg)",
-            borderWidth: stroke,
-            borderColor: secondaryColor,
-            borderBottomColor: color,
-            borderRightColor: color,
-          }}
-          className="absolute left-0 top-0 box-border rounded-[50%]"
-        ></motion.div>
-      </div>
-      {bottomComponent}
+        className="absolute left-0 top-0 box-border rounded-[50%]"
+      ></motion.div>
     </div>
-  );
+    {bottomComponent}
+  </div>
+);
 
 export default HalfCircleProgress;
