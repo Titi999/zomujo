@@ -24,7 +24,7 @@ const SearchDoctorsCard = () => {
         <Search color={'#8C96A5'} className="ml-1.5" />
         <input
           type="text"
-          placeholder="Search by specialty"
+          placeholder="Search by speciality"
           value={search}
           onChange={({ target }) => setSearch(target.value)}
           className="h-full w-full pl-2 outline-none max-md:text-sm"

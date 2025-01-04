@@ -48,13 +48,15 @@ const DoctorCard = ({
             <div className="flex flex-row items-center gap-1.5">
               <div className="h-[5px] w-[5px] rounded-full bg-primary"></div>
               <p className="text-sm leading-[14px]">
-                {doctor?.experience ?? 1} years of experience
+                {doctor?.experience ?? 1} year(s) of experience
               </p>
             </div>
-            <div className="flex flex-row items-center gap-1.5">
-              <div className="h-[5px] w-[5px] rounded-full bg-primary"></div>
-              <p className="text-sm leading-[14px]">{doctor.noOfConsultations} consultations</p>
-            </div>
+            {doctor.noOfConsultations && (
+              <div className="flex flex-row items-center gap-1.5">
+                <div className="h-[5px] w-[5px] rounded-full bg-primary"></div>
+                <p className="text-sm leading-[14px]">{doctor.noOfConsultations} consultations</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
