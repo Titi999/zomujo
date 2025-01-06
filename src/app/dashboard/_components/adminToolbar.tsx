@@ -9,10 +9,10 @@ const AdminToolbar = () => (
     </div>
     <div className="flex gap-x-3">
       <div className="rounded-full border border-gray-200 bg-white p-2">
-        <Bell color="#667185" />
+        <Bell className="text-grayscale-500" />
       </div>
       <div className="rounded-full border border-gray-200 bg-white p-2">
-        <Megaphone color="#667185" />
+        <Megaphone className="text-grayscale-500" />
       </div>
       <div>
         <Button
@@ -21,7 +21,7 @@ const AdminToolbar = () => (
             <div className="flex items-center gap-x-1">
               <Settings />
               <span>System Operation</span>
-              <SquareCheck radius={12} fill="#16A34A" color="white" />
+              <SquareCheck radius={12} fill="#16A34A" className="text-white" />
             </div>
           }
         />

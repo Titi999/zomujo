@@ -16,7 +16,7 @@ export default function Layout({
     <SidebarProvider>
       <SidebarLayout />
       <PhoneNavbar />
-      <main className="w-full bg-[#F0F2F5] me:border">
+      <main className="w-full bg-grayscale-100 me:border">
         {isAdmin && <AdminToolbar />}
         {children}
       </main>
