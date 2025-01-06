@@ -1,9 +1,12 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '@/lib/store';
+import { Role } from '@/types/shared.enum';
 
 const selectAuthentication = (state: RootState) => state.authentication;
 
 export const selectUserRole = createSelector(selectAuthentication, ({ user }) => user?.role);
+
+export const selectIsAdmin = createSelector(selectUserRole, (role) => role === Role.Admin);
 
 export const selectErrorMessage = createSelector(
   selectAuthentication,
