@@ -1,20 +1,25 @@
+'use client';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { ReactNode } from 'react';
-import { cookies } from 'next/headers';
 import { PhoneNavbar, SidebarLayout } from './_components/sidebar/Sidebar';
+import AdminToolbar from '@/app/dashboard/_components/adminToolbar';
+import { useAppSelector } from '@/lib/hooks';
+import { selectIsAdmin } from '@/lib/features/auth/authSelector';
 
-export default async function Layout({
+export default function Layout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
-  const cookieStore = await cookies();
-  const defaultOpen = cookieStore.get('sidebar:state')?.value === 'true';
+  const isAdmin = useAppSelector(selectIsAdmin);
   return (
-    <SidebarProvider defaultOpen={defaultOpen}>
+    <SidebarProvider>
       <SidebarLayout />
       <PhoneNavbar />
-      <main className="w-full bg-[#F0F2F5] me:border">{children}</main>
+      <main className="w-full bg-grayscale-100 me:border">
+        {isAdmin && <AdminToolbar />}
+        {children}
+      </main>
     </SidebarProvider>
   );
 }
