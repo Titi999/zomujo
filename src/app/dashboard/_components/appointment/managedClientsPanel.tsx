@@ -1,6 +1,5 @@
 'use client';
 import { Badge } from '@/components/ui/badge';
-import { Checkbox } from '@/components/ui/checkbox';
 import { OptionsMenu } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { TableData } from '@/components/ui/table';
@@ -50,6 +49,7 @@ const ManagedClientsPanel = () => {
   ];
 
   const [sort, setSort] = useState<string>();
+  //Todo: To be replaced with the right options
   const options = [
     {
       value: 'asc',
@@ -76,9 +76,9 @@ const ManagedClientsPanel = () => {
     <div className="mt-4 rounded-lg bg-white">
       <div className="p-6">
         <p className="py-6 text-xl font-bold">Managed clients</p>
-        <div className="mb-6 flex justify-between">
-          <div className="flex gap-2">
-            <Input error="" placeholder="Search Patient" className="w-[333px]" />
+        <div className="mb-4 flex flex-wrap justify-between">
+          <div className="mb-2 flex  gap-2">
+            <Input error="" placeholder="Search Patient" className="sm:w-[333px] max-w-[333px]" />
             <OptionsMenu
               options={filterOptions}
               Icon={ListFilter}
@@ -94,7 +94,7 @@ const ManagedClientsPanel = () => {
             menuTrigger="Sort By"
             selected={sort}
             setSelected={setSort}
-            className="bg-gray-50"
+            className="h-10 bg-gray-50 hidden sm:flex"
           />
         </div>
         <TableData columns={columns} data={data} />
@@ -107,28 +107,6 @@ export default ManagedClientsPanel;
 
 const columns: ColumnDef<ManagedClientProps>[] = [
   {
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="-mr-10"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
     accessorKey: 'id',
     header: 'ID',
   },
@@ -136,7 +114,7 @@ const columns: ColumnDef<ManagedClientProps>[] = [
     accessorKey: 'patient',
     header: ({ column }) => (
       <div
-        className="flex cursor-pointer"
+        className="flex cursor-pointer whitespace-nowrap"
         onClick={() => {
           //Todo: Api integration for sorting
           console.log(column);
@@ -165,7 +143,7 @@ const columns: ColumnDef<ManagedClientProps>[] = [
     accessorKey: 'consult',
     header: ({ column }) => (
       <div
-        className="flex cursor-pointer"
+        className="flex cursor-pointer whitespace-nowrap"
         onClick={() => {
           //Todo: Api integration for sorting
           console.log(column);
