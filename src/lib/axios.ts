@@ -6,6 +6,7 @@ const networkFailureErrorMessage = 'Oops! Server Error... Please check your inte
 
 export default axios.create({
   baseURL: BASE_URL,
+  withCredentials: true,
 });
 
 export const axiosErrorHandler = (error: unknown): string => {

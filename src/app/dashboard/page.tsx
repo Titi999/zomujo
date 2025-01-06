@@ -1,9 +1,7 @@
-import DoctorHomepage from './_components/doctorHome/home';
+import Dashboard from '@/app/dashboard/_components/dashboard';
 
-export default function Dashboard() {
-  return (
-    <div>
-      <DoctorHomepage />
-    </div>
-  );
+function Main() {
+  return <Dashboard />;
 }
+
+export default Main;

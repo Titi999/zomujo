@@ -208,3 +208,4 @@ export const DAYS_OF_WEEK = [
   'Saturday',
   'Sunday',
 ];
+export const unMatchingPasswords = 'Passwords do not match';

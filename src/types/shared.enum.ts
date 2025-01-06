@@ -10,10 +10,10 @@ export enum Status {
 }
 
 export enum Role {
-  Admin = 'ADMIN',
-  SuperAdmin = 'SUPER_ADMIN',
-  Doctor = 'DOCTOR',
-  Patient = 'PATIENT',
+  Admin = 'admin',
+  SuperAdmin = 'super_admin',
+  Doctor = 'doctor',
+  Patient = 'patient',
 }
 
 export enum CalendarType {

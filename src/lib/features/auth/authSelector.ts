@@ -3,10 +3,7 @@ import { RootState } from '@/lib/store';
 
 const selectAuthentication = (state: RootState) => state.authentication;
 
-export const selectUserRole = createSelector(
-  selectAuthentication,
-  ({ user }) => user?.role || null,
-);
+export const selectUserRole = createSelector(selectAuthentication, ({ user }) => user?.role);
 
 export const selectErrorMessage = createSelector(
   selectAuthentication,
@@ -18,6 +15,11 @@ export const selectIsLoading = createSelector(selectAuthentication, ({ isLoading
 export const selectUserName = createSelector(
   selectAuthentication,
   ({ user }) => `${user?.firstName} ${user?.lastName}`,
+);
+
+export const selectUserFirstName = createSelector(
+  selectAuthentication,
+  ({ user }) => user?.firstName,
 );
 
 export const selectUser = createSelector(selectAuthentication, ({ user }) => user);

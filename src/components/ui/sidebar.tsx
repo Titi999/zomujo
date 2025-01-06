@@ -119,8 +119,8 @@ const SidebarProvider = forwardRef<
 
     const contextValue = useMemo<SidebarContext>(
       () => ({
-        state,
-        open,
+        state: 'expanded',
+        open: true,
         setOpen,
         isMobile,
         openMobile,
