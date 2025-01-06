@@ -1,8 +1,9 @@
+import DoctorHomepage from './_components/doctorHome/home';
+
 export default function Dashboard() {
   return (
     <div>
-      <h1>Dashboard</h1>
-      <span>Home will be here</span>
+      <DoctorHomepage />
     </div>
   );
 }

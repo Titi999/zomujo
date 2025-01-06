@@ -102,6 +102,10 @@ export default {
           '500': '#D97706',
           '600': '#B45309',
         },
+        blue: {
+          cobalt: '#165FA3',
+          lightPowder: '#E8EFF6',
+        },
         primaryDark: '#067458',
         primaryLight: '#F0F9F7',
         primaryLightBase: '#08AF85',

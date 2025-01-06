@@ -1,10 +1,17 @@
 'use client';
 
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
-import { Check, ChevronRight, Circle } from 'lucide-react';
+import { Check, ChevronDown, ChevronRight, Circle, LucideProps } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { ComponentPropsWithoutRef, ComponentRef, forwardRef, HTMLAttributes } from 'react';
+import {
+  ComponentPropsWithoutRef,
+  ComponentRef,
+  forwardRef,
+  ForwardRefExoticComponent,
+  HTMLAttributes,
+  RefAttributes,
+} from 'react';
 
 const DropdownMenu = DropdownMenuPrimitive.Root;
 
@@ -167,6 +174,61 @@ const DropdownMenuShortcut = ({ className, ...props }: HTMLAttributes<HTMLSpanEl
 
 DropdownMenuShortcut.displayName = 'DropdownMenuShortcut';
 
+export interface ISelected {
+  value: string;
+  label?: string;
+}
+interface IOptionMenuProps {
+  menuTrigger: string;
+  Icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
+  triggerIconPosition?: 'left' | 'right';
+  menuLabel?: string;
+  selected: string | undefined;
+  setSelected: React.Dispatch<React.SetStateAction<string | undefined>>;
+  options: ISelected[];
+  className?: string;
+}
+const OptionsMenu = ({
+  menuTrigger,
+  Icon,
+  menuLabel,
+  selected,
+  setSelected,
+  options,
+  className,
+}: IOptionMenuProps) => (
+  <DropdownMenu>
+    <DropdownMenuTrigger asChild>
+      <div
+        className={cn('flex items-center justify-center gap-1 rounded-lg border px-2', className)}
+      >
+        {Icon && <Icon size={16} />}
+        <span className="text-sm">{menuTrigger}</span>
+        <ChevronDown size={16} />
+      </div>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent>
+      {menuLabel && (
+        <>
+          <DropdownMenuLabel> {menuLabel}</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+        </>
+      )}
+      <DropdownMenuRadioGroup
+        value={selected}
+        onValueChange={(value) => setSelected && setSelected(value)}
+      >
+        {options.map(({ value, label }) => (
+          <DropdownMenuRadioItem key={value} value={value}>
+            {' '}
+            {label}
+          </DropdownMenuRadioItem>
+        ))}
+      </DropdownMenuRadioGroup>
+    </DropdownMenuContent>
+  </DropdownMenu>
+);
+
 export {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -183,4 +245,5 @@ export {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuRadioGroup,
+  OptionsMenu,
 };
