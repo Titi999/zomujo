@@ -77,8 +77,8 @@ const ManagedClientsPanel = () => {
       <div className="p-6">
         <p className="py-6 text-xl font-bold">Managed clients</p>
         <div className="mb-4 flex flex-wrap justify-between">
-          <div className="mb-2 flex  gap-2">
-            <Input error="" placeholder="Search Patient" className="sm:w-[333px] max-w-[333px]" />
+          <div className="mb-2 flex gap-2">
+            <Input error="" placeholder="Search Patient" className="max-w-[333px] sm:w-[333px]" />
             <OptionsMenu
               options={filterOptions}
               Icon={ListFilter}
@@ -94,7 +94,7 @@ const ManagedClientsPanel = () => {
             menuTrigger="Sort By"
             selected={sort}
             setSelected={setSort}
-            className="h-10 bg-gray-50 hidden sm:flex"
+            className="hidden h-10 bg-gray-50 sm:flex"
           />
         </div>
         <TableData columns={columns} data={data} />

@@ -16,13 +16,15 @@ const AppointmentPanel = () => {
   const startDate1 = new Date(today.getFullYear(), today.getMonth(), today1.getDate(), 2, 0, 0);
   const endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 13, 0, 0);
   const endDate1 = new Date(today.getFullYear(), today.getMonth(), today1.getDate(), 5, 0, 0);
-  
+
   return (
     <div className="w-[calc(100vw - 48px)] flex flex-col overflow-clip rounded-2xl border border-gray-200 bg-white md:w-[calc(100vw-316px-60px)] me:w-[calc(100vw-316px-264px-48px-16px-16px)]">
       <div className="relative flex flex-col gap-8 border-b border-gray-200 p-6">
         <div className="flex flex-row items-center gap-2.5">
-          <p className="text-2xl font-bold truncate">Today&apos;s Appointments</p>
-          <Badge variant={'brown'}>3 <span className=' hidden sm:block ml-1'>patients</span></Badge>
+          <p className="truncate text-2xl font-bold">Today&apos;s Appointments</p>
+          <Badge variant={'brown'}>
+            3 <span className="ml-1 hidden sm:block">patients</span>
+          </Badge>
         </div>
         <div className="flex flex-row items-center justify-between">
           <DateSelector

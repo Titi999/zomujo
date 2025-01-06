@@ -16,7 +16,7 @@ const AppointmentRequestPanel = () => {
   const suggestSmallScreen = useMemo(
     () => (
       <Carousel>
-        <CarouselContent className='m-auto'>
+        <CarouselContent className="m-auto">
           <CarouselItem>
             <AppointmentRequestCard
               request={{

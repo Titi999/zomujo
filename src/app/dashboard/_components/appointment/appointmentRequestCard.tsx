@@ -27,7 +27,7 @@ const AppointmentRequestCard = ({
       <div className="flex flex-row items-center gap-3">
         <div className="h-11 w-11 rounded-full bg-gray-600"></div>
         <div className="flex h-full flex-col justify-between">
-          <p className="max-w-[130px] truncate text-sm font-medium text-left">
+          <p className="max-w-[130px] truncate text-left text-sm font-medium">
             {firstName} {lastName}
           </p>
           <Badge variant={'brown'}>
