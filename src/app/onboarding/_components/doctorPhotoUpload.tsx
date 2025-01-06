@@ -2,7 +2,7 @@ import { Check, InfoIcon } from 'lucide-react';
 import React, { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
-import { requiredStringSchema } from '@/schemas/zod.schemas';
+import { fileSchema } from '@/schemas/zod.schemas';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -15,13 +15,19 @@ import { doctorOnboarding } from '@/lib/features/auth/authThunk';
 import { updateCurrentStep } from '@/lib/features/auth/authSlice';
 
 const DoctorPhotoUploadScheme = z.object({
-  profilePicture: requiredStringSchema(),
+  profilePicture: fileSchema,
 });
 
 const DoctorPhotoUpload = () => {
   const [confirm, setConfirm] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const { register, setValue, watch, getValues } = useForm<IDoctorPhotoUpload>({
+  const {
+    register,
+    setValue,
+    watch,
+    getValues,
+    formState: { isValid },
+  } = useForm<IDoctorPhotoUpload>({
     resolver: zodResolver(DoctorPhotoUploadScheme),
   });
   const dispatch = useAppDispatch();
@@ -55,7 +61,7 @@ const DoctorPhotoUpload = () => {
             label="Passport Photo"
             value={watch('profilePicture')}
             {...register('profilePicture')}
-            onChange={(file) => file && setValue('profilePicture', file)}
+            onChange={(file) => setValue('profilePicture', file!, { shouldValidate: true })}
           />
         </div>
         <div className="flex flex-row">
@@ -73,13 +79,14 @@ const DoctorPhotoUpload = () => {
           variant="secondary"
           className="w-full bg-accent-foreground text-white"
           type="button"
+          disabled={isLoading}
           child="Back"
         />
         <Button
           className="w-full"
           child="Finish"
           isLoading={isLoading}
-          disabled={!watch('profilePicture') || !confirm}
+          disabled={!isValid || !confirm}
           type="submit"
         />
       </div>

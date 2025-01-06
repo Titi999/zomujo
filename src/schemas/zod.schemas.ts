@@ -18,6 +18,8 @@ export const requiredStringSchema = (isRequired = true) => {
   return isRequired ? schema.nonempty('Field is required') : schema;
 };
 
+export const fileSchema = z.instanceof(File);
+
 export const nameSchema = z
   .string()
   .nonempty('Field is required')
