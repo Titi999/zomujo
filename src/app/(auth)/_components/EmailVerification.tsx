@@ -23,7 +23,9 @@ const EmailVerification = () => {
       if (payload) {
         setMessage(String(payload));
         const interval = setInterval(() => {
-          setCountdown((prev) => prev - 1);
+          if (countdown > 0) {
+            setCountdown((prev) => prev - 1);
+          }
         }, 1000);
 
         const timeout = setTimeout(() => {
