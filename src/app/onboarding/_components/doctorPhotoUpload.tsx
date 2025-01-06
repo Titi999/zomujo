@@ -66,6 +66,7 @@ const DoctorPhotoUpload = () => {
         </div>
         <div className="flex flex-row">
           <Checkbox
+            name="confirm"
             labelClassName="text-gray-500"
             checked={confirm}
             onCheckedChange={(checked) => setConfirm(Boolean(checked))}
