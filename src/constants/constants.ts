@@ -13,6 +13,7 @@ import {
   Settings,
   User,
   UserSearch,
+  Hospital,
 } from 'lucide-react';
 
 export const MODE = {
@@ -164,6 +165,11 @@ export const ADMIN_SIDE_BAR: ISidebar = {
           title: 'Transactions',
           url: '#',
           Icon: Banknote,
+        },
+        {
+          title: 'Organization Requests',
+          url: '/dashboard/organization-requests',
+          Icon: Hospital,
         },
         {
           title: 'Manage S,M,I',
