@@ -3,7 +3,7 @@ import AppointmentPanel from '../appointment/appointmentPanel';
 import AppointmentRequestPanel from '../appointment/appointmentRequestPanel';
 import ManagedClientsPanel from '../appointment/managedClientsPanel';
 
-const DoctorHomepage = () => (
+const DoctorHome = () => (
   <div className="mx-6">
     <div> Doctors name and the navbar so lets check this and see how it works </div>
     <div className="flex w-full flex-row gap-4">
@@ -14,4 +14,4 @@ const DoctorHomepage = () => (
   </div>
 );
 
-export default DoctorHomepage;
+export default DoctorHome;

@@ -4,9 +4,9 @@ import { dashboardProvider } from '@/app/dashboard/_components/dashboardProvider
 import { useAppSelector } from '@/lib/hooks';
 import { selectUserRole } from '@/lib/features/auth/authSelector';
 import { Role } from '@/types/shared.enum';
-import DoctorHome from '@/app/dashboard/_components/doctorHome/home';
 import PatientHome from '@/app/dashboard/_components/patientHome/home';
 import { JSX } from 'react';
+import DoctorHome from '@/app/dashboard/_components/doctorHome/home';
 
 const Dashboard = () => {
   const role = useAppSelector(selectUserRole);
