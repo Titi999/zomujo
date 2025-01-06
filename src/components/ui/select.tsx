@@ -22,6 +22,7 @@ type SelectInputProps = {
   // Any is used here because the type of control is known at the instance this property is passed in as prop
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: Control<any>;
+  className?: string;
 };
 
 const Select = SelectPrimitive.Root;
@@ -166,6 +167,7 @@ const SelectInput = ({
   name,
   label,
   placeholder = '',
+  className,
 }: SelectInputProps) => (
   <Controller
     control={control}
@@ -173,7 +175,7 @@ const SelectInput = ({
     render={({ field }) => (
       <Select {...field} onValueChange={(value) => field.onChange(value)}>
         {label && <Label>{label}</Label>}
-        <SelectTrigger className="max-w-sm" ref={ref} error={error}>
+        <SelectTrigger className={cn('max-w-sm', className)} ref={ref} error={error}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
