@@ -20,7 +20,7 @@ export const MODE = {
   ON_TOUCH: 'onTouched',
 } as const;
 
-export const DASHBOARD_ROUTE = '/dashboard'
+export const DASHBOARD_ROUTE = '/dashboard';
 
 export const PATIENT_SIDE_BAR: ISidebar = {
   sidebarGroup: [

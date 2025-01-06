@@ -30,9 +30,8 @@ export interface DoctorTableProps {
   contact: string;
 }
 
-
-export interface IDoctorTableResponse{
-  rows:IDoctor[]
+export interface IDoctorTableResponse {
+  rows: IDoctor[];
 }
 
 const DoctorPanel = () => {
@@ -175,7 +174,7 @@ const columns: ColumnDef<DoctorTableProps>[] = [
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem>
-            <ShieldCheck /> Activate 
+            <ShieldCheck /> Activate
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Signature /> Approve

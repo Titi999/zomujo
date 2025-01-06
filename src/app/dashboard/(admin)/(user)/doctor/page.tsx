@@ -5,16 +5,15 @@ import React from 'react';
 import DoctorPanel from '../_components/doctorPanel';
 
 const Doctor = () => {
-
-    const mockStatsData: StatsCardProps[] = [
-      { title: 'Total Doctors', value: '560', percentage: '4.4', trend: 'up' },
-      { title: 'Active doctors', value: '60', percentage: '2', trend: 'down' },
-      { title: 'Pending Doctors', value: '500', percentage: '4.4', trend: 'up' },
-    ];
+  const mockStatsData: StatsCardProps[] = [
+    { title: 'Total Doctors', value: '560', percentage: '4.4', trend: 'up' },
+    { title: 'Active doctors', value: '60', percentage: '2', trend: 'down' },
+    { title: 'Pending Doctors', value: '500', percentage: '4.4', trend: 'up' },
+  ];
   return (
     <div className="mx-6">
       <section className="flex items-center justify-between">
-        <p className="text-[20px] sm:text-[32px] font-bold"> Registered Doctor</p>
+        <p className="text-[20px] font-bold sm:text-[32px]"> Registered Doctor</p>
         <Button
           child={
             <>
@@ -30,8 +29,8 @@ const Doctor = () => {
           <StatsCard key={index} {...data} />
         ))}
       </div>
-          <section>
-             <DoctorPanel/> 
+      <section>
+        <DoctorPanel />
       </section>
     </div>
   );

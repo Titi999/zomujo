@@ -53,7 +53,7 @@ export const SidebarLayout = () => {
                 {category.menu.map(({ title, url, Icon, subMenu }) =>
                   subMenu ? (
                     <Collapsible className="group/collapsible" key={title}>
-                      <SidebarMenuItem >
+                      <SidebarMenuItem>
                         <CollapsibleTrigger asChild>
                           <SidebarMenuButton>
                             {Icon && <Icon />} {title}
