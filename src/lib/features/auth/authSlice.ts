@@ -56,6 +56,7 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
+        state.errorMessage = '';
         state.isLoading = true;
       })
       .addCase(login.fulfilled || login.rejected, (state) => {
@@ -63,6 +64,7 @@ const authSlice = createSlice({
       });
     builder
       .addCase(doctorOnboarding.pending, (state) => {
+        state.errorMessage = '';
         state.isLoading = true;
       })
       .addCase(doctorOnboarding.fulfilled || doctorOnboarding.rejected, (state) => {
@@ -70,6 +72,7 @@ const authSlice = createSlice({
       });
     builder
       .addCase(signUp.pending, (state) => {
+        state.errorMessage = '';
         state.isLoading = true;
       })
       .addCase(signUp.fulfilled || signUp.rejected, (state) => {
@@ -77,6 +80,7 @@ const authSlice = createSlice({
       });
     builder
       .addCase(requestOrganization.pending, (state) => {
+        state.errorMessage = '';
         state.isLoading = true;
       })
       .addCase(requestOrganization.fulfilled || requestOrganization.rejected, (state) => {
@@ -84,6 +88,7 @@ const authSlice = createSlice({
       });
     builder
       .addCase(forgotPassword.pending, (state) => {
+        state.errorMessage = '';
         state.isLoading = true;
       })
       .addCase(forgotPassword.fulfilled || forgotPassword.rejected, (state) => {
@@ -91,6 +96,7 @@ const authSlice = createSlice({
       });
     builder
       .addCase(resetPassword.pending, (state) => {
+        state.errorMessage = '';
         state.isLoading = true;
       })
       .addCase(resetPassword.fulfilled || resetPassword.rejected, (state) => {
@@ -98,6 +104,7 @@ const authSlice = createSlice({
       });
     builder
       .addCase(verifyEmail.pending, (state) => {
+        state.errorMessage = '';
         state.isLoading = true;
       })
       .addCase(verifyEmail.fulfilled || resetPassword.rejected, (state) => {

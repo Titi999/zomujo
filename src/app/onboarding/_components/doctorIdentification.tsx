@@ -4,7 +4,7 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { requiredStringSchema } from '@/schemas/zod.schemas';
+import { fileSchema } from '@/schemas/zod.schemas';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -12,8 +12,8 @@ import { updateCurrentStep, updateDoctorIdentification } from '@/lib/features/au
 import { IDoctorIdentification } from '@/types/auth.interface';
 
 const DoctorIdentificationSchema = z.object({
-  front: requiredStringSchema(),
-  back: requiredStringSchema(),
+  front: fileSchema,
+  back: fileSchema,
 });
 
 const DoctorIdentification = () => {
@@ -21,7 +21,13 @@ const DoctorIdentification = () => {
     ({ authentication }) => authentication.doctorIdentification,
   );
   const [confirm, setConfirm] = useState(false);
-  const { register, setValue, watch, getValues } = useForm<IDoctorIdentification>({
+  const {
+    register,
+    setValue,
+    watch,
+    getValues,
+    formState: { isValid },
+  } = useForm<IDoctorIdentification>({
     resolver: zodResolver(DoctorIdentificationSchema),
     defaultValues: doctorIdentification,
   });
@@ -57,7 +63,7 @@ const DoctorIdentification = () => {
             label="Front"
             value={watch('front')}
             {...register('front')}
-            onChange={(file) => setValue('front', file!)}
+            onChange={(file) => setValue('front', file!, { shouldValidate: true })}
           />
           <SingleImageDropzone
             height={280}
@@ -65,11 +71,12 @@ const DoctorIdentification = () => {
             label="Back"
             value={watch('back')}
             {...register('back')}
-            onChange={(file) => setValue('back', file!)}
+            onChange={(file) => setValue('back', file!, { shouldValidate: true })}
           />
         </div>
         <div className="flex flex-row">
           <Checkbox
+            name="confirm"
             labelClassName="text-gray-500"
             checked={confirm}
             onCheckedChange={(checked) => setConfirm(Boolean(checked))}
@@ -85,12 +92,7 @@ const DoctorIdentification = () => {
           type="button"
           child="Back"
         />
-        <Button
-          className="w-full"
-          disabled={!watch('front') || !watch('back') || !confirm}
-          type="submit"
-          child="Continue"
-        />
+        <Button className="w-full" disabled={!isValid || !confirm} type="submit" child="Continue" />
       </div>
     </form>
   );

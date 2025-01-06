@@ -80,7 +80,11 @@ const LoginForm = () => {
             className="w-full max-w-sm"
           />
           <div className="flex w-full max-w-sm justify-between">
-            <Checkbox labelClassName="font-normal leading-none text-base" labelName="Remember me" />
+            <Checkbox
+              name="remember"
+              labelClassName="font-normal leading-none text-base"
+              labelName="Remember me"
+            />
 
             <Link href="/forgot-password" className="text-primary">
               Forgot password?
