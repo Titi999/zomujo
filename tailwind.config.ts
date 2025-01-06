@@ -10,7 +10,7 @@ export default {
   theme: {
     extend: {
       screens: {
-        me: '900px',
+        me: '1024px',
       },
       colors: {
         background: 'hsl(var(--background))',
@@ -101,6 +101,10 @@ export default {
           '400': '#F59E0B',
           '500': '#D97706',
           '600': '#B45309',
+        },
+        blue: {
+          cobalt: '#165FA3',
+          lightPowder: '#E8EFF6',
         },
         primaryDark: '#067458',
         primaryLight: '#F0F9F7',
