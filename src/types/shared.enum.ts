@@ -7,6 +7,7 @@ export enum Gender {
 export enum Status {
   Verified = 'verified',
   Unverified = 'unverified',
+  Pending = 'pending',
 }
 
 export enum Role {

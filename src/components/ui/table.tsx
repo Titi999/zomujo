@@ -124,10 +124,7 @@ export const TableData = <TData, TValue>({
     autoResetPageIndex: autoResetPageIndex,
     onSortingChange: setSorting,
     onPaginationChange: (updater) => {
-      const updatedPagination = (old: PaginationState) => {
-        const newState = functionalUpdate(updater, old);
-        return newState;
-      };
+      const updatedPagination = (old: PaginationState) => functionalUpdate(updater, old);
       const updatedPaginationValues = updatedPagination(table.getState().pagination);
 
       setPagination(updatedPaginationValues);
