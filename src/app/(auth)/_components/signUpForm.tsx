@@ -102,6 +102,7 @@ const SignUpForm = () => {
   const [successMessage, setMessage] = useState('');
   const { isLoading, errorMessage } = useAppSelector(selectThunkState);
   const onSubmit = async (userCredentials: ISignUp) => {
+    setMessage('')
     const action = userCredentials.role === Role.Admin ? requestOrganization : signUp;
     const { payload } = await dispatch(action(userCredentials));
     if (payload) {

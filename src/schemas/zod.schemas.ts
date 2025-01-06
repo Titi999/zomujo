@@ -24,7 +24,7 @@ export const nameSchema = z
   .string()
   .nonempty('Field is required')
   .min(3, 'Field should be more than 3 characters')
-  .regex(/^[A-Za-z]+$/, 'Field should only contain alphabets');
+  .regex(/^[A-Za-z\s]+$/, 'Field should only contain alphabets');
 
 export const mdcNumberSchema = requiredStringSchema().regex(
   /^MDC\/(RN|PN)\/\d{5}$/,

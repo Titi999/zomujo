@@ -20,6 +20,8 @@ export const MODE = {
   ON_TOUCH: 'onTouched',
 } as const;
 
+export const DASHBOARD_ROUTE = '/dashboard'
+
 export const PATIENT_SIDE_BAR: ISidebar = {
   sidebarGroup: [
     {
@@ -27,7 +29,7 @@ export const PATIENT_SIDE_BAR: ISidebar = {
       menu: [
         {
           title: 'Home',
-          url: '/dashboard',
+          url: DASHBOARD_ROUTE,
           Icon: Home,
         },
         {
@@ -86,7 +88,7 @@ export const DOCTOR_SIDE_BAR: ISidebar = {
       menu: [
         {
           title: 'Home',
-          url: '/dashboard',
+          url: DASHBOARD_ROUTE,
           Icon: Home,
         },
         {
@@ -133,7 +135,7 @@ export const ADMIN_SIDE_BAR: ISidebar = {
       menu: [
         {
           title: 'Overview',
-          url: '/dashboard',
+          url: DASHBOARD_ROUTE,
           Icon: Home,
         },
         {
@@ -148,15 +150,15 @@ export const ADMIN_SIDE_BAR: ISidebar = {
         },
         {
           title: 'User',
-          url: '#',
+          url: `${DASHBOARD_ROUTE}/doctor`,
           Icon: User,
           subMenu: [
             {
-              title: 'Patient',
-              url: '#',
+              title: 'Doctor',
+              url: `${DASHBOARD_ROUTE}/doctor`,
             },
             {
-              title: 'Doctor',
+              title: 'Patient',
               url: '#',
             },
           ],
@@ -168,8 +170,9 @@ export const ADMIN_SIDE_BAR: ISidebar = {
         },
         {
           title: 'Organization Requests',
-          url: '/dashboard/organization-requests',
+          url: `${DASHBOARD_ROUTE}/organization-requests`,
           Icon: Hospital,
+          phoneTitle: 'Organization',
         },
         {
           title: 'Manage S,M,I',
