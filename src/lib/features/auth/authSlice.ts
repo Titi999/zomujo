@@ -52,6 +52,9 @@ const authSlice = createSlice({
       state.user = payload.user;
       state.extra = payload.extra;
     },
+    updateExtra: (state, { payload }) => {
+      state.extra = payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -119,5 +122,6 @@ export const {
   updateDoctorIdentification,
   updateCurrentStep,
   setUserInfo,
+  updateExtra,
 } = authSlice.actions;
 export default authSlice.reducer;
