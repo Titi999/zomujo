@@ -13,3 +13,7 @@ export interface IPagination<T> {
   prevPage: number | null;
   totalPages: number;
 }
+
+export interface IAction<T = undefined> {
+  payload: T;
+}
