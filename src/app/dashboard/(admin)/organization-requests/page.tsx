@@ -1,9 +1,7 @@
+import OrganizationRequests from '@/app/dashboard/(admin)/organization-requests/_components/organizationRequests';
+
 function OrganizationRequestsPage() {
-  return (
-    <div>
-      <h1>Organization Requests</h1>
-    </div>
-  );
+  return <OrganizationRequests />;
 }
 
 export default OrganizationRequestsPage;

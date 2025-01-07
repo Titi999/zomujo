@@ -151,7 +151,7 @@ export const TableData = <TData, TValue>({
                 {headerGroup.headers.map((header) => (
                   <TableHead key={header.id} className="text-black">
                     {isLoading ? (
-                      <Skeleton className="h-4 w-[250px] bg-gray-300" />
+                      <Skeleton className="h-4 max-w-[250px] bg-gray-300" />
                     ) : header.isPlaceholder ? null : (
                       flexRender(header.column.columnDef.header, header.getContext())
                     )}
@@ -166,7 +166,7 @@ export const TableData = <TData, TValue>({
                 <TableRow key={rowIndex}>
                   {Array.from({ length: columns.length }).map((_, colIndex) => (
                     <TableCell key={colIndex}>
-                      <Skeleton className="h-4 w-[250px] bg-gray-300" />
+                      <Skeleton className="h-4 max-w-[250px] bg-gray-300" />
                     </TableCell>
                   ))}
                 </TableRow>
