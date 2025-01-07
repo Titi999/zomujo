@@ -11,6 +11,7 @@ import {
 } from '@tanstack/react-table';
 import { Button } from './button';
 import { forwardRef, HTMLAttributes, TdHTMLAttributes, ThHTMLAttributes, useState } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -19,6 +20,7 @@ interface DataTableProps<TData, TValue> {
   autoResetPageIndex?: boolean;
   manualPagination?: boolean;
   onPaginationChange?: () => void;
+  isLoading?: boolean;
 }
 
 const Table = forwardRef<HTMLTableElement, HTMLAttributes<HTMLTableElement>>(
@@ -108,6 +110,7 @@ export const TableData = <TData, TValue>({
   autoResetPageIndex = true,
   manualPagination = true,
   onPaginationChange,
+  isLoading,
 }: DataTableProps<TData, TValue>) => {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
@@ -147,16 +150,28 @@ export const TableData = <TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <TableHead key={header.id} className="text-black">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
+                    {isLoading ? (
+                      <Skeleton className="h-4 w-[250px] bg-gray-300" />
+                    ) : header.isPlaceholder ? null : (
+                      flexRender(header.column.columnDef.header, header.getContext())
+                    )}
                   </TableHead>
                 ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {isLoading ? (
+              Array.from({ length: rowCount }).map((_, rowIndex) => (
+                <TableRow key={rowIndex}>
+                  {Array.from({ length: columns.length }).map((_, colIndex) => (
+                    <TableCell key={colIndex}>
+                      <Skeleton className="h-4 w-[250px] bg-gray-300" />
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
