@@ -162,8 +162,8 @@ export const TableData = <TData, TValue>({
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              Array.from({ length: 10 }).map((_, index) => (
-                <TableRow key={index}>
+              Array.from({ length: rowCount }).map((_, rowIndex) => (
+                <TableRow key={rowIndex}>
                   {Array.from({ length: columns.length }).map((_, colIndex) => (
                     <TableCell key={colIndex}>
                       <Skeleton className="h-4 w-[250px] bg-gray-300" />
