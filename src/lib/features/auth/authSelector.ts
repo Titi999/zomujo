@@ -32,3 +32,5 @@ export const selectThunkState = createSelector(
   selectErrorMessage,
   (isLoading, errorMessage) => ({ isLoading, errorMessage }),
 );
+
+export const selectExtra = createSelector(selectAuthentication, ({ extra }) => extra);
