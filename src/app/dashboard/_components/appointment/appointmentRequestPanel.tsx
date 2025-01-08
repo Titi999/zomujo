@@ -2,8 +2,7 @@
 import React, { useMemo, useState } from 'react';
 import AppointmentRequestCard from './appointmentRequestCard';
 import { Badge } from '@/components/ui/badge';
-import { Modal } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { Confirmation } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 import { ModalProps } from '@/types/appointment';
 import { AppointmentStatus, VisitType } from '@/types/shared.enum';
@@ -70,19 +69,27 @@ const AppointmentRequestPanel = () => {
   );
   return (
     <>
-      <Modal
+      <Confirmation
         open={openModal}
-        content={
-          selectedPatient && (
-            <ModalContent
-              option={selectedPatient?.option}
-              patient={selectedPatient.patient}
-              setModal={setModal}
-            />
-          )
+        description={
+          <>
+            Are you sure you want to
+            <span
+              className={cn(
+                'px-1',
+                selectedPatient?.option == 'Accept' ? 'text-primary' : 'text-error-400',
+              )}
+            >
+              {selectedPatient?.option}
+            </span>
+            <span className={'pr-1 font-semibold'}>
+              {selectedPatient?.patient.firstName} {selectedPatient?.patient.lastName}
+            </span>
+            request?
+          </>
         }
-        showClose={true}
-        setState={setModal}
+        acceptCommand={() => setModal && setModal(false)}
+        rejectCommand={() => setModal && setModal(false)}
       />
       <div className="h-[calc(100vh-203px)] w-full overflow-y-scroll rounded-2xl border bg-white pt-6 max-md:h-[380px]">
         <div className="flex flex-row items-center justify-center gap-2">
@@ -162,26 +169,3 @@ const AppointmentRequestPanel = () => {
 };
 
 export default AppointmentRequestPanel;
-
-const ModalContent = ({ option, patient: { firstName, lastName }, setModal }: ModalProps) => (
-  <div>
-    <p>
-      Are you sure you want to
-      <span className={cn('px-1', option == 'Accept' ? 'text-primary' : 'text-error-400')}>
-        {option}
-      </span>
-      <span className={'pr-1 font-semibold'}>
-        {firstName} {lastName}
-      </span>
-      request?
-    </p>
-    <div className="flex justify-end gap-4 pt-4">
-      <Button child="Yes, Accept" />
-      <Button
-        child="No, Decline"
-        variant={'destructive'}
-        onClick={() => setModal && setModal(false)}
-      />
-    </div>
-  </div>
-);

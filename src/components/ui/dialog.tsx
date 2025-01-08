@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
 import Image from 'next/image';
 import { EmailIllustration, ErrorIllustration, SuccessIllustration } from '@/assets/images';
+import { Button } from '@/components/ui/button';
 
 const Dialog = DialogPrimitive.Root;
 
@@ -189,6 +190,47 @@ const Modal = ({
   </Dialog>
 );
 
+type ConfirmationProps = {
+  description: ReactNode | string;
+  acceptButtonTitle?: string;
+  rejectButtonTitle?: string;
+  acceptCommand: () => void;
+  rejectCommand: () => void;
+} & Pick<ModalProps, 'open' | 'showClose' | 'setState'>;
+
+const Confirmation = ({
+  open,
+  showClose,
+  description,
+  acceptButtonTitle,
+  rejectButtonTitle,
+  acceptCommand,
+  rejectCommand,
+  setState,
+}: ConfirmationProps) => (
+  <Modal
+    open={open}
+    content={
+      <div>
+        <p>{description}</p>
+        <div className="flex justify-end gap-4 pt-4">
+          <Button
+            onClick={acceptCommand}
+            child={acceptButtonTitle ? acceptButtonTitle : 'Yes, Accept'}
+          />
+          <Button
+            child={rejectButtonTitle ? rejectButtonTitle : 'No, Decline'}
+            variant={'destructive'}
+            onClick={rejectCommand}
+          />
+        </div>
+      </div>
+    }
+    showClose={showClose}
+    setState={setState}
+  />
+);
+
 export {
   Dialog,
   DialogPortal,
@@ -201,4 +243,5 @@ export {
   DialogTitle,
   DialogDescription,
   Modal,
+  Confirmation,
 };
