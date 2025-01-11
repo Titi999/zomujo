@@ -1,17 +1,32 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import authReducer from '@/lib/features/auth/authSlice';
 import hospitalReducer from '@/lib/features/hospitals/hospitalSlice';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
+const authPersistConfig = {
+  key: 'user',
+  storage,
+  whitelist: ['user', 'extra'],
+};
+
+const rootReducer = combineReducers({
+  authentication: persistReducer(authPersistConfig, authReducer),
+  hospital: hospitalReducer,
+});
 
 export const makeStore = () =>
   configureStore({
-    reducer: {
-      authentication: authReducer,
-      hospital: hospitalReducer,
-    },
+    reducer: rootReducer,
+    devTools: process.env.NODE_ENV !== 'production',
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: {
-          ignoredActions: ['authentication/updateDoctorIdentification'],
+          ignoredActions: [
+            'persist/PERSIST',
+            'persist/REHYDRATE',
+            'authentication/updateDoctorIdentification',
+          ],
           ignoredPaths: [
             'authentication.doctorIdentification.front',
             'authentication.doctorIdentification.back',

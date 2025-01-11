@@ -5,6 +5,7 @@ import { PhoneNavbar, SidebarLayout } from './_components/sidebar/Sidebar';
 import AdminToolbar from '@/app/dashboard/_components/adminToolbar';
 import { useAppSelector } from '@/lib/hooks';
 import { selectIsAdmin } from '@/lib/features/auth/authSelector';
+import { DashboardProvider } from '@/app/dashboard/_components/dashboardProvider';
 
 export default function Layout({
   children,
@@ -13,13 +14,15 @@ export default function Layout({
 }>) {
   const isAdmin = useAppSelector(selectIsAdmin);
   return (
-    <SidebarProvider>
-      <SidebarLayout />
-      <PhoneNavbar />
-      <main className="w-full bg-grayscale-100 me:border">
-        {isAdmin && <AdminToolbar />}
-        {children}
-      </main>
-    </SidebarProvider>
+    <DashboardProvider>
+      <SidebarProvider>
+        <SidebarLayout />
+        <PhoneNavbar />
+        <main className="w-full bg-grayscale-100 me:border">
+          {isAdmin && <AdminToolbar />}
+          {children}
+        </main>
+      </SidebarProvider>
+    </DashboardProvider>
   );
 }

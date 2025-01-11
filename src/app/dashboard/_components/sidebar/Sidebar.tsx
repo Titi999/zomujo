@@ -164,6 +164,7 @@ export const PhoneNavbar = () => {
 const getSidebarByRole = (role?: Role) => {
   switch (role) {
     case Role.Admin:
+    case Role.SuperAdmin:
       return ADMIN_SIDE_BAR;
     case Role.Doctor:
       return DOCTOR_SIDE_BAR;
