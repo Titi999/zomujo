@@ -16,6 +16,7 @@ const badgeVariants = cva(
         brown:
           'rounded-full  bg-warning-50 px-2 text-sm font-medium text-warning-600 border-none text-sm w-fit',
         blue: 'rounded-full text-blue-cobalt  bg-blue-lightPowder px-2 text-sm font-medium  border-none text-sm w-fit',
+        gray: 'rounded-full text-grayscale-500  bg-grayscale-75 px-2 text-sm font-medium  border-none text-sm w-fit',
       },
     },
     defaultVariants: {

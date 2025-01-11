@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '@/lib/features/auth/authSlice';
+import hospitalReducer from '@/lib/features/hospitals/hospitalSlice';
 
 export const makeStore = () =>
   configureStore({
     reducer: {
       authentication: authReducer,
+      hospital: hospitalReducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

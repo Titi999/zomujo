@@ -123,6 +123,7 @@ type ModalProps = {
   imageVariant?: ImageVariant;
   showImage?: boolean;
   setState?: React.Dispatch<React.SetStateAction<boolean>>;
+  className?: string;
 };
 
 const Modal = ({
@@ -136,9 +137,10 @@ const Modal = ({
   imageVariant,
   showImage = false,
   setState,
+  className,
 }: ModalProps) => (
   <Dialog open={open} modal={true}>
-    <DialogContent showClose={showClose} setState={setState}>
+    <DialogContent showClose={showClose} setState={setState} className={className}>
       {showImage && (
         <div>
           {imageVariant === 'success' && (

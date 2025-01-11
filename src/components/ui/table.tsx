@@ -8,17 +8,32 @@ import {
   PaginationState,
   SortingState,
   useReactTable,
+  VisibilityState,
 } from '@tanstack/react-table';
 import { Button } from './button';
-import { forwardRef, HTMLAttributes, TdHTMLAttributes, ThHTMLAttributes, useState } from 'react';
+import {
+  forwardRef,
+  HTMLAttributes,
+  TdHTMLAttributes,
+  ThHTMLAttributes,
+  useEffect,
+  useState,
+} from 'react';
+import { IPagination } from '@/types/shared.interface';
+import { IDoctor } from '@/types/doctor.interface';
 
+export type PaginationData = Omit<IPagination<IDoctor>, 'rows'>;
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   rowCount?: number;
   autoResetPageIndex?: boolean;
   manualPagination?: boolean;
-  onPaginationChange?: () => void;
+  userPaginationChange?: (value: PaginationState) => void;
+  columnVisibility?: VisibilityState;
+  page?: number;
+  pageCount?: number;
+  paginationData?: PaginationData;
 }
 
 const Table = forwardRef<HTMLTableElement, HTMLAttributes<HTMLTableElement>>(
@@ -105,12 +120,16 @@ export const TableData = <TData, TValue>({
   columns,
   data,
   rowCount = 10,
-  autoResetPageIndex = true,
+  autoResetPageIndex = false,
   manualPagination = true,
-  onPaginationChange,
+  userPaginationChange,
+  columnVisibility,
+  page,
+  pageCount,
+  paginationData,
 }: DataTableProps<TData, TValue>) => {
   const [pagination, setPagination] = useState({
-    pageIndex: 0,
+    pageIndex: page ? page - 1 : 0,
     pageSize: 1,
   });
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -120,26 +139,50 @@ export const TableData = <TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     manualPagination: manualPagination,
-    rowCount: rowCount,
+    rowCount,
+    pageCount: paginationData ? paginationData.total : pageCount,
     autoResetPageIndex: autoResetPageIndex,
     onSortingChange: setSorting,
     onPaginationChange: (updater) => {
-      const updatedPagination = (old: PaginationState) => {
-        const newState = functionalUpdate(updater, old);
-        return newState;
-      };
+      const updatedPagination = (old: PaginationState) => functionalUpdate(updater, old);
       const updatedPaginationValues = updatedPagination(table.getState().pagination);
 
       setPagination(updatedPaginationValues);
 
-      //Todo: Make use of the pagination change
-      console.log(onPaginationChange);
+      if (userPaginationChange) {
+        userPaginationChange(updatedPaginationValues);
+      }
     },
     state: {
       pagination: pagination,
       sorting: sorting,
+      columnVisibility,
     },
   });
+
+  const [record, setRecord] = useState({ startRecord: 1, endRecord: 10, total: 10 });
+  const currentPage = table.getState().pagination.pageIndex + 1;
+
+  useEffect(() => {
+    if (page) {
+      setPagination((prev) => ({
+        ...prev,
+        pageIndex: page - 1,
+      }));
+    }
+
+    if (paginationData) {
+      const { page, pageSize, total } = paginationData;
+      const startRecord = (page - 1) * pageSize + 1;
+      const endRecord = Math.min(page * pageSize, total);
+
+      setRecord({
+        startRecord,
+        endRecord,
+        total,
+      });
+    }
+  }, [page, paginationData]);
 
   return (
     <>
@@ -183,23 +226,30 @@ export const TableData = <TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="mr-2 flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-          child="Previous"
-        />
-        <span> {pagination.pageIndex + 1}</span>
+      <div className="mr-2 flex items-center justify-between space-x-2 py-4">
+        <div>
+          <p className="text-sm text-gray-400">
+            Showing {record.startRecord} to {record.endRecord} of {record.total} entries
+          </p>
+        </div>
+        <div className="flex items-center justify-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            child="Previous"
+          />
+          <span>{currentPage}</span>
 
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-          child={'Next'}
-        />
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={record.endRecord === record.total}
+            child={'Next'}
+          />
+        </div>
       </div>
     </>
   );

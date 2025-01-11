@@ -110,6 +110,8 @@ export default {
         primaryLight: '#F0F9F7',
         primaryLightBase: '#08AF85',
         primaryLightLight: '#F4FBF9',
+        lightOrange: '#FFE4CC',
+        deepOrange: '#FF8D24',
         sidebar: {
           DEFAULT: 'hsl(var(--sidebar-background))',
           foreground: 'hsl(var(--sidebar-foreground))',

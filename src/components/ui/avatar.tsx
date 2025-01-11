@@ -55,12 +55,13 @@ type AvatarCompProps = {
   name: string;
   imageSrc?: string;
   imageAlt?: string;
+  className?: string;
 };
 
-function AvatarComp({ imageSrc, name, imageAlt }: AvatarCompProps) {
+function AvatarComp({ imageSrc, name, imageAlt,className }: AvatarCompProps) {
   const initials = useMemo(() => getInitials(name), [name]);
   return (
-    <Avatar>
+    <Avatar className={className}>
       <AvatarImage src={imageSrc} alt={imageAlt} />
       <AvatarFallback>{initials}</AvatarFallback>
     </Avatar>
