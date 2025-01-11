@@ -1,6 +1,5 @@
 'use client';
 
-import { dashboardProvider } from '@/app/dashboard/_components/dashboardProvider';
 import { useAppSelector } from '@/lib/hooks';
 import { selectUserRole } from '@/lib/features/auth/authSelector';
 import { Role } from '@/types/shared.enum';
@@ -16,10 +15,10 @@ const Dashboard = () => {
     [Role.Doctor]: <DoctorHome />,
     [Role.Patient]: <PatientHome />,
     [Role.Admin]: <AdminHome />,
-    [Role.SuperAdmin]: <div>Super Admin</div>,
+    [Role.SuperAdmin]: <AdminHome />,
   };
 
   return <>{home[role!]}</>;
 };
 
-export default dashboardProvider(Dashboard);
+export default Dashboard;

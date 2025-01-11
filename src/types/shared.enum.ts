@@ -12,7 +12,7 @@ export enum Status {
 
 export enum Role {
   Admin = 'admin',
-  SuperAdmin = 'super_admin',
+  SuperAdmin = 'superadmin',
   Doctor = 'doctor',
   Patient = 'patient',
 }
