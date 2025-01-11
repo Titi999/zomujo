@@ -58,7 +58,7 @@ type AvatarCompProps = {
   className?: string;
 };
 
-function AvatarComp({ imageSrc, name, imageAlt,className }: AvatarCompProps) {
+function AvatarComp({ imageSrc, name, imageAlt, className }: AvatarCompProps) {
   const initials = useMemo(() => getInitials(name), [name]);
   return (
     <Avatar className={className}>

@@ -202,7 +202,7 @@ const DoctorPanel = () => {
   };
 
   const [paginationData, setPaginationData] = useState<PaginationData | undefined>(undefined);
-  const [selectedDoctor, setSelectedDoctor] = useState<IDoctor| undefined>();
+  const [selectedDoctor, setSelectedDoctor] = useState<IDoctor | undefined>();
   const [openModal, setModalOpen] = useState(false);
 
   useEffect(() => {
@@ -211,11 +211,10 @@ const DoctorPanel = () => {
 
       if ('payload' in result && typeof result.payload !== 'string') {
         const payload = result.payload as IPagination<IDoctor>;
-        const tableData = payload.rows.map((doctorDetails) =>  ({
-            ...doctorDetails,
-            status: 'Available',
-          })
-        );
+        const tableData = payload.rows.map((doctorDetails) => ({
+          ...doctorDetails,
+          status: 'Available',
+        }));
         setTableData(tableData);
         const { nextPage, page, pageSize, prevPage, total, totalPages } = payload;
         setPaginationData({ nextPage, page, pageSize, prevPage, total, totalPages });
