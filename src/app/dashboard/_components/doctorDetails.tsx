@@ -31,9 +31,9 @@ const DoctorDetails = ({
       <div className="mt-[38px] flex items-center justify-between">
         <p className="font-medium"> Consultation</p>
 
-        <p className="text-xl font-bold text-primary">
+       {rate && <p className="text-xl font-bold text-primary">
           GHs {rate?.amount} <span className="text-base text-gray-400">Fee</span>
-        </p>
+        </p>}
       </div>
     </section>
     <section className="w-full">
@@ -42,10 +42,12 @@ const DoctorDetails = ({
           Dr. {firstName} {lastName}
         </p>
         <p className="mt-4 font-medium text-gray-500"> {MDCRegistration}</p>
-        <div className="mt-8 flex gap-6 font-semibold">
-          {experience && <p> 💼 {experience} years of experience</p>}
-          <p>🤩 200+ Consultations</p>
-        </div>
+        {experience > 0 && (
+          <div className="mt-8 flex gap-6 font-semibold">
+            <p> 💼 {experience} years of experience</p>
+            <p>🤩 200+ Consultations</p>
+          </div>
+        )}
       </div>
       <div className="mt-6 flex-wrap">
         {specializations.map((specialization) => (
@@ -57,25 +59,31 @@ const DoctorDetails = ({
 
       <div>
         <hr className="my-8" />
-        <div>
-          <h3 className="text-xl font-bold">Bio</h3>
-          <p className="mt-6 text-gray-500">{bio}</p>
-        </div>
-        <div>
-          <h3 className="mt-12 text-xl font-bold">Education</h3>
-          {education && <EducationCard {...education} />}
-        </div>
-
-        <div>
-          <h3 className="mt-12 text-xl font-bold">Language</h3>
-          <div className="mt-5 flex gap-2">
-            {languages.map((language) => (
-              <Badge variant={'blue'} key={language}>
-                {language}
-              </Badge>
-            ))}
+        {bio && (
+          <div>
+            <h3 className="text-xl font-bold">Bio</h3>
+            <p className="mt-6 text-gray-500">{bio}</p>
           </div>
-        </div>
+        )}
+        {education && (
+          <div>
+            <h3 className="mt-12 text-xl font-bold">Education</h3>
+            <EducationCard {...education} />
+          </div>
+        )}
+
+        {languages.length > 0 && (
+          <div>
+            <h3 className="mt-12 text-xl font-bold">Language</h3>
+            <div className="mt-5 flex gap-2">
+              {languages.map((language) => (
+                <Badge variant={'blue'} key={language}>
+                  {language}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
 
         {awards.length > 0 && (
           <div>

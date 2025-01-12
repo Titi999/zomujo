@@ -51,7 +51,7 @@ const chartConfig = {
 const AdminHome = () => {
   const { control } = useForm();
   return (
-    <div className="px-8 pb-[80px]">
+    <div className="pb-[80px]">
       <div className="flex flex-col">
         <span className="text-[38px] font-bold">{getGreeting()}</span>
         <span className="text-grayscale-500">Track everything here</span>

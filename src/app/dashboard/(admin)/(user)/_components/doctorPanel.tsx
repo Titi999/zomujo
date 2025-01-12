@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { PaginationData, TableData } from '@/components/ui/table';
 import {
   approveDoctorRequest,
-  deactivateDoctor,
+  declineDoctor,
   getAllDoctors,
 } from '@/lib/features/doctors/doctorsThunk';
 import { useAppDispatch } from '@/lib/hooks';
@@ -28,25 +28,74 @@ import {
   CalendarX,
   Ellipsis,
   ListFilter,
+  MessageSquareX,
   Search,
   SendHorizontal,
   ShieldCheck,
   Signature,
 } from 'lucide-react';
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import DoctorDetails from './doctorDetails';
+import DoctorDetails from '../../../_components/doctorDetails';
 import { toast } from '@/hooks/use-toast';
+import { showErrorToast } from '@/lib/utils';
 
-export interface DoctorTableProps {
-  MCDRegistration: string;
-  name: string;
-  status: string;
-  gender: Gender;
-  contact: string;
-  profilePicture: string;
+interface IConfirmationState {
+  acceptCommand: () => void;
+  rejectCommand: () => void;
+  description: string;
+  open: boolean;
+  acceptTitle: string;
+  declineTitle: string;
 }
 
 const DoctorPanel = () => {
+  const [paginationData, setPaginationData] = useState<PaginationData | undefined>(undefined);
+  const [selectedDoctor, setSelectedDoctor] = useState<IDoctor | undefined>();
+  const [openModal, setModalOpen] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [isConfirmationLoading, setConfirmationLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const [tableData, setTableData] = useState<IDoctor[]>([]);
+  const [queryParameters, setQueryParameters] = useState<IQueryParams>({
+    page: 1,
+    orderDirection: 'desc',
+    orderBy: 'createdAt',
+    search: '',
+  });
+  const [confirmation, setConfirmation] = useState<IConfirmationState>({
+    acceptCommand: () => {},
+    rejectCommand: () => {},
+    description: '',
+    open: false,
+    acceptTitle: '',
+    declineTitle: '',
+  });
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const sortOptions = [
+    {
+      value: 'asc',
+      label: 'Ascending',
+    },
+    {
+      value: 'desc',
+      label: 'Descending',
+    },
+  ];
+
+  const filterOptions = [
+    {
+      value: 'MDCRegistration',
+      label: 'MDCRegistration',
+    },
+    {
+      value: 'firstName',
+      label: 'Name',
+    },
+    {
+      value: 'createdAt',
+      label: 'Recent',
+    },
+  ];
   const columns: ColumnDef<IDoctor>[] = [
     {
       accessorKey: 'MDCRegistration',
@@ -81,9 +130,9 @@ const DoctorPanel = () => {
         const status: string = row.getValue('status');
         const variant = (status: string) => {
           switch (status) {
-            case 'Available':
+            case 'Approved':
               return 'default';
-            case 'Booked':
+            case 'Declined':
               return 'brown';
             default:
               return 'destructive';
@@ -181,6 +230,25 @@ const DoctorPanel = () => {
               <Signature /> Approve
             </DropdownMenuItem>
             <DropdownMenuItem
+              onClick={() =>
+                setConfirmation((prev) => ({
+                  ...prev,
+                  open: true,
+                  acceptCommand: () => handleDropdownAction('decline', String(row.getValue('id'))),
+                  acceptTitle: 'Decline',
+                  declineTitle: 'Cancel',
+                  rejectCommand: () =>
+                    setConfirmation((prev) => ({
+                      ...prev,
+                      open: false,
+                    })),
+                  description: `Are you sure you want to decline ${row.getValue('firstName')}'s request?`,
+                }))
+              }
+            >
+              <MessageSquareX /> Decline
+            </DropdownMenuItem>
+            <DropdownMenuItem
               className="text-red-600"
               onClick={() =>
                 setConfirmation((prev) => ({
@@ -208,75 +276,21 @@ const DoctorPanel = () => {
     },
   ];
 
-  const sortOptions = [
-    {
-      value: 'asc',
-      label: 'Ascending',
-    },
-    {
-      value: 'desc',
-      label: 'Descending',
-    },
-  ];
-
-  const filterOptions = [
-    {
-      value: 'MDCRegistration',
-      label: 'MDCRegistration',
-    },
-    {
-      value: 'firstName',
-      label: 'Name',
-    },
-    {
-      value: 'createdAt',
-      label: 'Recent',
-    },
-  ];
-
-  const dispatch = useAppDispatch();
-  const [queryParameters, setQueryParameters] = useState<IQueryParams>({
-    page: 1,
-    orderDirection: 'desc',
-    orderBy: 'createdAt',
-    search: '',
-  });
-
-  const [tableData, setTableData] = useState<IDoctor[] | []>([]);
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value === '') {
-      setQueryParameters((prev) => ({
-        ...prev,
-        page: 1,
-        search: '',
-      }));
-    }
-    setSearchTerm(event.target.value);
-  };
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setQueryParameters((prev) => ({
-      ...prev,
-      page: 1,
-      search: searchTerm,
-    }));
-  };
-
-  const [paginationData, setPaginationData] = useState<PaginationData | undefined>(undefined);
-  const [selectedDoctor, setSelectedDoctor] = useState<IDoctor | undefined>();
-  const [openModal, setModalOpen] = useState(false);
-  const [isLoading, setLoading] = useState(false);
-  const [isConfirmationLoading, setConfirmationLoading] = useState(false);
-
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       const { payload } = await dispatch(getAllDoctors(queryParameters));
-      const response = payload as IPagination<IDoctor>;
-      const tableData = response.rows.map((doctorDetails) => ({
+      if (showErrorToast(payload)) {
+        toast(payload);
+        setLoading(false);
+        return;
+      }
+
+      const { rows } = payload as IPagination<IDoctor>;
+      // Todo: Status of the doctors are all approved; should be changed to their respective statuses once it is available from the backend
+      const tableData = rows.map((doctorDetails) => ({
         ...doctorDetails,
-        status: 'Available',
+        status: 'Approved',
       }));
 
       setTableData(tableData);
@@ -289,29 +303,37 @@ const DoctorPanel = () => {
     void fetchData();
   }, [queryParameters]);
 
-  const handleView = (MCDRegistration: string) => {
+  function handleView(MCDRegistration: string) {
     const doctor = tableData.find((doctor) => doctor.MDCRegistration === MCDRegistration);
-    setModalOpen(true);
     if (doctor) {
       setSelectedDoctor(doctor);
+      setModalOpen(true);
     }
-  };
+  }
 
-  const [confirmation, setConfirmation] = useState({
-    acceptCommand: () => {},
-    rejectCommand: () => {
-      setConfirmation((prev) => ({
+  function handleSearch(event: ChangeEvent<HTMLInputElement>) {
+    if (event.target.value === '') {
+      setQueryParameters((prev) => ({
         ...prev,
-        open: false,
+        page: 1,
+        search: '',
       }));
-    },
-    description: 'Are you sure ?',
-    open: false,
-    acceptTitle: 'Yes',
-    declineTitle: 'No',
-  });
+    }
+    setSearchTerm(event.target.value);
+  }
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setQueryParameters((prev) => ({
+      ...prev,
+      page: 1,
+      search: searchTerm,
+    }));
+  }
 
-  async function handleDropdownAction(action: 'activate' | 'approve' | 'deactivate', id: string) {
+  async function handleDropdownAction(
+    action: 'activate' | 'approve' | 'deactivate' | 'decline',
+    id: string,
+  ) {
     setConfirmationLoading(true);
     switch (action) {
       case 'approve':
@@ -322,11 +344,11 @@ const DoctorPanel = () => {
           }
         }
         break;
-      case 'deactivate':
+      case 'decline':
         {
-          const { payload: deactivatedResponse } = await dispatch(deactivateDoctor(id));
-          if (deactivatedResponse) {
-            toast(deactivatedResponse);
+          const { payload: declineResponse } = await dispatch(declineDoctor(id));
+          if (declineResponse) {
+            toast(declineResponse);
           }
         }
         break;
@@ -387,10 +409,10 @@ const DoctorPanel = () => {
             data={tableData}
             columnVisibility={{ profilePicture: false, lastName: false, id: false }}
             page={queryParameters.page}
-            userPaginationChange={(paginationState) =>
+            userPaginationChange={({ pageIndex }) =>
               setQueryParameters((prev) => ({
                 ...prev,
-                page: paginationState.pageIndex + 1,
+                page: pageIndex + 1,
               }))
             }
             paginationData={paginationData}

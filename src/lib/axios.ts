@@ -1,4 +1,4 @@
-import { Toast } from '@/types/shared.enum';
+import {  ToastStatus } from '@/types/shared.enum';
 import axios, { isAxiosError } from 'axios';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -19,7 +19,7 @@ export const axiosErrorHandler = (error: unknown, toast = false) => {
 
   if (toast) {
     return {
-      title: Toast.Error,
+      title: ToastStatus.Error,
       description: message,
       variant: 'destructive',
     };

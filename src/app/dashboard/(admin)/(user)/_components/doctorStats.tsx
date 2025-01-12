@@ -1,14 +1,15 @@
 'use client';
 import { StatsCard, StatsCardProps } from '@/app/dashboard/_components/statsCard';
 import { Button } from '@/components/ui/button';
+import { toast } from '@/hooks/use-toast';
 import { countAllDoctors } from '@/lib/features/doctors/doctorsThunk';
 import { useAppDispatch } from '@/lib/hooks';
+import { showErrorToast } from '@/lib/utils';
+import { BaseCountResponse } from '@/types/shared.interface';
 import { FileUp } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
-interface IDoctorCountResponse {
-  all: number;
-  allInc: number;
+export interface IDoctorCountResponse extends BaseCountResponse{
   pending: number;
   active: number;
   activeInc: number;
@@ -20,7 +21,12 @@ const DoctorStats = () => {
 
   useEffect(() => {
     const fetchDoctorCount = async () => {
-      const { payload } = await dispatch(countAllDoctors());
+        const { payload } = await dispatch(countAllDoctors());
+        if (showErrorToast(payload)) {
+                toast(payload)
+        return    
+        }
+
       if (payload) {
         const { all, active, activeInc, allInc, pending, pendingInc } =
           payload as IDoctorCountResponse;

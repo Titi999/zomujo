@@ -1,3 +1,5 @@
+import { Toast } from '@/hooks/use-toast';
+import { ToastStatus } from '@/types/shared.enum';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -32,3 +34,7 @@ export function interpolateRange(
   // Interpolate the value within the output range
   return outMin + normalizedValue * (outMax - outMin);
 }
+
+// Used to tell if we need to show a toast for the error based on the axiosErrorHandler function
+export const showErrorToast = (payload: unknown): boolean =>
+  (payload as Toast).title === ToastStatus.Error;

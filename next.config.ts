@@ -10,16 +10,15 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  //mock data for hospital images and doctors 
+  //TODO: Remove once mock data is removed and the modify the domains once the data is consistent and ready 
   images: {
-    domains: ['picsum.photos', 'loremflickr.com', 'firebasestorage.googleapis.com'],
-    //mock data for hopsital images
-    //TODO: Remove once mock data is removed
     remotePatterns: [
       {
-        hostname: 'thumbs.dreamstime.com',
+        hostname: '**',
         protocol: 'https',
         port: '',
-        pathname: '/b/**',
+        pathname: '**',
       },
     ],
   },

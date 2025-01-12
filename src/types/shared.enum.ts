@@ -34,7 +34,7 @@ export enum AppointmentStatus {
   Pending = 'pending',
 }
 
-export enum Toast {
+export enum ToastStatus {
   Success = 'Success',
   Error = 'Error',
 }
