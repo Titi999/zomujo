@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
-    domains: ['picsum.photos'],
+    domains: ['picsum.photos', 'loremflickr.com', 'firebasestorage.googleapis.com'],
     //mock data for hopsital images
     //TODO: Remove once mock data is removed
     remotePatterns: [

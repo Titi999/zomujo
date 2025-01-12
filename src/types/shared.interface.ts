@@ -21,3 +21,6 @@ export interface IQueryParams {
   orderDirection?: string;
   orderBy?: string;
 }
+export interface IAction<T = undefined> {
+  payload: T;
+}

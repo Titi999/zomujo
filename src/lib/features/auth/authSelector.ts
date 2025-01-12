@@ -6,7 +6,10 @@ const selectAuthentication = (state: RootState) => state.authentication;
 
 export const selectUserRole = createSelector(selectAuthentication, ({ user }) => user?.role);
 
-export const selectIsAdmin = createSelector(selectUserRole, (role) => role === Role.Admin);
+export const selectIsAdmin = createSelector(
+  selectUserRole,
+  (role) => role === Role.Admin || role === Role.SuperAdmin,
+);
 
 export const selectErrorMessage = createSelector(
   selectAuthentication,
@@ -32,3 +35,5 @@ export const selectThunkState = createSelector(
   selectErrorMessage,
   (isLoading, errorMessage) => ({ isLoading, errorMessage }),
 );
+
+export const selectExtra = createSelector(selectAuthentication, ({ extra }) => extra);

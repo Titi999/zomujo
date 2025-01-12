@@ -13,11 +13,12 @@ const DoctorDetails = ({
   specializations,
   bio,
   education,
-  rate: { amount },
+  rate,
   languages,
   awards,
+  IDs: { back, front },
 }: IDoctor) => (
-  <div className="flex gap-[30px]">
+  <div className="flex flex-col gap-[30px] md:flex-row">
     <section className="max-w-[284px]">
       <Image
         src={profilePicture}
@@ -29,8 +30,9 @@ const DoctorDetails = ({
 
       <div className="mt-[38px] flex items-center justify-between">
         <p className="font-medium"> Consultation</p>
+
         <p className="text-xl font-bold text-primary">
-          GHs {amount} <span className="text-base text-gray-400">Fee</span>
+          GHs {rate?.amount} <span className="text-base text-gray-400">Fee</span>
         </p>
       </div>
     </section>
@@ -41,7 +43,7 @@ const DoctorDetails = ({
         </p>
         <p className="mt-4 font-medium text-gray-500"> {MDCRegistration}</p>
         <div className="mt-8 flex gap-6 font-semibold">
-          <p> 💼 {experience} years of experience</p>
+          {experience && <p> 💼 {experience} years of experience</p>}
           <p>🤩 200+ Consultations</p>
         </div>
       </div>
@@ -61,7 +63,7 @@ const DoctorDetails = ({
         </div>
         <div>
           <h3 className="mt-12 text-xl font-bold">Education</h3>
-          <EducationCard {...education} />
+          {education && <EducationCard {...education} />}
         </div>
 
         <div>
@@ -75,13 +77,34 @@ const DoctorDetails = ({
           </div>
         </div>
 
-        <div>
-          <h3 className="mb-5 mt-12 text-xl font-bold">Awards</h3>
-          {awards.map((award) => (
-            <Badge variant={'destructive'} key={award}>
-              {award}
-            </Badge>
-          ))}
+        {awards.length > 0 && (
+          <div>
+            <h3 className="mb-5 mt-12 text-xl font-bold">Awards</h3>
+            {awards.map((award) => (
+              <Badge variant={'destructive'} key={award}>
+                {award}
+              </Badge>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="mt-5">
+        <h3 className="mb-5 mt-12 text-xl font-bold">Identification Card</h3>
+        <div className="flex flex-wrap gap-4">
+          <Image
+            src={front}
+            alt="front Id"
+            width={409}
+            height={244}
+            className="h-[244px] w-[409px] rounded-lg object-cover"
+          />
+          <Image
+            src={back}
+            alt="back Id"
+            width={409}
+            height={244}
+            className="h-[244px] w-[409px] rounded-lg object-cover"
+          />
         </div>
       </div>
     </section>

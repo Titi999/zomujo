@@ -2,7 +2,7 @@
 import { AvatarComp } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Modal } from '@/components/ui/dialog';
+import { Confirmation, Modal } from '@/components/ui/dialog';
 import {
   DropdownMenuContent,
   OptionsMenu,
@@ -12,7 +12,11 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { PaginationData, TableData } from '@/components/ui/table';
-import { getAllDoctors } from '@/lib/features/doctors/doctorsThunk';
+import {
+  approveDoctorRequest,
+  deactivateDoctor,
+  getAllDoctors,
+} from '@/lib/features/doctors/doctorsThunk';
 import { useAppDispatch } from '@/lib/hooks';
 import { IDoctor } from '@/types/doctor.interface';
 import { Gender } from '@/types/shared.enum';
@@ -31,6 +35,7 @@ import {
 } from 'lucide-react';
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import DoctorDetails from './doctorDetails';
+import { toast } from '@/hooks/use-toast';
 
 export interface DoctorTableProps {
   MCDRegistration: string;
@@ -52,6 +57,9 @@ const DoctorPanel = () => {
     },
     {
       accessorKey: 'lastName',
+    },
+    {
+      accessorKey: 'id',
     },
     {
       accessorKey: 'firstName',
@@ -98,19 +106,23 @@ const DoctorPanel = () => {
       header: 'Gender',
       cell: ({ row }) => {
         const gender: string = row.getValue('gender');
-        const variant = (gender: string) => {
+        const genderProperties = (
+          gender: string,
+        ): { title: string; variant: 'brown' | 'blue' | 'destructive' } => {
           switch (gender) {
             case Gender.Male:
-              return 'brown';
+              return { title: 'Male', variant: 'brown' };
             case Gender.Female:
-              return 'blue';
+              return { title: 'Female', variant: 'blue' };
             default:
-              return 'destructive';
+              return { title: 'Other', variant: 'destructive' };
           }
         };
+
+        const { title, variant } = genderProperties(gender);
         return (
           <div>
-            <Badge variant={variant(gender)}>{gender}</Badge>
+            <Badge variant={variant}>{title}</Badge>
           </div>
         );
       },
@@ -130,13 +142,63 @@ const DoctorPanel = () => {
             <DropdownMenuItem onClick={() => handleView(row.getValue('MDCRegistration'))}>
               <Binoculars /> View
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() =>
+                setConfirmation((prev) => ({
+                  ...prev,
+                  open: true,
+                  acceptCommand: () => handleDropdownAction('activate', String(row.getValue('id'))),
+                  acceptTitle: 'Activate',
+                  declineTitle: 'Cancel',
+                  rejectCommand: () =>
+                    setConfirmation((prev) => ({
+                      ...prev,
+                      open: false,
+                    })),
+                  description: `Are you sure you want to activate ${row.getValue('firstName')}'s account?`,
+                }))
+              }
+            >
               <ShieldCheck /> Activate
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() =>
+                setConfirmation((prev) => ({
+                  ...prev,
+                  open: true,
+                  acceptCommand: () => handleDropdownAction('approve', String(row.getValue('id'))),
+                  acceptTitle: 'Approve',
+                  declineTitle: 'Cancel',
+                  rejectCommand: () =>
+                    setConfirmation((prev) => ({
+                      ...prev,
+                      open: false,
+                    })),
+                  description: `Are you sure you want to approve ${row.getValue('firstName')}'s account?`,
+                }))
+              }
+            >
               <Signature /> Approve
             </DropdownMenuItem>
-            <DropdownMenuItem className="text-red-600">
+            <DropdownMenuItem
+              className="text-red-600"
+              onClick={() =>
+                setConfirmation((prev) => ({
+                  ...prev,
+                  open: true,
+                  acceptCommand: () =>
+                    handleDropdownAction('deactivate', String(row.getValue('id'))),
+                  acceptTitle: 'Deactivate',
+                  declineTitle: 'Cancel',
+                  rejectCommand: () =>
+                    setConfirmation((prev) => ({
+                      ...prev,
+                      open: false,
+                    })),
+                  description: `Are you sure you want to deactivate ${row.getValue('firstName')}'s account?`,
+                }))
+              }
+            >
               <CalendarX /> Deactivate
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -167,8 +229,8 @@ const DoctorPanel = () => {
       label: 'Name',
     },
     {
-      value: 'consult',
-      label: 'Recent Consult',
+      value: 'createdAt',
+      label: 'Recent',
     },
   ];
 
@@ -176,7 +238,7 @@ const DoctorPanel = () => {
   const [queryParameters, setQueryParameters] = useState<IQueryParams>({
     page: 1,
     orderDirection: 'desc',
-    orderBy: 'firstName',
+    orderBy: 'createdAt',
     search: '',
   });
 
@@ -204,9 +266,12 @@ const DoctorPanel = () => {
   const [paginationData, setPaginationData] = useState<PaginationData | undefined>(undefined);
   const [selectedDoctor, setSelectedDoctor] = useState<IDoctor | undefined>();
   const [openModal, setModalOpen] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [isConfirmationLoading, setConfirmationLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const result = await dispatch(getAllDoctors(queryParameters));
 
       if ('payload' in result && typeof result.payload !== 'string') {
@@ -215,10 +280,12 @@ const DoctorPanel = () => {
           ...doctorDetails,
           status: 'Available',
         }));
+
         setTableData(tableData);
         const { nextPage, page, pageSize, prevPage, total, totalPages } = payload;
         setPaginationData({ nextPage, page, pageSize, prevPage, total, totalPages });
       }
+      setLoading(false);
     };
 
     void fetchData();
@@ -231,6 +298,44 @@ const DoctorPanel = () => {
       setSelectedDoctor(doctor);
     }
   };
+
+  const [confirmation, setConfirmation] = useState({
+    acceptCommand: () => {},
+    rejectCommand: () => {
+      setConfirmation((prev) => ({
+        ...prev,
+        open: false,
+      }));
+    },
+    description: 'Are you sure ?',
+    open: false,
+    acceptTitle: 'Yes',
+    declineTitle: 'No',
+  });
+
+  async function handleDropdownAction(action: 'activate' | 'approve' | 'deactivate', id: string) {
+    setConfirmationLoading(true);
+    switch (action) {
+      case 'approve':
+        {
+          const { payload } = await dispatch(approveDoctorRequest(id));
+          if (payload) {
+            toast(payload);
+          }
+        }
+        break;
+      case 'deactivate':
+        {
+          const { payload: deactivatedResponse } = await dispatch(deactivateDoctor(id));
+          if (deactivatedResponse) {
+            toast(deactivatedResponse);
+          }
+        }
+        break;
+    }
+
+    setConfirmationLoading(false);
+  }
 
   return (
     <>
@@ -282,7 +387,7 @@ const DoctorPanel = () => {
           <TableData
             columns={columns}
             data={tableData}
-            columnVisibility={{ profilePicture: false, lastName: false }}
+            columnVisibility={{ profilePicture: false, lastName: false, id: false }}
             page={queryParameters.page}
             userPaginationChange={(paginationState) =>
               setQueryParameters((prev) => ({
@@ -291,6 +396,7 @@ const DoctorPanel = () => {
               }))
             }
             paginationData={paginationData}
+            isLoading={isLoading}
           />
         </div>
       </div>
@@ -298,9 +404,26 @@ const DoctorPanel = () => {
       <Modal
         open={openModal}
         content={<DoctorDetails {...selectedDoctor!} />}
-        className="max-h-[90vh] max-w-[80vw] overflow-y-scroll"
+        className="max-w-screen max-h-screen overflow-y-scroll md:max-h-[90vh] md:max-w-[80vw]"
         setState={setModalOpen}
         showClose={true}
+      />
+
+      <Confirmation
+        open={confirmation.open}
+        showClose={true}
+        acceptCommand={confirmation.acceptCommand}
+        rejectCommand={confirmation.rejectCommand}
+        description={confirmation.description}
+        acceptButtonTitle={confirmation.acceptTitle}
+        rejectButtonTitle={confirmation.declineTitle}
+        setState={() =>
+          setConfirmation((prev) => ({
+            ...prev,
+            open: false,
+          }))
+        }
+        isLoading={isConfirmationLoading}
       />
     </>
   );

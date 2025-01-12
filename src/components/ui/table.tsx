@@ -20,9 +20,9 @@ import {
   useState,
 } from 'react';
 import { IPagination } from '@/types/shared.interface';
-import { IDoctor } from '@/types/doctor.interface';
+import { Skeleton } from '@/components/ui/skeleton';
 
-export type PaginationData = Omit<IPagination<IDoctor>, 'rows'>;
+export type PaginationData = Omit<IPagination<unknown>, 'rows'>;
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -34,6 +34,7 @@ interface DataTableProps<TData, TValue> {
   page?: number;
   pageCount?: number;
   paginationData?: PaginationData;
+  isLoading?: boolean;
 }
 
 const Table = forwardRef<HTMLTableElement, HTMLAttributes<HTMLTableElement>>(
@@ -127,6 +128,7 @@ export const TableData = <TData, TValue>({
   page,
   pageCount,
   paginationData,
+  isLoading,
 }: DataTableProps<TData, TValue>) => {
   const [pagination, setPagination] = useState({
     pageIndex: page ? page - 1 : 0,
@@ -193,16 +195,28 @@ export const TableData = <TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <TableHead key={header.id} className="text-black">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
+                    {isLoading ? (
+                      <Skeleton className="h-4 max-w-[250px] bg-gray-300" />
+                    ) : header.isPlaceholder ? null : (
+                      flexRender(header.column.columnDef.header, header.getContext())
+                    )}
                   </TableHead>
                 ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {isLoading ? (
+              Array.from({ length: rowCount }).map((_, rowIndex) => (
+                <TableRow key={rowIndex}>
+                  {Array.from({ length: columns.length }).map((_, colIndex) => (
+                    <TableCell key={colIndex}>
+                      <Skeleton className="h-4 max-w-[250px] bg-gray-300" />
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -237,7 +251,7 @@ export const TableData = <TData, TValue>({
             variant="outline"
             size="sm"
             onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+            disabled={!table.getCanPreviousPage() || isLoading}
             child="Previous"
           />
           <span>{currentPage}</span>
@@ -246,7 +260,7 @@ export const TableData = <TData, TValue>({
             variant="outline"
             size="sm"
             onClick={() => table.nextPage()}
-            disabled={record.endRecord === record.total}
+            disabled={record.endRecord === record.total || isLoading}
             child={'Next'}
           />
         </div>

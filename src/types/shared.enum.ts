@@ -12,7 +12,7 @@ export enum Status {
 
 export enum Role {
   Admin = 'admin',
-  SuperAdmin = 'super_admin',
+  SuperAdmin = 'superadmin',
   Doctor = 'doctor',
   Patient = 'patient',
 }
@@ -32,4 +32,9 @@ export enum AppointmentStatus {
   Accepted = 'accepted',
   Declined = 'declined',
   Pending = 'pending',
+}
+
+export enum Toast {
+  Success = 'Success',
+  Error = 'Error',
 }

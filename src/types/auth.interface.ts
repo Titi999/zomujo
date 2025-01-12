@@ -32,7 +32,6 @@ export interface IUser {
   isActive: boolean;
   role: Role;
   createdAt: Date;
-  extra: unknown; // we will replace this with the appropriate types based on roles
 }
 
 export interface ISignUp {

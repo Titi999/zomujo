@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { axiosErrorHandler } from '@/lib/axios';
-import { setErrorMessage, setUserInfo } from '@/lib/features/auth/authSlice';
+import { setErrorMessage, setUserInfo, updateExtra } from '@/lib/features/auth/authSlice';
 import {
   DoctorOnboarding,
   IDoctorPhotoUpload,
@@ -46,11 +46,17 @@ export const doctorOnboarding = createAsyncThunk(
       ...doctorPhotoUpload,
     };
     try {
-      await axios.patch(`${authPath}complete-doctor-registration`, doctorDetails, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
+      //TODO: Should replace unknown with IDoctor created by Kwabena Owusu
+      const { data } = await axios.patch<IResponse<unknown>>(
+        `${authPath}complete-doctor-registration`,
+        doctorDetails,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         },
-      });
+      );
+      dispatch(updateExtra(data.data));
       return true;
     } catch (error) {
       dispatch(setErrorMessage(axiosErrorHandler(error)));
