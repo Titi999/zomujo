@@ -184,7 +184,7 @@ interface IOptionMenuProps {
   triggerIconPosition?: 'left' | 'right';
   menuLabel?: string;
   selected: string | undefined;
-  setSelected: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setSelected: (value: string) => void;
   options: ISelected[];
   className?: string;
 }
@@ -203,8 +203,8 @@ const OptionsMenu = ({
         className={cn('flex items-center justify-center gap-1 rounded-lg border px-2', className)}
       >
         {Icon && <Icon size={16} />}
-        <span className="text-sm">{menuTrigger}</span>
-        <ChevronDown size={16} />
+        <span className="hidden text-sm sm:block">{menuTrigger}</span>
+        <ChevronDown size={16} className="hidden sm:block" />
       </div>
     </DropdownMenuTrigger>
     <DropdownMenuContent>
@@ -220,7 +220,6 @@ const OptionsMenu = ({
       >
         {options.map(({ value, label }) => (
           <DropdownMenuRadioItem key={value} value={value}>
-            {' '}
             {label}
           </DropdownMenuRadioItem>
         ))}

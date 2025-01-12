@@ -1,3 +1,4 @@
+import { ToastStatus } from '@/types/shared.enum';
 import axios, { isAxiosError } from 'axios';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -9,11 +10,20 @@ export default axios.create({
   withCredentials: true,
 });
 
-export const axiosErrorHandler = (error: unknown): string => {
-  if (isAxiosError(error)) {
-    return error.response?.data.message ?? networkFailureErrorMessage;
-  } else if (error instanceof Error) {
-    return error.message;
+export const axiosErrorHandler = (error: unknown, toast = false) => {
+  const message = isAxiosError(error)
+    ? (error.response?.data.message ?? networkFailureErrorMessage)
+    : error instanceof Error
+      ? error.message
+      : networkFailureErrorMessage;
+
+  if (toast) {
+    return {
+      title: ToastStatus.Error,
+      description: message,
+      variant: 'destructive',
+    };
   }
-  return networkFailureErrorMessage;
+
+  return message;
 };

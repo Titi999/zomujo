@@ -124,6 +124,7 @@ type ModalProps = {
   imageVariant?: ImageVariant;
   showImage?: boolean;
   setState?: React.Dispatch<React.SetStateAction<boolean>>;
+  className?: string;
 };
 
 const Modal = ({
@@ -137,9 +138,10 @@ const Modal = ({
   imageVariant,
   showImage = false,
   setState,
+  className,
 }: ModalProps) => (
   <Dialog open={open} modal={true}>
-    <DialogContent showClose={showClose} setState={setState}>
+    <DialogContent showClose={showClose} setState={setState} className={className}>
       {showImage && (
         <div>
           {imageVariant === 'success' && (
@@ -196,6 +198,7 @@ type ConfirmationProps = {
   rejectButtonTitle?: string;
   acceptCommand: () => void;
   rejectCommand: () => void;
+  isLoading?: boolean;
 } & Pick<ModalProps, 'open' | 'showClose' | 'setState'>;
 
 const Confirmation = ({
@@ -207,6 +210,7 @@ const Confirmation = ({
   acceptCommand,
   rejectCommand,
   setState,
+  isLoading,
 }: ConfirmationProps) => (
   <Modal
     open={open}
@@ -217,16 +221,18 @@ const Confirmation = ({
           <Button
             onClick={acceptCommand}
             child={acceptButtonTitle ? acceptButtonTitle : 'Yes, Accept'}
+            isLoading={isLoading}
           />
           <Button
             child={rejectButtonTitle ? rejectButtonTitle : 'No, Decline'}
             variant={'destructive'}
             onClick={rejectCommand}
+            disabled={isLoading}
           />
         </div>
       </div>
     }
-    showClose={showClose}
+    showClose={isLoading ? false : showClose}
     setState={setState}
   />
 );

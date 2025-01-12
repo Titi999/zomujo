@@ -4,10 +4,17 @@ import { OptionsMenu } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { TableData } from '@/components/ui/table';
 import { Gender } from '@/types/shared.enum';
-import { ManagedClientProps } from '@/types/table.types';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowDownAZ, ChevronsUpDown, Eye, ListFilter } from 'lucide-react';
 import React, { useState } from 'react';
+
+export type ManagedClientProps = {
+  id: string;
+  patient: string;
+  gender: Gender;
+  clinic: string;
+  consult: string;
+};
 
 const ManagedClientsPanel = () => {
   const data: ManagedClientProps[] = [

@@ -63,10 +63,19 @@ export const SidebarLayout = () => {
 
                         <CollapsibleContent>
                           <SidebarMenuSub>
-                            {subMenu.map((subMenu) => (
-                              <SidebarMenuButton key={subMenu.title} title={subMenu.title}>
-                                <Link href={url}> {subMenu.title}</Link>
-                              </SidebarMenuButton>
+                            {subMenu.map(({ url, title }) => (
+                              <SidebarMenuItem key={title}>
+                                <Link href={url}>
+                                  <SidebarMenuButton
+                                    key={title}
+                                    title={title}
+                                    isActive={pathName === url}
+                                    className="data-[active=true]/menu-action:before:opacity-0"
+                                  >
+                                    {title}
+                                  </SidebarMenuButton>
+                                </Link>
+                              </SidebarMenuItem>
                             ))}
                           </SidebarMenuSub>
                         </CollapsibleContent>

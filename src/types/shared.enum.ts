@@ -33,3 +33,8 @@ export enum AppointmentStatus {
   Declined = 'declined',
   Pending = 'pending',
 }
+
+export enum ToastStatus {
+  Success = 'Success',
+  Error = 'Error',
+}

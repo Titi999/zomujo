@@ -41,7 +41,7 @@ const OrganizationRequests = () => {
   }, []);
 
   return (
-    <div className="px-8 pb-[80px]">
+    <div className="pb-[80px]">
       <div className="flex flex-col">
         <span className="text-[32px] font-bold">Organization Requests</span>
       </div>

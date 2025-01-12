@@ -3,7 +3,7 @@ import { Search, Bell, Megaphone, Settings, SquareCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const AdminToolbar = () => (
-  <div className="flex justify-between gap-y-4 px-8 py-5 max-md:flex-wrap">
+  <div className="flex justify-between gap-y-4 py-5 max-md:flex-wrap">
     <div className="w-full">
       <Input leftIcon={<Search color="#8C96A5" />} className="rounded-xl" placeholder="Search" />
     </div>

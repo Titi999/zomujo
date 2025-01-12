@@ -2,9 +2,9 @@ import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/c
 import { cn } from '@/lib/utils';
 
 export type StatsCardProps = {
-  title: string;
-  value: string;
-  percentage: string;
+  title: string | number;
+  value: string | number;
+  percentage: string | number;
   trend: 'up' | 'down';
 };
 
