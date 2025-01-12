@@ -272,19 +272,17 @@ const DoctorPanel = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const result = await dispatch(getAllDoctors(queryParameters));
+      const { payload } = await dispatch(getAllDoctors(queryParameters));
+      const response = payload as IPagination<IDoctor>;
+      const tableData = response.rows.map((doctorDetails) => ({
+        ...doctorDetails,
+        status: 'Available',
+      }));
 
-      if ('payload' in result && typeof result.payload !== 'string') {
-        const payload = result.payload as IPagination<IDoctor>;
-        const tableData = payload.rows.map((doctorDetails) => ({
-          ...doctorDetails,
-          status: 'Available',
-        }));
+      setTableData(tableData);
+      const { nextPage, page, pageSize, prevPage, total, totalPages } = payload;
+      setPaginationData({ nextPage, page, pageSize, prevPage, total, totalPages });
 
-        setTableData(tableData);
-        const { nextPage, page, pageSize, prevPage, total, totalPages } = payload;
-        setPaginationData({ nextPage, page, pageSize, prevPage, total, totalPages });
-      }
       setLoading(false);
     };
 
