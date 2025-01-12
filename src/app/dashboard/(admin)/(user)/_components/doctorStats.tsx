@@ -5,27 +5,21 @@ import { toast } from '@/hooks/use-toast';
 import { countAllDoctors } from '@/lib/features/doctors/doctorsThunk';
 import { useAppDispatch } from '@/lib/hooks';
 import { showErrorToast } from '@/lib/utils';
-import { BaseCountResponse } from '@/types/shared.interface';
+import { IDoctorCountResponse } from '@/types/stats.interface';
 import { FileUp } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
-export interface IDoctorCountResponse extends BaseCountResponse{
-  pending: number;
-  active: number;
-  activeInc: number;
-  pendingInc: number;
-}
 const DoctorStats = () => {
   const dispatch = useAppDispatch();
   const [StatsData, setStatsData] = useState<StatsCardProps[]>([]);
 
   useEffect(() => {
     const fetchDoctorCount = async () => {
-        const { payload } = await dispatch(countAllDoctors());
-        if (showErrorToast(payload)) {
-                toast(payload)
-        return    
-        }
+      const { payload } = await dispatch(countAllDoctors());
+      if (showErrorToast(payload)) {
+        toast(payload);
+        return;
+      }
 
       if (payload) {
         const { all, active, activeInc, allInc, pending, pendingInc } =

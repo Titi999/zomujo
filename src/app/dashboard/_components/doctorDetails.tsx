@@ -31,9 +31,11 @@ const DoctorDetails = ({
       <div className="mt-[38px] flex items-center justify-between">
         <p className="font-medium"> Consultation</p>
 
-       {rate && <p className="text-xl font-bold text-primary">
-          GHs {rate?.amount} <span className="text-base text-gray-400">Fee</span>
-        </p>}
+        {rate && (
+          <p className="text-xl font-bold text-primary">
+            GHs {rate?.amount} <span className="text-base text-gray-400">Fee</span>
+          </p>
+        )}
       </div>
     </section>
     <section className="w-full">

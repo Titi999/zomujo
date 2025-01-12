@@ -1,4 +1,4 @@
-import {  ToastStatus } from '@/types/shared.enum';
+import { ToastStatus } from '@/types/shared.enum';
 import axios, { isAxiosError } from 'axios';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;

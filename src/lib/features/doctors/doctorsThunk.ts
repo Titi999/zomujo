@@ -1,9 +1,9 @@
-import { IDoctorCountResponse } from '@/app/dashboard/(admin)/(user)/_components/doctorStats';
 import { Toast as ToastType } from '@/hooks/use-toast';
 import axios, { axiosErrorHandler } from '@/lib/axios';
 import { IDoctor } from '@/types/doctor.interface';
 import { ToastStatus } from '@/types/shared.enum';
 import { IPagination, IQueryParams, IResponse } from '@/types/shared.interface';
+import { IDoctorCountResponse } from '@/types/stats.interface';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const getAllDoctors = createAsyncThunk(
