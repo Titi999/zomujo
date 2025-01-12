@@ -347,9 +347,9 @@ const DoctorPanel = () => {
         break;
       case 'decline':
         {
-          const { payload: declineResponse } = await dispatch(declineDoctor(id));
-          if (declineResponse) {
-            toast(declineResponse);
+          const { payload } = await dispatch(declineDoctor(id));
+          if (payload) {
+            toast(payload);
           }
         }
         break;
