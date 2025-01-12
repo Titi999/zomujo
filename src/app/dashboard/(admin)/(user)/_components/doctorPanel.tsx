@@ -312,14 +312,15 @@ const DoctorPanel = () => {
   }
 
   function handleSearch(event: ChangeEvent<HTMLInputElement>) {
-    if (event.target.value === '') {
+    const { value } = event.target;
+    if (value === '') {
       setQueryParameters((prev) => ({
         ...prev,
         page: 1,
         search: '',
       }));
     }
-    setSearchTerm(event.target.value);
+    setSearchTerm(value);
   }
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
