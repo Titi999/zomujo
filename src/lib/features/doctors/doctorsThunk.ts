@@ -1,4 +1,3 @@
-import { Toast as ToastType } from '@/hooks/use-toast';
 import axios, { axiosErrorHandler } from '@/lib/axios';
 import { IDoctor } from '@/types/doctor.interface';
 import { IPagination, IQueryParams, IResponse } from '@/types/shared.interface';
@@ -22,7 +21,7 @@ export const getAllDoctors = createAsyncThunk(
 
 export const approveDoctorRequest = createAsyncThunk(
   'doctors/approveDoctorsRequest',
-  async (id: string): Promise<ToastType> => {
+  async (id: string) => {
     try {
       const {
         data: { message },
@@ -35,20 +34,17 @@ export const approveDoctorRequest = createAsyncThunk(
   },
 );
 
-export const declineDoctor = createAsyncThunk(
-  'doctors/declineDoctor',
-  async (id: string): Promise<ToastType> => {
-    try {
-      const {
-        data: { message },
-      } = await axios.delete<IResponse>(`admins/decline-doctor/${id}`);
+export const declineDoctor = createAsyncThunk('doctors/declineDoctor', async (id: string) => {
+  try {
+    const {
+      data: { message },
+    } = await axios.delete<IResponse>(`admins/decline-doctor/${id}`);
 
-      return generateSuccessToast(message);
-    } catch (error) {
-      return axiosErrorHandler(error, true);
-    }
-  },
-);
+    return generateSuccessToast(message);
+  } catch (error) {
+    return axiosErrorHandler(error, true);
+  }
+});
 
 export const countAllDoctors = createAsyncThunk('dashboard/countDoctors', async () => {
   try {
