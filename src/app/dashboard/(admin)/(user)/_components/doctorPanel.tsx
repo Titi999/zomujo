@@ -270,7 +270,7 @@ const DoctorPanel = (): JSX.Element => {
     const fetchData = async (): Promise<void> => {
       setLoading(true);
       const { payload } = await dispatch(getAllDoctors(queryParameters));
-      if (showErrorToast(payload)) {
+      if (payload && showErrorToast(payload)) {
         toast(payload);
         setLoading(false);
         return;

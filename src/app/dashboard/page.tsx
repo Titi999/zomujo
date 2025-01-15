@@ -1,6 +1,7 @@
 import Dashboard from '@/app/dashboard/_components/dashboard';
+import { JSX } from 'react';
 
-function Main() {
+function Main(): JSX.Element {
   return <Dashboard />;
 }
 
