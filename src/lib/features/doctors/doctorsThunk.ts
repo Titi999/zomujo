@@ -1,18 +1,17 @@
 import { Toast as ToastType } from '@/hooks/use-toast';
 import axios, { axiosErrorHandler } from '@/lib/axios';
 import { IDoctor } from '@/types/doctor.interface';
-import { ToastStatus } from '@/types/shared.enum';
 import { IPagination, IQueryParams, IResponse } from '@/types/shared.interface';
 import { IDoctorCountResponse } from '@/types/stats.interface';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { generateSuccessToast } from '@/lib/utils';
 
 export const getAllDoctors = createAsyncThunk(
   'doctors/allDoctors',
-  async ({ orderBy, orderDirection, page, search }: IQueryParams) => {
+  async ({ page, search }: IQueryParams) => {
     try {
-      const userOrder = `${orderBy}:${orderDirection};`;
       const { data } = await axios.get<IResponse<IPagination<IDoctor>>>(
-        `doctors?orderBy=${userOrder}&page=${page}&search=${search}`,
+        `doctors?page=${page}&search=${search}`,
       );
       return data.data;
     } catch (error) {
@@ -29,7 +28,7 @@ export const approveDoctorRequest = createAsyncThunk(
         data: { message },
       } = await axios.patch<IResponse>(`admins/verify-doctor/${id}`);
 
-      return { title: ToastStatus.Success, description: message, variant: 'success' };
+      return generateSuccessToast(message);
     } catch (error) {
       return axiosErrorHandler(error, true);
     }
@@ -44,7 +43,7 @@ export const declineDoctor = createAsyncThunk(
         data: { message },
       } = await axios.delete<IResponse>(`admins/decline-doctor/${id}`);
 
-      return { title: ToastStatus.Success, description: message, variant: 'success' };
+      return generateSuccessToast(message);
     } catch (error) {
       return axiosErrorHandler(error, true);
     }

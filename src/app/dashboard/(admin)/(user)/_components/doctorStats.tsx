@@ -1,22 +1,24 @@
 'use client';
-import { StatsCard, StatsCardProps } from '@/app/dashboard/_components/statsCard';
+import { StatsCards } from '@/app/dashboard/_components/statsCards';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
 import { countAllDoctors } from '@/lib/features/doctors/doctorsThunk';
 import { useAppDispatch } from '@/lib/hooks';
 import { showErrorToast } from '@/lib/utils';
-import { IDoctorCountResponse } from '@/types/stats.interface';
+import { IDoctorCountResponse, IStatsCard } from '@/types/stats.interface';
 import { FileUp } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 
-const DoctorStats = () => {
+const DoctorStats = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const [StatsData, setStatsData] = useState<StatsCardProps[]>([]);
+  const [statsData, setStatsData] = useState<IStatsCard[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const fetchDoctorCount = async () => {
+    const fetchDoctorCount = async (): Promise<void> => {
       const { payload } = await dispatch(countAllDoctors());
       if (showErrorToast(payload)) {
+        setIsLoading(false);
         toast(payload);
         return;
       }
@@ -46,7 +48,9 @@ const DoctorStats = () => {
           },
         ]);
       }
+      setIsLoading(false);
     };
+    setIsLoading(true);
     void fetchDoctorCount();
   }, []);
 
@@ -65,9 +69,7 @@ const DoctorStats = () => {
         />
       </section>
       <div className="mt-8 flex flex-wrap justify-evenly gap-6">
-        {StatsData.map((data, index) => (
-          <StatsCard key={index} {...data} />
-        ))}
+        <StatsCards statsData={statsData} isLoading={isLoading} />
       </div>
     </div>
   );

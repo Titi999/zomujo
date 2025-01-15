@@ -2,7 +2,7 @@
 import { AvatarComp } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Confirmation, Modal } from '@/components/ui/dialog';
+import { Confirmation, ConfirmationProps, Modal } from '@/components/ui/dialog';
 import {
   DropdownMenuContent,
   OptionsMenu,
@@ -34,26 +34,18 @@ import {
   ShieldCheck,
   Signature,
 } from 'lucide-react';
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, JSX, useEffect, useState } from 'react';
 import DoctorDetails from '../../../_components/doctorDetails';
 import { toast } from '@/hooks/use-toast';
 import { showErrorToast } from '@/lib/utils';
+import { useSearch } from '@/hooks/useSearch';
 
-interface IConfirmationState {
-  acceptCommand: () => void;
-  rejectCommand: () => void;
-  description: string;
-  open: boolean;
-  acceptTitle: string;
-  declineTitle: string;
-}
-
-const DoctorPanel = () => {
+const DoctorPanel = (): JSX.Element => {
   const [paginationData, setPaginationData] = useState<PaginationData | undefined>(undefined);
   const [selectedDoctor, setSelectedDoctor] = useState<IDoctor | undefined>();
   const [openModal, setModalOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const [isConfirmationLoading, setConfirmationLoading] = useState(false);
+  const [isConfirmationLoading, setIsConfirmationLoading] = useState(false);
   const dispatch = useAppDispatch();
   const [tableData, setTableData] = useState<IDoctor[]>([]);
   const [queryParameters, setQueryParameters] = useState<IQueryParams>({
@@ -62,15 +54,13 @@ const DoctorPanel = () => {
     orderBy: 'createdAt',
     search: '',
   });
-  const [confirmation, setConfirmation] = useState<IConfirmationState>({
+  const [confirmation, setConfirmation] = useState<ConfirmationProps>({
     acceptCommand: () => {},
     rejectCommand: () => {},
     description: '',
     open: false,
-    acceptTitle: '',
-    declineTitle: '',
   });
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const { searchTerm, handleSearch } = useSearch(handleSubmit);
   const sortOptions = [
     {
       value: 'asc',
@@ -113,7 +103,7 @@ const DoctorPanel = () => {
     {
       accessorKey: 'firstName',
       header: 'Name',
-      cell: ({ row }) => {
+      cell: ({ row }): JSX.Element => {
         const image = String(row.getValue('profilePicture'));
         const name = `${row.getValue('firstName')} ${row.getValue('lastName')}`;
         return (
@@ -126,9 +116,9 @@ const DoctorPanel = () => {
     {
       accessorKey: 'status',
       header: 'Status',
-      cell: ({ row }) => {
+      cell: ({ row }): JSX.Element => {
         const status: string = row.getValue('status');
-        const variant = (status: string) => {
+        const variant = (status: string): 'default' | 'brown' | 'destructive' => {
           switch (status) {
             case 'Approved':
               return 'default';
@@ -153,7 +143,7 @@ const DoctorPanel = () => {
     {
       accessorKey: 'gender',
       header: 'Gender',
-      cell: ({ row }) => {
+      cell: ({ row }): JSX.Element => {
         const gender: string = row.getValue('gender');
         const genderProperties = (
           gender: string,
@@ -277,7 +267,7 @@ const DoctorPanel = () => {
   ];
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (): Promise<void> => {
       setLoading(true);
       const { payload } = await dispatch(getAllDoctors(queryParameters));
       if (showErrorToast(payload)) {
@@ -286,7 +276,7 @@ const DoctorPanel = () => {
         return;
       }
 
-      const { rows } = payload as IPagination<IDoctor>;
+      const { rows, ...pagination } = payload as IPagination<IDoctor>;
       // Todo: Status of the doctors are all approved; should be changed to their respective statuses once it is available from the backend
       const tableData = rows.map((doctorDetails) => ({
         ...doctorDetails,
@@ -294,16 +284,14 @@ const DoctorPanel = () => {
       }));
 
       setTableData(tableData);
-      const { nextPage, page, pageSize, prevPage, total, totalPages } = payload;
-      setPaginationData({ nextPage, page, pageSize, prevPage, total, totalPages });
-
+      setPaginationData(pagination);
       setLoading(false);
     };
 
     void fetchData();
   }, [queryParameters]);
 
-  function handleView(MCDRegistration: string) {
+  function handleView(MCDRegistration: string): void {
     const doctor = tableData.find((doctor) => doctor.MDCRegistration === MCDRegistration);
     if (doctor) {
       setSelectedDoctor(doctor);
@@ -311,31 +299,20 @@ const DoctorPanel = () => {
     }
   }
 
-  function handleSearch(event: ChangeEvent<HTMLInputElement>) {
-    const { value } = event.target;
-    if (value === '') {
-      setQueryParameters((prev) => ({
-        ...prev,
-        page: 1,
-        search: '',
-      }));
-    }
-    setSearchTerm(value);
-  }
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>, search?: string): void {
     event.preventDefault();
     setQueryParameters((prev) => ({
       ...prev,
       page: 1,
-      search: searchTerm,
+      search: search ?? searchTerm,
     }));
   }
 
   async function handleDropdownAction(
     action: 'activate' | 'approve' | 'deactivate' | 'decline',
     id: string,
-  ) {
-    setConfirmationLoading(true);
+  ): Promise<void> {
+    setIsConfirmationLoading(true);
     switch (action) {
       case 'approve':
         {
@@ -355,7 +332,7 @@ const DoctorPanel = () => {
         break;
     }
 
-    setConfirmationLoading(false);
+    setIsConfirmationLoading(false);
   }
 
   return (
@@ -431,13 +408,8 @@ const DoctorPanel = () => {
       />
 
       <Confirmation
-        open={confirmation.open}
+        {...confirmation}
         showClose={true}
-        acceptCommand={confirmation.acceptCommand}
-        rejectCommand={confirmation.rejectCommand}
-        description={confirmation.description}
-        acceptButtonTitle={confirmation.acceptTitle}
-        rejectButtonTitle={confirmation.declineTitle}
         setState={() =>
           setConfirmation((prev) => ({
             ...prev,

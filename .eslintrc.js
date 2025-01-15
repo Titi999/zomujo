@@ -23,6 +23,10 @@ module.exports = {
     'no-useless-escape': 'error',
     'no-unreachable': 'error',
     'import/no-cycle': 2,
+    '@typescript-eslint/explicit-function-return-type': ['error'],
+    '@typescript-eslint/no-unused-vars': 'error',
   },
-  overrides: [{ files: ['*Slice.ts', '*Thunk.ts', 'store.ts'], rules: { 'import/no-cycle': 'off' } }],
+  overrides: [
+    { files: ['*Slice.ts', '*Thunk.ts', 'store.ts'], rules: { 'import/no-cycle': 'off' } },
+  ],
 };

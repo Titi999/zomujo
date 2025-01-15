@@ -3,10 +3,18 @@ import { ToastStatus } from '@/types/shared.enum';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-export function cn(...inputs: ClassValue[]) {
+/**
+ * Combines multiple class names into a single string
+ * @param inputs
+ */
+export function cn(...inputs: ClassValue[]): string {
   return twMerge(clsx(inputs));
 }
 
+/**
+ * Get the initials of a name
+ * @param name
+ */
 export const getInitials = (name: string): string => {
   const nameSplit = name.split(' ');
   const nameLength = nameSplit.length;
@@ -35,6 +43,19 @@ export function interpolateRange(
   return outMin + normalizedValue * (outMax - outMin);
 }
 
-// Used to tell if we need to show a toast for the error based on the axiosErrorHandler function
+/**
+ * Used to tell if we need to show a toast for the error based on the axiosErrorHandler function
+ * @param payload - The payload from the axiosErrorHandler function
+ */
 export const showErrorToast = (payload: unknown): boolean =>
   (payload as Toast).title === ToastStatus.Error;
+
+/**
+ * Use to generate a success toast message type
+ * @param message - The message to display in the toast
+ */
+export const generateSuccessToast = (message: string): Toast => ({
+  title: ToastStatus.Success,
+  description: message,
+  variant: 'success',
+});

@@ -14,19 +14,15 @@ export interface IPagination<T> {
   totalPages: number;
 }
 
-export interface IQueryParams {
+export interface IQueryParams<T> {
   page?: number;
   search?: string;
   pageSize?: number;
   orderDirection?: string;
   orderBy?: string;
+  status?: T;
 }
 
 export interface IAction<T = undefined> {
   payload: T;
-}
-
-export interface BaseCountResponse {
-  all: number;
-  allInc: number;
 }

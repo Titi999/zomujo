@@ -9,6 +9,7 @@ import {
   verifyEmail,
 } from '@/lib/features/auth/authThunk';
 import { IDoctorIdentification, IPersonalDetails, IUser } from '@/types/auth.interface';
+import { IDoctor } from '@/types/doctor.interface';
 
 interface AuthenticationState {
   errorMessage: string;
@@ -17,7 +18,7 @@ interface AuthenticationState {
   doctorPersonalDetails: IPersonalDetails | undefined;
   doctorIdentification: IDoctorIdentification | undefined;
   user: IUser | undefined;
-  extra: unknown;
+  extra: IDoctor | undefined; // TODO: we will create union when other roles are ready
 }
 
 const initialState: AuthenticationState = {
