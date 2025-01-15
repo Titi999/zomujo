@@ -37,7 +37,7 @@ export const getOrganizationRequestsStats = createAsyncThunk(
 
 export const declineOrganizationRequest = createAsyncThunk(
   'organizationRequests/declineOrganizationRequest',
-  async (id: string): Promise<Toast> => {
+  async (id: string) => {
     try {
       const {
         data: { message },
@@ -51,7 +51,7 @@ export const declineOrganizationRequest = createAsyncThunk(
 
 export const approveOrganizationRequest = createAsyncThunk(
   'organizationRequests/approveOrganizationRequest',
-  async (id: string): Promise<Toast> => {
+  async (id: string) => {
     try {
       const {
         data: { message },
