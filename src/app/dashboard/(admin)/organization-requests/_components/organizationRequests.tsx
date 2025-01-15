@@ -74,7 +74,7 @@ const OrganizationRequests = (): JSX.Element => {
   useEffect(() => {
     const fetchHospitals = async (): Promise<void> => {
       const { payload } = await dispatch(getOrganizationRequests(queryParameters));
-      if (showErrorToast(payload)) {
+      if (payload && showErrorToast(payload)) {
         toast(payload);
         return;
       }
