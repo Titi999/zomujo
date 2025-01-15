@@ -5,7 +5,6 @@ import { IPagination, IQueryParams, IResponse } from '@/types/shared.interface';
 import { IHospital } from '@/types/hospital.interface';
 import { IOrganizationRequestsCountResponse } from '@/types/stats.interface';
 import { generateSuccessToast } from '@/lib/utils';
-import { Toast } from '@/hooks/use-toast';
 
 export const getOrganizationRequests = createAsyncThunk(
   'organizationRequests/getOrganizationRequests',
