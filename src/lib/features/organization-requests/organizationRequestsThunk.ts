@@ -5,6 +5,7 @@ import { IPagination, IQueryParams, IResponse } from '@/types/shared.interface';
 import { IHospital } from '@/types/hospital.interface';
 import { IOrganizationRequestsCountResponse } from '@/types/stats.interface';
 import { generateSuccessToast } from '@/lib/utils';
+import { Toast } from '@/hooks/use-toast';
 
 export const getOrganizationRequests = createAsyncThunk(
   'organizationRequests/getOrganizationRequests',
@@ -36,28 +37,28 @@ export const getOrganizationRequestsStats = createAsyncThunk(
 
 export const declineOrganizationRequest = createAsyncThunk(
   'organizationRequests/declineOrganizationRequest',
-  async (id: string) => {
+  async (id: string): Promise<Toast> => {
     try {
       const {
         data: { message },
       } = await axios.delete<IResponse>(`admins/org-request/${id}`);
       return generateSuccessToast(message);
     } catch (error) {
-      return axiosErrorHandler(error, true);
+      return axiosErrorHandler(error, true) as Toast;
     }
   },
 );
 
 export const approveOrganizationRequest = createAsyncThunk(
   'organizationRequests/approveOrganizationRequest',
-  async (id: string) => {
+  async (id: string): Promise<Toast> => {
     try {
       const {
         data: { message },
       } = await axios.post<IResponse>(`admins/org-request/${id}`);
       return generateSuccessToast(message);
     } catch (error) {
-      return axiosErrorHandler(error, true);
+      return axiosErrorHandler(error, true) as Toast;
     }
   },
 );
