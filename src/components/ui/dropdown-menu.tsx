@@ -10,6 +10,7 @@ import {
   forwardRef,
   ForwardRefExoticComponent,
   HTMLAttributes,
+  JSX,
   RefAttributes,
 } from 'react';
 
@@ -168,7 +169,10 @@ const DropdownMenuSeparator = forwardRef<
 ));
 DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName;
 
-const DropdownMenuShortcut = ({ className, ...props }: HTMLAttributes<HTMLSpanElement>) => (
+const DropdownMenuShortcut = ({
+  className,
+  ...props
+}: HTMLAttributes<HTMLSpanElement>): JSX.Element => (
   <span className={cn('ml-auto text-xs tracking-widest opacity-60', className)} {...props} />
 );
 
@@ -196,7 +200,7 @@ const OptionsMenu = ({
   setSelected,
   options,
   className,
-}: IOptionMenuProps) => (
+}: IOptionMenuProps): JSX.Element => (
   <DropdownMenu>
     <DropdownMenuTrigger asChild>
       <div

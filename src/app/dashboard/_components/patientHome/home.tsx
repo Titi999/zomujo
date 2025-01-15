@@ -7,7 +7,7 @@ import PatientVitalsCard from '@/app/dashboard/_components/patientHome/_componen
 import { AvatarGreetings } from '@/app/dashboard/_components/avatarGreetings';
 import HospitalCard from '@/app/dashboard/_components/patientHome/_component/hospitalCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ReactNode, useMemo } from 'react';
+import { JSX, ReactNode, useMemo } from 'react';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 
 // TODO: We will replace this with real requests
@@ -64,7 +64,7 @@ const mockHospitals = [
   },
 ];
 
-const PatientHome = () => {
+const PatientHome = (): JSX.Element => {
   const suggest = useMemo(
     () => (
       <>
@@ -158,7 +158,7 @@ type SuggestedProps = {
   children: ReactNode;
 };
 
-const Suggested = ({ title, children }: SuggestedProps) => (
+const Suggested = ({ title, children }: SuggestedProps): JSX.Element => (
   <div className="flex w-full flex-col gap-6 max-md:mt-10">
     <div className="flex flex-row items-center justify-between">
       <p className="text-xl font-bold leading-5">{title}</p>

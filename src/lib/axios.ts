@@ -1,5 +1,6 @@
 import { ToastStatus } from '@/types/shared.enum';
 import axiosClient, { isAxiosError } from 'axios';
+import { Toast } from '@/hooks/use-toast';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -23,7 +24,7 @@ axios.interceptors.response.use(
   },
 );
 
-export const axiosErrorHandler = (error: unknown, toast = false) => {
+export const axiosErrorHandler = (error: unknown, toast = false): string | Toast => {
   const message = isAxiosError(error)
     ? (error.response?.data.message ?? networkFailureErrorMessage)
     : error instanceof Error

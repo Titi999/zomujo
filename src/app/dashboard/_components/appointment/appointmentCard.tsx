@@ -7,11 +7,11 @@ import {
 } from '@/constants/constants';
 import { cn } from '@/lib/utils';
 import { House, Video } from 'lucide-react';
-import React from 'react';
+import React, { JSX } from 'react';
 import moment from 'moment';
 import { AppointmentStatus, VisitType } from '@/types/shared.enum';
 
-export interface IAppointmentCardProps {
+export type IAppointmentCardProps = {
   id: string;
   className?: string;
   startDate: Date;
@@ -22,7 +22,7 @@ export interface IAppointmentCardProps {
     firstName: string;
     lastName: string;
   };
-}
+};
 const AppointmentCard = ({
   endDate,
   startDate,
@@ -30,7 +30,7 @@ const AppointmentCard = ({
   visitType,
   className,
   patient,
-}: IAppointmentCardProps) => {
+}: IAppointmentCardProps): JSX.Element => {
   const day = (startDate.getDay() + (DAYS_IN_WEEK - 1)) % DAYS_IN_WEEK;
 
   const hour = startDate.getHours() + startDate.getMinutes() / MINUTES_IN_HOUR;

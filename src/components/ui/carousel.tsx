@@ -30,7 +30,7 @@ type CarouselContextProps = {
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
 
-function useCarousel() {
+function useCarousel(): CarouselContextProps {
   const context = React.useContext(CarouselContext);
 
   if (!context) {
@@ -101,7 +101,7 @@ const Carousel = React.forwardRef<
     api.on('reInit', onSelect);
     api.on('select', onSelect);
 
-    return () => {
+    return (): void => {
       api?.off('select', onSelect);
     };
   }, [api, onSelect]);

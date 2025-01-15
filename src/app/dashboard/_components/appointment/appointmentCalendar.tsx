@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { JSX, useEffect, useRef } from 'react';
 import AppointmentCard, { IAppointmentCardProps } from './appointmentCard';
 import { cn } from '@/lib/utils';
 import { DAYS_IN_WEEK, DAYS_OF_WEEK, TWELVE_HOUR_SYSTEM } from '@/constants/constants';
@@ -11,7 +11,11 @@ interface AppointmentCalendarProps {
   selectedDate: Date;
 }
 
-const AppointmentCalendar = ({ className, slots = [], selectedDate }: AppointmentCalendarProps) => {
+const AppointmentCalendar = ({
+  className,
+  slots = [],
+  selectedDate,
+}: AppointmentCalendarProps): JSX.Element => {
   const selectedDay = (selectedDate.getDay() + 6) % DAYS_IN_WEEK;
 
   const calendarRef = useRef<HTMLDivElement>(null);

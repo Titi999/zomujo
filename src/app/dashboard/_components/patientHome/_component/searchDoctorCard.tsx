@@ -1,14 +1,14 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { JSX, useState } from 'react';
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-const SearchDoctorsCard = () => {
+const SearchDoctorsCard = (): JSX.Element => {
   const router = useRouter();
   const [search, setSearch] = useState('');
 
-  const findMedical = () => router.push(`/dashboard/find-medical?search=${search}`);
+  const findMedical = (): void => router.push(`/dashboard/find-medical?search=${search}`);
 
   return (
     <div className="relative flex w-full flex-col gap-8 rounded-2xl bg-primary bg-arc1 bg-no-repeat p-8">

@@ -4,7 +4,7 @@ import * as React from 'react';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
 
 import { cn, getInitials } from '@/lib/utils';
-import { useMemo } from 'react';
+import { JSX, useMemo } from 'react';
 
 const Avatar = React.forwardRef<
   React.ComponentRef<typeof AvatarPrimitive.Root>,
@@ -58,7 +58,7 @@ type AvatarCompProps = {
   className?: string;
 };
 
-function AvatarComp({ imageSrc, name, imageAlt, className }: AvatarCompProps) {
+function AvatarComp({ imageSrc, name, imageAlt, className }: AvatarCompProps): JSX.Element {
   const initials = useMemo(() => getInitials(name), [name]);
   return (
     <Avatar className={className}>

@@ -1,5 +1,5 @@
 'use client';
-import React, { useMemo, useState } from 'react';
+import React, { JSX, useMemo, useState } from 'react';
 import AppointmentRequestCard from './appointmentRequestCard';
 import { Badge } from '@/components/ui/badge';
 import { Confirmation } from '@/components/ui/dialog';
@@ -8,7 +8,7 @@ import { ModalProps } from '@/types/appointment';
 import { AppointmentStatus, VisitType } from '@/types/shared.enum';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 
-const AppointmentRequestPanel = () => {
+const AppointmentRequestPanel = (): JSX.Element => {
   const [openModal, setModal] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState<ModalProps | undefined>();
 

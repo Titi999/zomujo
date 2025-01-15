@@ -2,11 +2,11 @@
 import { getCurrentTimeInGMT, getWeekdaysOfCurrentWeek } from '@/lib/date';
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import Image from 'next/image';
-import React from 'react';
+import React, { JSX } from 'react';
 import { DummyDoctorProfile } from '@/assets/images';
 import { cn } from '@/lib/utils';
 
-const UpcomingAppointmentCard = () => {
+const UpcomingAppointmentCard = (): JSX.Element => {
   const today = new Date();
   const currentDay = today.getDate();
   const days = getWeekdaysOfCurrentWeek();
@@ -87,7 +87,7 @@ const WeekPicker = ({
 }: {
   days: { day: number; weekday: string }[];
   currentDay: number;
-}) => (
+}): JSX.Element => (
   <div className="flex flex-col gap-7">
     <div className="flex flex-col gap-2">
       <p className="text-xs text-gray-400">{getCurrentTimeInGMT()}</p>

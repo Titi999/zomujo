@@ -6,7 +6,7 @@ import { TableData } from '@/components/ui/table';
 import { Gender } from '@/types/shared.enum';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowDownAZ, ChevronsUpDown, Eye, ListFilter } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { JSX, useState } from 'react';
 
 export type ManagedClientProps = {
   id: string;
@@ -16,7 +16,7 @@ export type ManagedClientProps = {
   consult: string;
 };
 
-const ManagedClientsPanel = () => {
+const ManagedClientsPanel = (): JSX.Element => {
   const data: ManagedClientProps[] = [
     {
       id: '728ed52f',

@@ -10,6 +10,7 @@ import {
   Payload,
   ValueType,
 } from 'recharts/types/component/DefaultTooltipContent';
+import { JSX } from 'react';
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: '', dark: '.dark' } as const;
@@ -30,7 +31,7 @@ type ChartContextProps = {
 
 const ChartContext = React.createContext<ChartContextProps | null>(null);
 
-function useChart() {
+function useChart(): ChartContextProps {
   const context = React.useContext(ChartContext);
 
   if (!context) {
@@ -70,7 +71,7 @@ const ChartContainer = React.forwardRef<
 });
 ChartContainer.displayName = 'Chart';
 
-const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
+const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }): JSX.Element | null => {
   const colorConfig = Object.entries(config).filter(([, config]) => config.theme || config.color);
 
   if (!colorConfig.length) {
@@ -308,7 +309,20 @@ const ChartLegendContent = React.forwardRef<
 ChartLegendContent.displayName = 'ChartLegend';
 
 // Helper to extract item config from a payload.
-function getPayloadConfigFromPayload(config: ChartConfig, payload: unknown, key: string) {
+function getPayloadConfigFromPayload(
+  config: ChartConfig,
+  payload: unknown,
+  key: string,
+):
+  | ({
+      label?: React.ReactNode;
+      icon?: React.ComponentType;
+    } & { color?: string; theme?: never })
+  | ({ label?: React.ReactNode; icon?: React.ComponentType } & {
+      color?: never;
+      theme: Record<keyof typeof THEMES, string>;
+    })
+  | undefined {
   if (typeof payload !== 'object' || payload === null) {
     return undefined;
   }

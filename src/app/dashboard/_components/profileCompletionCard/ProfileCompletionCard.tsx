@@ -1,9 +1,9 @@
 'use client';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { JSX } from 'react';
 
-const ProfileCompletionCard = () => {
+const ProfileCompletionCard = (): JSX.Element => {
   const router = useRouter();
   const filledPercent = (10 / 100) * 100;
 

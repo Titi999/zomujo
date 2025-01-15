@@ -10,14 +10,14 @@ import { emailSchema } from '@/schemas/zod.schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { JSX, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 interface IForgotPassword {
   email: string;
 }
-const ForgetPasswordForm = () => {
+const ForgetPasswordForm = (): JSX.Element => {
   const ForgotPasswordSchema = z.object({
     email: emailSchema(),
   });
@@ -36,7 +36,7 @@ const ForgetPasswordForm = () => {
   const dispatch = useAppDispatch();
   const { isLoading, errorMessage } = useAppSelector(selectThunkState);
 
-  const onSubmit = async ({ email }: IForgotPassword) => {
+  const onSubmit = async ({ email }: IForgotPassword): Promise<void> => {
     const { payload } = await dispatch(forgotPassword(email));
     if (payload) {
       setMessage(String(payload));

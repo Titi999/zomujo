@@ -3,8 +3,9 @@ import { getGreeting } from '@/lib/date';
 import Text from '@/components/text/text';
 import { useAppSelector } from '@/lib/hooks';
 import { selectUserFirstName, selectUserName } from '@/lib/features/auth/authSelector';
+import { JSX } from 'react';
 
-export const AvatarGreetings = () => {
+export const AvatarGreetings = (): JSX.Element => {
   const firstName = useAppSelector(selectUserFirstName);
   const userName = useAppSelector(selectUserName);
 

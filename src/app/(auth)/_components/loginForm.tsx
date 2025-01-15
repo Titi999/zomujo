@@ -14,7 +14,7 @@ import { MODE } from '@/constants/constants';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { AlertMessage } from '@/components/ui/alert';
 import { login } from '@/lib/features/auth/authThunk';
-import React from 'react';
+import React, { JSX } from 'react';
 import { selectThunkState } from '@/lib/features/auth/authSelector';
 import { useRouter } from 'next/navigation';
 import { ILogin } from '@/types/auth.interface';
@@ -25,7 +25,7 @@ const LoginSchema = z.object({
   password: passwordSchema,
 });
 
-const LoginForm = () => {
+const LoginForm = (): JSX.Element => {
   const {
     register,
     handleSubmit,
@@ -36,12 +36,13 @@ const LoginForm = () => {
 
   const { isLoading, errorMessage } = useAppSelector(selectThunkState);
 
-  const onSubmit = async (loginCredentials: ILogin) => {
+  const onSubmit = async (loginCredentials: ILogin): Promise<void> => {
     const { payload } = await dispatch(login(loginCredentials));
     if (payload) {
       router.push('/dashboard');
     }
   };
+
   return (
     <form className="flex w-full flex-col items-center" onSubmit={handleSubmit(onSubmit)}>
       <Image src={Logo} width={44} height={44} alt="Zyptyk-logo" />

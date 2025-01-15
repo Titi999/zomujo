@@ -1,6 +1,6 @@
 import SingleImageDropzone from '@/components/ui/singleFileDropzone';
 import { InfoIcon } from 'lucide-react';
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, JSX, useEffect, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -16,7 +16,7 @@ const DoctorIdentificationSchema = z.object({
   back: fileSchema,
 });
 
-const DoctorIdentification = () => {
+const DoctorIdentification = (): JSX.Element => {
   const doctorIdentification = useAppSelector(
     ({ authentication }) => authentication.doctorIdentification,
   );
@@ -33,7 +33,7 @@ const DoctorIdentification = () => {
   });
   const dispatch = useAppDispatch();
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     dispatch(updateDoctorIdentification(getValues()));
   };

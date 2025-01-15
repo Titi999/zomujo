@@ -3,7 +3,7 @@ import * as SelectPrimitive from '@radix-ui/react-select';
 import { Check, ChevronDown, ChevronUp } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { ComponentPropsWithoutRef, ComponentRef, forwardRef, Ref } from 'react';
+import { ComponentPropsWithoutRef, ComponentRef, forwardRef, JSX, Ref } from 'react';
 import { Control, Controller } from 'react-hook-form';
 import { Label } from './label';
 
@@ -168,7 +168,7 @@ const SelectInput = ({
   label,
   placeholder = '',
   className,
-}: SelectInputProps) => (
+}: SelectInputProps): JSX.Element => (
   <Controller
     control={control}
     name={name}

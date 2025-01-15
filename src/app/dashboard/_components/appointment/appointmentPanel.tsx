@@ -1,12 +1,12 @@
 'use client';
-import React, { useState } from 'react';
+import React, { JSX, useState } from 'react';
 import DateSelector from './dateSelector';
 import AppointmentCalendar from './appointmentCalendar';
 import moment from 'moment';
 import { Badge } from '@/components/ui/badge';
 import { AppointmentStatus, VisitType } from '@/types/shared.enum';
 
-const AppointmentPanel = () => {
+const AppointmentPanel = (): JSX.Element => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   //Todo: Remove them, they were used for testing purposes

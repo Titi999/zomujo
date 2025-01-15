@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z, ZodString } from 'zod';
 
 export const passwordSchema = z
   .string()
@@ -10,10 +10,10 @@ export const passwordSchema = z
   .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character')
   .max(20, 'Password is too long');
 
-export const emailSchema = (isRequired = true) =>
+export const emailSchema = (isRequired = true): ZodString =>
   requiredStringSchema(isRequired).email('Invalid email format').min(5, 'Email is too short');
 
-export const requiredStringSchema = (isRequired = true) => {
+export const requiredStringSchema = (isRequired = true): ZodString => {
   const schema = z.string();
   return isRequired ? schema.nonempty('Field is required') : schema;
 };

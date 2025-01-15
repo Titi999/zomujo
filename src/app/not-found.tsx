@@ -1,9 +1,9 @@
 'use client';
-import React from 'react';
+import React, { JSX } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 
-export default function NotFound() {
+export default function NotFound(): JSX.Element {
   const router = useRouter();
   return (
     <main className="flex h-screen w-full flex-col items-center justify-center gap-12">
