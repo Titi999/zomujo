@@ -17,7 +17,7 @@ const DoctorStats = (): JSX.Element => {
   useEffect(() => {
     const fetchDoctorCount = async (): Promise<void> => {
       const { payload } = await dispatch(countAllDoctors());
-      if (showErrorToast(payload)) {
+      if (payload && showErrorToast(payload)) {
         setIsLoading(false);
         toast(payload);
         return;
