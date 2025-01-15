@@ -14,7 +14,7 @@ export interface IPagination<T> {
   totalPages: number;
 }
 
-export interface IQueryParams<T> {
+export interface IQueryParams<T = undefined> {
   page?: number;
   search?: string;
   pageSize?: number;
