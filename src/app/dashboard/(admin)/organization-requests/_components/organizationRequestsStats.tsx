@@ -15,7 +15,7 @@ const OrganizationRequestsStats = (): JSX.Element => {
     const fetchRequestCounts = async (): Promise<void> => {
       const { payload } = await dispatch(getOrganizationRequestsStats());
 
-      if (showErrorToast(payload)) {
+      if (payload && showErrorToast(payload)) {
         toast(payload);
         setIsLoading(false);
         return;
