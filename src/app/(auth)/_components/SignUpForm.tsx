@@ -220,7 +220,7 @@ interface NameFieldsProps {
   errors: FieldErrors;
 }
 const NameFields = ({ register, errors }: NameFieldsProps) => (
-  <div className="mt-8 flex w-full flex-col items-baseline justify-center gap-8 md:w-[96.5%] md:flex-row md:gap-2">
+  <div className="mt-8 flex w-full flex-col items-baseline justify-center gap-8 md:w-full md:flex-row md:gap-2">
     <Input
       labelName="First Name"
       error={errors.firstName?.message?.toString() || ''}
