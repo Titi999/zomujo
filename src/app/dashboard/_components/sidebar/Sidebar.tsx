@@ -45,7 +45,7 @@ export const SidebarLayout = () => {
               <SidebarMenu>
                 {category.menu.map((tab) =>
                   tab.subMenu ? (
-                    <Collapsible className="group/collapsible" key={tab.title} >
+                    <Collapsible className="group/collapsible" key={tab.title}>
                       <SidebarMenuItem>
                         <CollapsibleTrigger asChild>
                           <SidebarMenuButton>
@@ -88,7 +88,7 @@ export const SidebarLayout = () => {
               <User />
               <div className="flex flex-col">
                 <span>User name</span>
-                <span className="text-badge rounded-lg px-2.5 py-1.5 text-xs font-medium">
+                <span className="rounded-lg px-2.5 py-1.5 text-xs font-medium text-badge">
                   Role
                 </span>
               </div>

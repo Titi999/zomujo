@@ -101,7 +101,7 @@ body {
   background-color: #fff;
 }
 
-@supports (-moz-appearance:none) {
+@supports (-moz-appearance: none) {
   * {
     scrollbar-width: thin;
     scrollbar-color: #d8dae5 #fff;

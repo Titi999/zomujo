@@ -3,12 +3,9 @@ import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-
 const ProfileCompletionCard = () => {
   const router = useRouter();
-;
-
-  const filledPercent = ((50) / 100) * 100;
+  const filledPercent = (50 / 100) * 100;
 
   return (
     <div

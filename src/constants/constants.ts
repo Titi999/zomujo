@@ -19,8 +19,6 @@ export const MODE = {
   ON_TOUCH: 'onTouched',
 } as const;
 
-
-
 export const PATIENT_SIDE_BAR: ISidebar = {
   sidebarGroup: [
     {

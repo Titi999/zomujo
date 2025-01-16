@@ -96,7 +96,10 @@ const SidebarProvider = forwardRef<
     );
 
     // Helper to toggle the sidebar.
-    const toggleSidebar = useCallback(() => isMobile ? setOpenMobile((open) => !open) : setOpen((open) => !open), [isMobile, setOpen, setOpenMobile]);
+    const toggleSidebar = useCallback(
+      () => (isMobile ? setOpenMobile((open) => !open) : setOpen((open) => !open)),
+      [isMobile, setOpen, setOpenMobile],
+    );
 
     // Adds a keyboard shortcut to toggle the sidebar.
     useEffect(() => {
@@ -306,55 +309,55 @@ SidebarRail.displayName = 'SidebarRail';
 
 const SidebarInset = forwardRef<HTMLDivElement, ComponentProps<'main'>>(
   ({ className, ...props }, ref) => (
-      <main
-        ref={ref}
-        className={cn(
-          'relative flex min-h-svh flex-1 flex-col bg-background',
-          'peer-data-[variant=inset]:min-h-[calc(100svh-theme(spacing.4))] md:peer-data-[variant=inset]:m-2 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow',
-          className,
-        )}
-        {...props}
-      />
-    ),
+    <main
+      ref={ref}
+      className={cn(
+        'relative flex min-h-svh flex-1 flex-col bg-background',
+        'peer-data-[variant=inset]:min-h-[calc(100svh-theme(spacing.4))] md:peer-data-[variant=inset]:m-2 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow',
+        className,
+      )}
+      {...props}
+    />
+  ),
 );
 SidebarInset.displayName = 'SidebarInset';
 
 const SidebarInput = forwardRef<ComponentRef<typeof Input>, ComponentProps<typeof Input>>(
   ({ className, ...props }, ref) => (
-      <Input
-        ref={ref}
-        data-sidebar="input"
-        className={cn(
-          'h-8 w-full bg-background shadow-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
-          className,
-        )}
-        {...props}
-      />
-    ),
+    <Input
+      ref={ref}
+      data-sidebar="input"
+      className={cn(
+        'h-8 w-full bg-background shadow-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
+        className,
+      )}
+      {...props}
+    />
+  ),
 );
 SidebarInput.displayName = 'SidebarInput';
 
 const SidebarHeader = forwardRef<HTMLDivElement, ComponentProps<'div'>>(
   ({ className, ...props }, ref) => (
-      <div
-        ref={ref}
-        data-sidebar="header"
-        className={cn('flex flex-col gap-2 p-4', className)}
-        {...props}
-      />
-    ),
+    <div
+      ref={ref}
+      data-sidebar="header"
+      className={cn('flex flex-col gap-2 p-4', className)}
+      {...props}
+    />
+  ),
 );
 SidebarHeader.displayName = 'SidebarHeader';
 
 const SidebarFooter = forwardRef<HTMLDivElement, ComponentProps<'div'>>(
   ({ className, ...props }, ref) => (
-      <div
-        ref={ref}
-        data-sidebar="footer"
-        className={cn('flex flex-col gap-2 p-4', className)}
-        {...props}
-      />
-    ),
+    <div
+      ref={ref}
+      data-sidebar="footer"
+      className={cn('flex flex-col gap-2 p-4', className)}
+      {...props}
+    />
+  ),
 );
 SidebarFooter.displayName = 'SidebarFooter';
 
@@ -362,39 +365,39 @@ const SidebarSeparator = forwardRef<
   ComponentRef<typeof Separator>,
   ComponentProps<typeof Separator>
 >(({ className, ...props }, ref) => (
-    <Separator
-      ref={ref}
-      data-sidebar="separator"
-      className={cn('mx-2 w-auto bg-sidebar-border', className)}
-      {...props}
-    />
-  ));
+  <Separator
+    ref={ref}
+    data-sidebar="separator"
+    className={cn('mx-2 w-auto bg-sidebar-border', className)}
+    {...props}
+  />
+));
 SidebarSeparator.displayName = 'SidebarSeparator';
 
 const SidebarContent = forwardRef<HTMLDivElement, ComponentProps<'div'>>(
   ({ className, ...props }, ref) => (
-      <div
-        ref={ref}
-        data-sidebar="content"
-        className={cn(
-          'flex min-h-0 flex-1 flex-col gap-8 overflow-auto group-data-[collapsible=icon]:overflow-hidden',
-          className,
-        )}
-        {...props}
-      />
-    ),
+    <div
+      ref={ref}
+      data-sidebar="content"
+      className={cn(
+        'flex min-h-0 flex-1 flex-col gap-8 overflow-auto group-data-[collapsible=icon]:overflow-hidden',
+        className,
+      )}
+      {...props}
+    />
+  ),
 );
 SidebarContent.displayName = 'SidebarContent';
 
 const SidebarGroup = forwardRef<HTMLDivElement, ComponentProps<'div'>>(
   ({ className, ...props }, ref) => (
-      <div
-        ref={ref}
-        data-sidebar="group"
-        className={cn('relative flex w-full min-w-0 flex-col py-4 pl-4', className)}
-        {...props}
-      />
-    ),
+    <div
+      ref={ref}
+      data-sidebar="group"
+      className={cn('relative flex w-full min-w-0 flex-col py-4 pl-4', className)}
+      {...props}
+    />
+  ),
 );
 SidebarGroup.displayName = 'SidebarGroup';
 
