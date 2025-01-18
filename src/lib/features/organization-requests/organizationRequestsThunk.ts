@@ -9,28 +9,32 @@ import { Toast } from '@/hooks/use-toast';
 
 export const getOrganizationRequests = createAsyncThunk(
   'organizationRequests/getOrganizationRequests',
-  async ({ page, search, status }: IQueryParams<ApproveDeclineStatus | ''>) => {
+  async ({
+    page,
+    search,
+    status,
+  }: IQueryParams<ApproveDeclineStatus | ''>): Promise<Toast | IPagination<IHospital>> => {
     try {
       const { data } = await axios.get<IResponse<IPagination<IHospital>>>(
         `admins/org-request?status=${status}&page=${page}&search=${search}`,
       );
       return data.data;
     } catch (error) {
-      return axiosErrorHandler(error, true);
+      return axiosErrorHandler(error, true) as Toast;
     }
   },
 );
 
 export const getOrganizationRequestsStats = createAsyncThunk(
   'organizationRequests/getOrganizationRequestsStats',
-  async () => {
+  async (): Promise<IOrganizationRequestsCountResponse | Toast> => {
     try {
       const { data } = await axios.get<IResponse<IOrganizationRequestsCountResponse>>(
         `dashboard/orgrequest-count`,
       );
       return data.data;
     } catch (error) {
-      return axiosErrorHandler(error, true);
+      return axiosErrorHandler(error, true) as Toast;
     }
   },
 );

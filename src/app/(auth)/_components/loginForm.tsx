@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { emailSchema, passwordSchema } from '@/schemas/zod.schemas';
+import { emailSchema, requiredStringSchema } from '@/schemas/zod.schemas';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { MODE } from '@/constants/constants';
@@ -22,7 +22,7 @@ import { authenticationProvider } from './authenticationProvider';
 
 const LoginSchema = z.object({
   email: emailSchema(),
-  password: passwordSchema,
+  password: requiredStringSchema(),
 });
 
 const LoginForm = (): JSX.Element => {

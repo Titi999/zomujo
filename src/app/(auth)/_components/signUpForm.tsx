@@ -21,7 +21,7 @@ import { requestOrganization, signUp } from '@/lib/features/auth/authThunk';
 import { selectThunkState } from '@/lib/features/auth/authSelector';
 import { Role } from '@/types/shared.enum';
 import { ImageVariant, Modal } from '@/components/ui/dialog';
-import Location from '@/components/Location/Location';
+import Location from '@/components/location/location';
 import { Option } from 'react-google-places-autocomplete/build/types';
 
 const SignUpForm = (): JSX.Element => {

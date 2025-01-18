@@ -52,7 +52,7 @@ const chartConfig = {
 const AdminHome = (): JSX.Element => {
   const { control } = useForm();
   return (
-    <div className="pb-[80px]">
+    <div className="pb-20">
       <div className="flex flex-col">
         <span className="text-[38px] font-bold">{getGreeting()}</span>
         <span className="text-grayscale-500">Track everything here</span>

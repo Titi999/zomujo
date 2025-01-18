@@ -10,9 +10,7 @@ export function useSearch(
     setSearchTerm(value);
     if (value === '' && handleSubmit) {
       setSearchTerm('');
-      setTimeout(() => {
-        handleSubmit(event as unknown as FormEvent<HTMLFormElement>, '');
-      }, 1000);
+      handleSubmit(event as unknown as FormEvent<HTMLFormElement>, '');
     }
   }
 
