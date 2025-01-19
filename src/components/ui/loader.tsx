@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import { Logo } from '@/assets/images';
+import { JSX } from 'react';
 
-export function Loader() {
+export function Loader(): JSX.Element {
   return (
     <div className="flex h-screen items-center justify-center">
       <div className="relative flex h-36 w-36 items-center justify-center">

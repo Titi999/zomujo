@@ -11,6 +11,7 @@ import {
   forwardRef,
   HTMLAttributes,
   HtmlHTMLAttributes,
+  JSX,
 } from 'react';
 
 const Sheet = SheetPrimitive.Root;
@@ -79,12 +80,12 @@ const SheetContent = forwardRef<ComponentRef<typeof SheetPrimitive.Content>, She
 );
 SheetContent.displayName = SheetPrimitive.Content.displayName;
 
-const SheetHeader = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => (
+const SheetHeader = ({ className, ...props }: HTMLAttributes<HTMLDivElement>): JSX.Element => (
   <div className={cn('flex flex-col space-y-2 text-center sm:text-left', className)} {...props} />
 );
 SheetHeader.displayName = 'SheetHeader';
 
-const SheetFooter = ({ className, ...props }: HtmlHTMLAttributes<HTMLDivElement>) => (
+const SheetFooter = ({ className, ...props }: HtmlHTMLAttributes<HTMLDivElement>): JSX.Element => (
   <div
     className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2', className)}
     {...props}

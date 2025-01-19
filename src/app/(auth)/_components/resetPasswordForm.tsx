@@ -11,11 +11,11 @@ import { IResetPassword } from '@/types/auth.interface';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-const ResetPasswordForm = () => {
+const ResetPasswordForm = (): JSX.Element => {
   const ResetPasswordSchema = z
     .object({
       newPassword: passwordSchema,
@@ -43,7 +43,7 @@ const ResetPasswordForm = () => {
   const [openModal, setOpenModal] = useState(false);
   const { isLoading, errorMessage } = useAppSelector(selectThunkState);
 
-  const onSubmit = async (passwordCredentials: IResetPassword) => {
+  const onSubmit = async (passwordCredentials: IResetPassword): Promise<void> => {
     const { payload } = await dispatch(resetPassword(passwordCredentials));
     if (payload) {
       setMessage(String(payload));
@@ -105,7 +105,7 @@ const ResetPasswordForm = () => {
 
 export default ResetPasswordForm;
 
-export const SuccessMessage = ({ message }: { message: string }) => (
+export const SuccessMessage = ({ message }: { message: string }): JSX.Element => (
   <div className="flex flex-col gap-2">
     {message}
     <Link href="/login">

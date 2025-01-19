@@ -4,7 +4,7 @@ import * as React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { ReactNode } from 'react';
+import { JSX, ReactNode } from 'react';
 import Image from 'next/image';
 import { EmailIllustration, ErrorIllustration, SuccessIllustration } from '@/assets/images';
 import { Button } from '@/components/ui/button';
@@ -69,12 +69,18 @@ const DialogContent = React.forwardRef<
 ));
 DialogContent.displayName = DialogPrimitive.Content.displayName;
 
-const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+const DialogHeader = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>): JSX.Element => (
   <div className={cn('flex flex-col space-y-1.5 text-center sm:text-left', className)} {...props} />
 );
 DialogHeader.displayName = 'DialogHeader';
 
-const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+const DialogFooter = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>): JSX.Element => (
   <div
     className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2', className)}
     {...props}
@@ -107,6 +113,7 @@ const DialogDescription = React.forwardRef<
   />
 ));
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
+
 export enum ImageVariant {
   Success = 'success',
   Error = 'error',
@@ -139,12 +146,12 @@ const Modal = ({
   showImage = false,
   setState,
   className,
-}: ModalProps) => (
+}: ModalProps): JSX.Element => (
   <Dialog open={open} modal={true}>
     <DialogContent showClose={showClose} setState={setState} className={className}>
       {showImage && (
         <div>
-          {imageVariant === 'success' && (
+          {imageVariant === ImageVariant.Success && (
             <>
               <Image
                 src={SuccessIllustration}
@@ -154,7 +161,7 @@ const Modal = ({
               <h2 className="-mb-6 mt-3 font-semibold text-primary">Success</h2>
             </>
           )}
-          {imageVariant === 'email' && (
+          {imageVariant === ImageVariant.Email && (
             <>
               <Image
                 src={EmailIllustration}
@@ -164,7 +171,7 @@ const Modal = ({
               <h2 className="-mb-6 mt-3 font-semibold text-primary">Email Verification</h2>
             </>
           )}
-          {imageVariant === 'error' && (
+          {imageVariant === ImageVariant.Error && (
             <>
               <Image
                 src={ErrorIllustration}
@@ -192,7 +199,7 @@ const Modal = ({
   </Dialog>
 );
 
-type ConfirmationProps = {
+export type ConfirmationProps = {
   description: ReactNode | string;
   acceptButtonTitle?: string;
   rejectButtonTitle?: string;
@@ -211,7 +218,7 @@ const Confirmation = ({
   rejectCommand,
   setState,
   isLoading,
-}: ConfirmationProps) => (
+}: ConfirmationProps): JSX.Element => (
   <Modal
     open={open}
     content={

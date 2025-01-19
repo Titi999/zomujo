@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { JSX } from 'react';
 import DoctorPanel from '../_components/doctorPanel';
 import DoctorStats from '../_components/doctorStats';
 
-const Doctor = () => (
+const Doctor = (): JSX.Element => (
   <>
     <DoctorStats />
     <DoctorPanel />

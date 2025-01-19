@@ -1,16 +1,30 @@
 import { ToastStatus } from '@/types/shared.enum';
-import axios, { isAxiosError } from 'axios';
+import axiosClient, { isAxiosError } from 'axios';
+import { Toast } from '@/hooks/use-toast';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const networkFailureErrorMessage = 'Oops! Server Error... Please check your internet connection';
 
-export default axios.create({
+const axios = axiosClient.create({
   baseURL: BASE_URL,
   withCredentials: true,
 });
 
-export const axiosErrorHandler = (error: unknown, toast = false) => {
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (isAxiosError(error)) {
+      if (error.response?.status === 401) {
+        window.localStorage.clear();
+        window.location.reload();
+      }
+    }
+    return Promise.reject(error);
+  },
+);
+
+export const axiosErrorHandler = (error: unknown, toast = false): string | Toast => {
   const message = isAxiosError(error)
     ? (error.response?.data.message ?? networkFailureErrorMessage)
     : error instanceof Error
@@ -27,3 +41,5 @@ export const axiosErrorHandler = (error: unknown, toast = false) => {
 
   return message;
 };
+
+export default axios;

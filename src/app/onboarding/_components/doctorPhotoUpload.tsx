@@ -1,5 +1,5 @@
 import { Check, InfoIcon } from 'lucide-react';
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, JSX, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { fileSchema } from '@/schemas/zod.schemas';
@@ -18,7 +18,7 @@ const DoctorPhotoUploadScheme = z.object({
   profilePicture: fileSchema,
 });
 
-const DoctorPhotoUpload = () => {
+const DoctorPhotoUpload = (): JSX.Element => {
   const [confirm, setConfirm] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const {
@@ -33,7 +33,7 @@ const DoctorPhotoUpload = () => {
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(({ authentication }) => authentication.isLoading);
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     const { payload } = await dispatch(doctorOnboarding(getValues()));
     if (payload) {
@@ -97,7 +97,7 @@ const DoctorPhotoUpload = () => {
 
 export default DoctorPhotoUpload;
 
-const OnboardingSuccessful = () => {
+const OnboardingSuccessful = (): JSX.Element => {
   const router = useRouter();
   return (
     <div className="relative flex flex-col items-center gap-12 p-8 pt-16">

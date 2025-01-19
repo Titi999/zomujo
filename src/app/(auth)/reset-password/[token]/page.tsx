@@ -4,8 +4,9 @@ import Text from '@/components/text/text';
 import Image from 'next/image';
 import { Logo } from '@/assets/images';
 import ResetPasswordForm from '../../_components/resetPasswordForm';
+import { JSX } from 'react';
 
-const ForgetPassword = () => (
+const ForgetPassword = (): JSX.Element => (
   <AuthenticationFrame
     imageSlide={ResetPasswordSlide}
     imageAlt="reset-password"

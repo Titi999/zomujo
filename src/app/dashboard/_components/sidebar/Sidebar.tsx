@@ -33,8 +33,10 @@ import { Avatar } from '@/components/ui/avatar';
 import { useAppSelector } from '@/lib/hooks';
 import { selectUserName, selectUserRole } from '@/lib/features/auth/authSelector';
 import { Role } from '@/types/shared.enum';
+import { JSX } from 'react';
+import { ISidebar } from '@/types/sidebar.interface';
 
-export const SidebarLayout = () => {
+export const SidebarLayout = (): JSX.Element => {
   const userName = useAppSelector(selectUserName);
   const role = useAppSelector(selectUserRole);
   const pathName = usePathname();
@@ -123,7 +125,7 @@ export const SidebarLayout = () => {
   );
 };
 
-export const PhoneNavbar = () => {
+export const PhoneNavbar = (): JSX.Element => {
   const role = useAppSelector(selectUserRole);
   const pathName = usePathname();
   const flattenedMenu = getSidebarByRole(role).sidebarGroup.flatMap((group) => group.menu);
@@ -170,7 +172,7 @@ export const PhoneNavbar = () => {
   );
 };
 
-const getSidebarByRole = (role?: Role) => {
+const getSidebarByRole = (role?: Role): ISidebar => {
   switch (role) {
     case Role.Admin:
     case Role.SuperAdmin:

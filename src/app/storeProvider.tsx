@@ -1,12 +1,12 @@
 'use client';
-import { useRef, ReactNode } from 'react';
+import { useRef, ReactNode, JSX } from 'react';
 import { Provider } from 'react-redux';
 import { makeStore, AppStore } from '@/lib/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 import { Loader } from '@/components/ui/loader';
 
-export default function StoreProvider({ children }: { children: ReactNode }) {
+export default function StoreProvider({ children }: { children: ReactNode }): JSX.Element {
   const storeRef = useRef<AppStore>(undefined);
   if (!storeRef.current) {
     // Create the store instance the first time this renders

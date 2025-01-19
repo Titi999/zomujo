@@ -1,4 +1,4 @@
-export const getCurrentYear = () => new Date().getFullYear();
+export const getCurrentYear = (): number => new Date().getFullYear();
 
 interface WeekdayObject {
   day: number;
@@ -48,13 +48,13 @@ export function getCurrentTimeInGMT(): string {
   return now.toLocaleTimeString('en-GB', options).toUpperCase();
 }
 
-export const maxDate = (ageLimit = 18) => {
+export const maxDate = (ageLimit = 18): string => {
   const today = new Date();
   const maxDate = new Date(today.getFullYear() - ageLimit, today.getMonth(), today.getDate());
   return maxDate.toISOString().split('T')[0];
 };
 
-export function getGreeting() {
+export function getGreeting(): string {
   const currentHour = new Date().getHours();
   if (currentHour >= 5 && currentHour < 12) {
     return 'Good morning';
@@ -62,4 +62,12 @@ export function getGreeting() {
     return 'Good afternoon';
   }
   return 'Good evening';
+}
+
+export function getFormattedDate(date: Date | string): string {
+  return new Date(date).toLocaleDateString('en', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
 }

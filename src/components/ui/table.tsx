@@ -14,6 +14,7 @@ import { Button } from './button';
 import {
   forwardRef,
   HTMLAttributes,
+  JSX,
   TdHTMLAttributes,
   ThHTMLAttributes,
   useEffect,
@@ -129,7 +130,7 @@ export const TableData = <TData, TValue>({
   pageCount,
   paginationData,
   isLoading,
-}: DataTableProps<TData, TValue>) => {
+}: DataTableProps<TData, TValue>): JSX.Element => {
   const [pagination, setPagination] = useState({
     pageIndex: page ? page - 1 : 0,
     pageSize: 1,
@@ -146,7 +147,8 @@ export const TableData = <TData, TValue>({
     autoResetPageIndex: autoResetPageIndex,
     onSortingChange: setSorting,
     onPaginationChange: (updater) => {
-      const updatedPagination = (old: PaginationState) => functionalUpdate(updater, old);
+      const updatedPagination = (old: PaginationState): PaginationState =>
+        functionalUpdate(updater, old);
       const updatedPaginationValues = updatedPagination(table.getState().pagination);
 
       setPagination(updatedPaginationValues);
@@ -188,7 +190,7 @@ export const TableData = <TData, TValue>({
 
   return (
     <>
-      <div className="border-y">
+      <div className="border-y bg-white">
         <Table>
           <TableHeader className="bg-gray-50 font-medium">
             {table.getHeaderGroups().map((headerGroup) => (

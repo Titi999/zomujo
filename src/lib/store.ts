@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import authReducer from '@/lib/features/auth/authSlice';
 import hospitalReducer from '@/lib/features/hospitals/hospitalSlice';
+import organizationRequestsReducer from '@/lib/features/organization-requests/organizationRequestsSlice';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
@@ -13,8 +14,10 @@ const authPersistConfig = {
 const rootReducer = combineReducers({
   authentication: persistReducer(authPersistConfig, authReducer),
   hospital: hospitalReducer,
+  organizationRequests: organizationRequestsReducer,
 });
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const makeStore = () =>
   configureStore({
     reducer: rootReducer,

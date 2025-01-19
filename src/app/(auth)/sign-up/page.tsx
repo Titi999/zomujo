@@ -4,8 +4,9 @@ import Text from '@/components/text/text';
 import Image from 'next/image';
 import { Logo } from '@/assets/images';
 import SignUpForm from '../_components/signUpForm';
+import { JSX } from 'react';
 
-const SignUp = () => (
+const SignUp = (): JSX.Element => (
   <AuthenticationFrame
     imageSlide={SignUpSlide}
     imageAlt="sign-up"

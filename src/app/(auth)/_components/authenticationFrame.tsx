@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image, { StaticImageData } from 'next/image';
-import { ReactNode } from 'react';
+import { JSX, ReactNode } from 'react';
 import { getCurrentYear } from '@/lib/date';
 import Text from '@/components/text/text';
 
@@ -20,7 +20,7 @@ export default function AuthenticationFrame({
   imageSlide,
   imagePosition = ImagePosition.Right,
   imageAlt,
-}: AuthenticationFrameProps) {
+}: AuthenticationFrameProps): JSX.Element {
   const flexDirection = imagePosition === ImagePosition.Right ? 'flex-row-reverse' : 'flex-row';
   return (
     <main className={`flex h-screen w-full ${flexDirection} p-5`}>

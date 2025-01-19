@@ -9,7 +9,7 @@ import {
   requiredStringSchema,
 } from '@/schemas/zod.schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react';
+import React, { JSX, useState } from 'react';
 import { useForm, UseFormRegister, FieldErrors } from 'react-hook-form';
 import { z } from 'zod';
 import { Input } from '@/components/ui/input';
@@ -21,10 +21,10 @@ import { requestOrganization, signUp } from '@/lib/features/auth/authThunk';
 import { selectThunkState } from '@/lib/features/auth/authSelector';
 import { Role } from '@/types/shared.enum';
 import { ImageVariant, Modal } from '@/components/ui/dialog';
-import Location from '@/components/Location/Location';
+import Location from '@/components/location/location';
 import { Option } from 'react-google-places-autocomplete/build/types';
 
-const SignUpForm = () => {
+const SignUpForm = (): JSX.Element => {
   const DoctorsSchema = z
     .object({
       firstName: nameSchema,
@@ -101,7 +101,7 @@ const SignUpForm = () => {
   const dispatch = useAppDispatch();
   const [successMessage, setMessage] = useState('');
   const { isLoading, errorMessage } = useAppSelector(selectThunkState);
-  const onSubmit = async (userCredentials: ISignUp) => {
+  const onSubmit = async (userCredentials: ISignUp): Promise<void> => {
     setMessage('');
     const action = userCredentials.role === Role.Admin ? requestOrganization : signUp;
     const { payload } = await dispatch(action(userCredentials));
@@ -114,7 +114,7 @@ const SignUpForm = () => {
   };
 
   const [openModal, setOpenModal] = useState(false);
-  const handleLocationValue = ({ value }: Option) => {
+  const handleLocationValue = ({ value }: Option): void => {
     setValue('location', value.description || '', {
       shouldValidate: true,
     });
@@ -265,11 +265,11 @@ const SignUpForm = () => {
 
 export default SignUpForm;
 
-interface NameFieldsProps {
+type NameFieldsProps = {
   register: UseFormRegister<ISignUp>;
   errors: FieldErrors;
-}
-const NameFields = ({ register, errors }: NameFieldsProps) => (
+};
+const NameFields = ({ register, errors }: NameFieldsProps): JSX.Element => (
   <div className="mt-8 flex w-full flex-col items-baseline justify-center gap-8 md:w-full md:flex-row md:gap-2">
     <Input
       labelName="First Name"

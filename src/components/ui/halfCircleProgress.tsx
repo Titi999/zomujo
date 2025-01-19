@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import React, { ReactNode } from 'react';
+import React, { JSX, ReactNode } from 'react';
 
 type halfCircleProgressProps = {
   progress?: number;
@@ -17,7 +17,7 @@ const HalfCircleProgress = ({
   color = '#08AF85',
   secondaryColor = '#F0F2F5',
   bottomComponent,
-}: halfCircleProgressProps) => (
+}: halfCircleProgressProps): JSX.Element => (
   <div className="relative float-left m-1 text-center">
     <div
       style={{

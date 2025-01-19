@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import React from 'react';
+import React, { JSX } from 'react';
 import moment from 'moment';
 
 interface DateSelectorProps {
@@ -8,7 +8,7 @@ interface DateSelectorProps {
   onDecrement: () => void;
   className?: string;
 }
-const DateSelector = ({ date, onDecrement, onIncrement }: DateSelectorProps) => (
+const DateSelector = ({ date, onDecrement, onIncrement }: DateSelectorProps): JSX.Element => (
   <div className="flex flex-row items-center gap-3">
     <button
       onClick={onDecrement}

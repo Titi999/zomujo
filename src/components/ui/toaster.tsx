@@ -9,8 +9,9 @@ import {
   ToastTitle,
   ToastViewport,
 } from '@/components/ui/toast';
+import { JSX } from 'react';
 
-export function Toaster() {
+export function Toaster(): JSX.Element {
   const { toasts } = useToast();
 
   return (

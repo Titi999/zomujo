@@ -1,6 +1,6 @@
 'use client';
 import { interpolate } from 'framer-motion';
-import React from 'react';
+import React, { JSX } from 'react';
 import { interpolateRange } from '@/lib/utils';
 import HalfCircleProgress from '@/components/ui/halfCircleProgress';
 import { Badge } from '@/components/ui/badge';
@@ -9,7 +9,7 @@ const PatientVitalsCard = ({
   patient,
 }: {
   patient?: { weight: number; heartRate: number; bloodSugarLevel: number; temperature: number };
-}) => {
+}): JSX.Element => {
   const vitalsColor = interpolate(
     [0, 0.25, 0.75, 1],
     ['#F59E0B', '#16A34A', '#16A34A', '#DC2626'],
@@ -70,7 +70,7 @@ const PatientVitalsCard = ({
   );
 };
 
-const vitalsRange = (data?: { systolic: number; diastolic: number }) => {
+const vitalsRange = (data?: { systolic: number; diastolic: number }): number => {
   const { systolic, diastolic } = data ?? {
     systolic: 120,
     diastolic: 80,

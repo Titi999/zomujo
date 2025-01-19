@@ -1,14 +1,14 @@
 'use client';
 import { cn } from '@/lib/utils';
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useState, useMemo, useRef, JSX } from 'react';
 
-const formatTime = (hour: number, minute: number) => {
+const formatTime = (hour: number, minute: number): string => {
   const formattedHour = hour > 12 ? hour - 12 : hour;
   const formattedMinute = minute < 10 ? `0${minute}` : minute;
   return `${formattedHour}:${formattedMinute}`;
 };
 
-const TimeIndicator = () => {
+const TimeIndicator = (): JSX.Element => {
   const [time, setTime] = useState(new Date());
 
   const totalHours = useMemo(() => (time.getHours() * 60 + time.getMinutes()) / 60, [time]);
@@ -19,7 +19,7 @@ const TimeIndicator = () => {
       setTime(new Date());
     }, 1000);
 
-    return () => clearInterval(interval);
+    return (): void => clearInterval(interval);
   }, []);
 
   useEffect(() => {

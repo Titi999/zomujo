@@ -9,10 +9,11 @@ import {
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { SelectInput, SelectOption } from '@/components/ui/select';
 import { Control, useForm } from 'react-hook-form';
-import { StatsCard, StatsCardProps } from '@/app/dashboard/_components/statsCard';
-import { ReactNode } from 'react';
+import { StatsCards } from '@/app/dashboard/_components/statsCards';
+import { JSX, ReactNode } from 'react';
+import { IStatsCard } from '@/types/stats.interface';
 
-const mockStatsData: StatsCardProps[] = [
+const mockStatsData: IStatsCard[] = [
   { title: 'Total users', value: '560', percentage: '4.4', trend: 'up' },
   { title: 'Total doctors', value: '60', percentage: '2', trend: 'down' },
   { title: 'Total patients', value: '500', percentage: '3.1', trend: 'up' },
@@ -48,18 +49,16 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const AdminHome = () => {
+const AdminHome = (): JSX.Element => {
   const { control } = useForm();
   return (
-    <div className="pb-[80px]">
+    <div className="pb-20">
       <div className="flex flex-col">
         <span className="text-[38px] font-bold">{getGreeting()}</span>
         <span className="text-grayscale-500">Track everything here</span>
       </div>
       <div className="mt-10 flex flex-wrap justify-evenly gap-6">
-        {mockStatsData.map((data, index) => (
-          <StatsCard key={index} {...data} />
-        ))}
+        <StatsCards statsData={mockStatsData} />
       </div>
       <div className="mt-8 flex gap-6 max-xl:flex-wrap">
         <Chart
@@ -141,7 +140,7 @@ type ChartProps = {
   children: ReactNode;
   statistics: { title: string; value: string }[];
 };
-const Chart = ({ title, control, children, statistics }: ChartProps) => (
+const Chart = ({ title, control, children, statistics }: ChartProps): JSX.Element => (
   <div className="w-full flex-grow basis-1/2">
     <Card className="rounded-2xl">
       <div className="flex justify-between p-8">
