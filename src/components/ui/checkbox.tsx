@@ -11,11 +11,28 @@ interface CheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPr
   labelName?: string;
   labelClassName?: string;
   name?: string;
+  title?: string;
+  titleClassName?: string;
+  titleLabelClassName?: string;
+  containerClassName?: string;
 }
 
 const Checkbox = React.forwardRef<React.ComponentRef<typeof CheckboxPrimitive.Root>, CheckboxProps>(
-  ({ className, labelName, name, labelClassName, ...props }, ref) => (
-    <div className="flex items-center gap-2">
+  (
+    {
+      className,
+      labelName,
+      name,
+      labelClassName,
+      title,
+      titleClassName,
+      titleLabelClassName,
+      containerClassName,
+      ...props
+    },
+    ref,
+  ) => (
+    <div className={cn('flex items-center gap-2', containerClassName)}>
       <CheckboxPrimitive.Root
         id={name}
         ref={ref}
@@ -31,11 +48,14 @@ const Checkbox = React.forwardRef<React.ComponentRef<typeof CheckboxPrimitive.Ro
           <Check className="h-4 w-4" />
         </CheckboxPrimitive.Indicator>
       </CheckboxPrimitive.Root>
-      {labelName && (
-        <Label htmlFor={name} className={labelClassName}>
-          {labelName}
-        </Label>
-      )}
+      <div className={titleLabelClassName}>
+        {title && <p className={titleClassName}> {title}</p>}
+        {labelName && (
+          <Label htmlFor={name} className={labelClassName}>
+            {labelName}
+          </Label>
+        )}
+      </div>
     </div>
   ),
 );

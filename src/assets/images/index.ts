@@ -7,3 +7,5 @@ export { default as DummyDoctorProfile } from './dummy-doctor-profile.jpg';
 export { default as SuccessIllustration } from './success.svg';
 export { default as ErrorIllustration } from './error.svg';
 export { default as EmailIllustration } from './email.svg';
+export { default as CardPayment } from './card.png';
+export { default as MobileMoney } from './mobile-money.png';

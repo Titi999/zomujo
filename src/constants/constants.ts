@@ -1,3 +1,4 @@
+import { Role } from '@/types/shared.enum';
 import { ISidebar } from '@/types/sidebar.interface';
 import {
   Archive,
@@ -14,6 +15,11 @@ import {
   User,
   UserSearch,
   Hospital,
+  ShieldCheck,
+  Bell,
+  CreditCard,
+  EarthLock,
+  CalendarCheck2,
 } from 'lucide-react';
 
 export const MODE = {
@@ -120,7 +126,7 @@ export const DOCTOR_SIDE_BAR: ISidebar = {
         },
         {
           title: 'Settings',
-          url: '#',
+          url: `${DASHBOARD_ROUTE}/settings`,
           Icon: Settings,
         },
       ],
@@ -173,6 +179,7 @@ export const ADMIN_SIDE_BAR: ISidebar = {
           url: `${DASHBOARD_ROUTE}/organization-requests`,
           Icon: Hospital,
           phoneTitle: 'Organization',
+          only: Role.SuperAdmin
         },
         {
           title: 'Manage S,M,I',
@@ -218,3 +225,128 @@ export const DAYS_OF_WEEK = [
   'Sunday',
 ];
 export const unMatchingPasswords = 'Passwords do not match';
+
+export const SETTINGS_ROUTE = 'settings';
+export const DOCTOR_SETTINGS_SIDEBAR: ISidebar = {
+  sidebarGroup: [
+    {
+      groupTitle: 'ACCOUNT',
+      menu: [
+        {
+          title: 'Personal',
+          url: `${DASHBOARD_ROUTE}/${SETTINGS_ROUTE}`,
+          Icon: User,
+        },
+        {
+          title: 'Security',
+          url: `${DASHBOARD_ROUTE}/${SETTINGS_ROUTE}/security`,
+          Icon: ShieldCheck,
+        },
+        {
+          title: 'Notification',
+          url: `${DASHBOARD_ROUTE}/${SETTINGS_ROUTE}/notification`,
+          Icon: Bell,
+        },
+        {
+          title: 'Payment',
+          url: `${DASHBOARD_ROUTE}/${SETTINGS_ROUTE}/payment`,
+          Icon: Banknote,
+        },
+        {
+          title: 'Identification',
+          url: `${DASHBOARD_ROUTE}/${SETTINGS_ROUTE}/identification`,
+          Icon: CreditCard,
+        },
+      ],
+    }
+  ],
+};
+
+export const ADMIN_SETTINGS_SIDEBAR: ISidebar = {
+  sidebarGroup: [
+    {
+      groupTitle: '',
+      menu: [
+        {
+          title: 'Personal',
+          url: '#',
+          Icon: User,
+        },
+        {
+          title: 'Security',
+          url: '#',
+          Icon: ShieldCheck,
+        },
+        {
+          title: 'Notification',
+          url: '#',
+          Icon: Bell,
+        },
+      ],
+    },
+
+    {
+      groupTitle: 'OTHER',
+      menu: [
+        {
+          title: 'Privacy',
+          url: '#',
+          Icon: EarthLock,
+          phoneTitle: 'Help',
+        },
+      ],
+    },
+  ],
+};
+
+export const PATIENT_SETTINGS_SIDEBAR: ISidebar = {
+  sidebarGroup: [
+    {
+      groupTitle: 'ACCOUNT',
+      menu: [
+        {
+          title: 'Personal',
+          url: '#',
+          Icon: User,
+        },
+        {
+          title: 'Security',
+          url: '#',
+          Icon: ShieldCheck,
+        },
+        {
+          title: 'Notification',
+          url: '#',
+          Icon: Bell,
+        },
+        {
+          title: 'Security',
+          url: '#',
+          Icon: ShieldCheck,
+        },
+        {
+          title: 'Notification',
+          url: '#',
+          Icon: Bell,
+        },
+      ],
+    },
+
+    {
+      groupTitle: 'OTHER',
+      menu: [
+        {
+          title: 'Privacy',
+          url: '#',
+          Icon: EarthLock,
+          phoneTitle: 'Help',
+        },
+        {
+          title: 'Appointments',
+          url: '#',
+          Icon: CalendarCheck2,
+        },
+      ],
+    },
+  ],
+};
