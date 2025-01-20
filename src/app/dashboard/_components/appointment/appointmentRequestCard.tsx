@@ -1,15 +1,15 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import React from 'react';
+import React, { JSX } from 'react';
 import { Badge } from '@/components/ui/badge';
 import moment from 'moment';
 import { IAppointmentRequest, ModalProps } from '@/types/appointment';
 
-export interface AppointmentCardProps {
+export type AppointmentCardProps = {
   request: IAppointmentRequest;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedPatient: React.Dispatch<React.SetStateAction<ModalProps | undefined>>;
-}
+};
 const AppointmentRequestCard = ({
   request: {
     date,
@@ -21,7 +21,7 @@ const AppointmentRequestCard = ({
   },
   setShowModal,
   setSelectedPatient,
-}: AppointmentCardProps) => (
+}: AppointmentCardProps): JSX.Element => (
   <div className="mx-auto mt-6 flex max-w-[249px] flex-col gap-4 rounded-2xl bg-gray-50 px-2.5 py-[18px]">
     <div className="flex w-full flex-row justify-between">
       <div className="flex flex-row items-center gap-3">

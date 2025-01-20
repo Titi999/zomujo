@@ -1,10 +1,10 @@
 'use client';
 import { Slider } from '@/components/ui/slider';
-import React, { useState } from 'react';
+import React, { JSX, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 
-const Pricing = () => {
+const Pricing = (): JSX.Element => {
   const MIN_AMOUNT = 20;
   const MAX_AMOUNT = 300;
 

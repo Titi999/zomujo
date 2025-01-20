@@ -1,7 +1,7 @@
 'use client';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { JSX, useEffect, useState } from 'react';
 import { verifyEmail } from '@/lib/features/auth/authThunk';
 import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
@@ -9,7 +9,7 @@ import { ErrorIllustration, SuccessIllustration } from '@/assets/images';
 import { selectThunkState } from '@/lib/features/auth/authSelector';
 import { Button } from '@/components/ui/button';
 
-const EmailVerification = () => {
+const EmailVerification = (): JSX.Element => {
   const [successMessage, setMessage] = useState('');
   const [countdown, setCountdown] = useState(7);
   const { token } = useParams<{ token: string }>();
@@ -32,7 +32,7 @@ const EmailVerification = () => {
           router.push('/dashboard');
         }, 7000);
 
-        return () => {
+        return (): void => {
           clearInterval(interval);
           clearTimeout(timeout);
         };

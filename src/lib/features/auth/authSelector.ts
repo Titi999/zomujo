@@ -2,6 +2,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '@/lib/store';
 import { Role } from '@/types/shared.enum';
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const selectAuthentication = (state: RootState) => state.authentication;
 
 export const selectUserRole = createSelector(selectAuthentication, ({ user }) => user?.role);

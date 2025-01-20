@@ -1,9 +1,10 @@
-import { Status } from '@/types/shared.enum';
+import { ApproveDeclineStatus } from '@/types/shared.enum';
 
 export interface IHospital {
   id: string;
   name: string;
   location: string;
   email: string;
-  status: Status;
+  status: ApproveDeclineStatus;
+  createdAt: Date;
 }

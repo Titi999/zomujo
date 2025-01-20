@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { GraduationCap } from 'lucide-react';
 import { IDoctor } from '@/types/doctor.interface';
+import { JSX } from 'react';
 
 const DoctorDetails = ({
   profilePicture,
@@ -17,7 +18,7 @@ const DoctorDetails = ({
   languages,
   awards,
   IDs: { back, front },
-}: IDoctor) => (
+}: IDoctor): JSX.Element => (
   <div className="flex flex-col gap-[30px] md:flex-row">
     <section className="max-w-[284px]">
       <Image
@@ -123,7 +124,7 @@ const DoctorDetails = ({
 
 export default DoctorDetails;
 
-const EducationCard = ({ school, degree }: { school: string; degree: string }) => (
+const EducationCard = ({ school, degree }: { school: string; degree: string }): JSX.Element => (
   <div className="mt-6 flex items-center justify-start gap-3">
     <div className="flex h-[35px] w-[35px] items-center justify-center rounded-[6.74px] bg-lightOrange">
       <GraduationCap className="text-deepOrange" />

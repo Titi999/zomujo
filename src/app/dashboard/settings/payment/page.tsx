@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { JSX } from 'react';
 import PaymentInfo from '../_components/transactions/paymentInfo';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Wallet from '../_components/transactions/wallet';
 import Pricing from '../_components/transactions/pricing';
 
-const Payment = () => (
+const Payment = (): JSX.Element => (
   <div>
     <div>
       <h2 className="text-2xl font-bold">Security</h2>

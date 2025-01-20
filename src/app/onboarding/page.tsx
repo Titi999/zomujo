@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import React from 'react';
+import React, { JSX } from 'react';
 import { Logo } from '@/assets/images';
 import { cn } from '@/lib/utils';
 import PersonalDetails from '@/app/onboarding/_components/personalDetails';
@@ -9,7 +9,7 @@ import DoctorIdentification from '@/app/onboarding/_components/doctorIdentificat
 import DoctorPhotoUpload from '@/app/onboarding/_components/doctorPhotoUpload';
 import { AlertMessage } from '@/components/ui/alert';
 
-const DoctorOnboarding = () => {
+const DoctorOnboarding = (): JSX.Element => {
   const currentStep = useAppSelector(({ authentication }) => authentication.currentStep);
   const errorMessage = useAppSelector(({ authentication }) => authentication.errorMessage);
 

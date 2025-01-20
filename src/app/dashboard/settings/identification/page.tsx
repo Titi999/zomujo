@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { JSX } from 'react';
 import Identity from '../_components/identity';
 
-const Identification = () => <Identity />;
+const Identification = (): JSX.Element => <Identity />;
 
 export default Identification;

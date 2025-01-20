@@ -11,6 +11,7 @@ import {
 } from '@/types/auth.interface';
 import { IResponse } from '@/types/shared.interface';
 import { RootState } from '@/lib/store';
+import { IDoctor } from '@/types/doctor.interface';
 
 const authPath = 'auth/' as const;
 export const login = createAsyncThunk(
@@ -46,8 +47,7 @@ export const doctorOnboarding = createAsyncThunk(
       ...doctorPhotoUpload,
     };
     try {
-      //TODO: Should replace unknown with IDoctor created by Kwabena Owusu
-      const { data } = await axios.patch<IResponse<unknown>>(
+      const { data } = await axios.patch<IResponse<IDoctor>>(
         `${authPath}complete-doctor-registration`,
         doctorDetails,
         {

@@ -2,7 +2,7 @@
 import { Star } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { JSX } from 'react';
 import { DummyDoctorProfile } from '@/assets/images';
 
 const DoctorCard = ({
@@ -18,7 +18,7 @@ const DoctorCard = ({
     noOfConsultations: number;
     rate: { amount: number };
   };
-}) => {
+}): JSX.Element => {
   const router = useRouter();
   return (
     <div className="flex w-full max-w-[360px] shrink-0 flex-col gap-2 rounded-[14px] border border-gray-200 bg-white p-6">

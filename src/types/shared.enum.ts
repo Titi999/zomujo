@@ -10,6 +10,12 @@ export enum Status {
   Pending = 'pending',
 }
 
+export enum ApproveDeclineStatus {
+  Approved = 'approved',
+  Declined = 'declined',
+  Pending = 'pending',
+}
+
 export enum Role {
   Admin = 'admin',
   SuperAdmin = 'superadmin',

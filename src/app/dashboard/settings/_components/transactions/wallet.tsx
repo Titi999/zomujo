@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
-import React from 'react';
+import React, { JSX } from 'react';
 
-const Wallet = () => (
+const Wallet = (): JSX.Element => (
   <div>
     <div className="h-[200px] w-[453px] rounded-xl border p-6">
       <p className="mb-2 text-sm font-medium text-gray-400">AVAILABLE</p>

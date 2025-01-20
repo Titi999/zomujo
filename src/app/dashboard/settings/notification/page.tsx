@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { JSX } from 'react';
 import NotificationPreference from '../_components/notification';
 
-const Notification = () => <NotificationPreference />;
+const Notification = (): JSX.Element => <NotificationPreference />;
 
 export default Notification;

@@ -12,6 +12,7 @@ import { updatePersonalDetails } from '@/lib/features/auth/authSlice';
 import { IPersonalDetails } from '@/types/auth.interface';
 import { MODE } from '@/constants/constants';
 import { maxDate } from '@/lib/date';
+import { JSX } from 'react';
 
 const PersonalDetailsSchema = z.object({
   MDCRegistration: mdcNumberSchema,
@@ -26,7 +27,7 @@ const genderOptions: SelectOption[] = [
   { label: 'Other', value: Gender.Other },
 ];
 
-const PersonalDetails = () => {
+const PersonalDetails = (): JSX.Element => {
   const personalDetails = useAppSelector(
     ({ authentication }) => authentication.doctorPersonalDetails,
   );
@@ -42,7 +43,7 @@ const PersonalDetails = () => {
   });
   const dispatch = useAppDispatch();
 
-  const onSubmit = (personalDetails: IPersonalDetails) => {
+  const onSubmit = (personalDetails: IPersonalDetails): void => {
     dispatch(updatePersonalDetails(personalDetails));
   };
 

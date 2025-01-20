@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { JSX } from 'react';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { Label } from '../ui/label';
 import { Option } from 'react-google-places-autocomplete/build/types';
@@ -19,7 +19,7 @@ const Location = ({
   error,
   handleLocationValue,
   onBlur,
-}: LocationProps) => (
+}: LocationProps): JSX.Element => (
   <div>
     <div className={cn('w-[100%]', classStyle)}>
       <Label>Location</Label>

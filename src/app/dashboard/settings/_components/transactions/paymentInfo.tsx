@@ -40,7 +40,7 @@ const PaymentInfo = (): JSX.Element => {
 
 export default PaymentInfo;
 
-const Card = ({ number, name, type }: CardProps) => (
+const Card = ({ number, name, type }: CardProps): JSX.Element => (
   <div className="flex h-[139px] w-[139px] flex-col items-start justify-center rounded-[7.32px] border pl-4">
     <Image src={type === 'card' ? CardPayment : MobileMoney} alt={type} />
     <p className="mt-4 truncate font-bold"> {name}</p>
@@ -48,7 +48,7 @@ const Card = ({ number, name, type }: CardProps) => (
   </div>
 );
 
-const PaymentMethod = () => (
+const PaymentMethod = (): JSX.Element => (
   <div>
     <p className="text-2xl font-bold"> Add Method</p>
     <hr className="my-6" />

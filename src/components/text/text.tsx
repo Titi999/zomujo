@@ -1,5 +1,10 @@
 import { cn } from '@/lib/utils';
-import { HTMLAttributes, createElement } from 'react';
+import {
+  HTMLAttributes,
+  createElement,
+  DetailedReactHTMLElement,
+  InputHTMLAttributes,
+} from 'react';
 
 type TextVariantStyle = 'h3' | 'body-small' | 'h4' | 'h2';
 type TextVariant = 'h3' | 'p' | 'h4' | 'span';
@@ -31,7 +36,10 @@ const Text = ({
   children,
   className,
   ...props
-}: CustomTextProps) =>
+}: CustomTextProps): DetailedReactHTMLElement<
+  InputHTMLAttributes<HTMLInputElement>,
+  HTMLInputElement
+> =>
   createElement(
     variant,
     {

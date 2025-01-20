@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { JSX } from 'react';
 import AppointmentPanel from '../appointment/appointmentPanel';
 import AppointmentRequestPanel from '../appointment/appointmentRequestPanel';
 import ManagedClientsPanel from '../appointment/managedClientsPanel';
 import { AvatarGreetings } from '../avatarGreetings';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-const DoctorHome = () => (
+const DoctorHome = (): JSX.Element => (
   <div className="mx-4 sm:mx-0">
     <AvatarGreetings />
     <div className="flex w-full items-center justify-center md:hidden">

@@ -2,7 +2,7 @@
 import { MapPin, Navigation, ExternalLink, Building2, X } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { JSX, useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 const HospitalCard = ({
@@ -17,11 +17,11 @@ const HospitalCard = ({
     googleMapsUrl: string;
     imageUrl?: string;
   };
-}) => {
+}): JSX.Element => {
   const router = useRouter();
   const [showPreview, setShowPreview] = useState(false);
 
-  const handleOpenMap = (url: string) => window.open(url, '_blank');
+  const handleOpenMap = (url: string): Window | null => window.open(url, '_blank');
 
   return (
     <>

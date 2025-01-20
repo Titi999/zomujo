@@ -28,16 +28,16 @@ type InputProps = {
 };
 
 const ERROR_MESSAGES = {
-  fileTooLarge(maxSize: number) {
+  fileTooLarge(maxSize: number): string {
     return `The file is too large. Max size is ${formatFileSize(maxSize)}.`;
   },
-  fileInvalidType() {
+  fileInvalidType(): string {
     return 'Invalid file type.';
   },
-  tooManyFiles(maxFiles: number) {
+  tooManyFiles(maxFiles: number): string {
     return `You can only add ${maxFiles} file(s).`;
   },
-  fileNotSupported() {
+  fileNotSupported(): string {
     return 'The file is not supported.';
   },
 };
@@ -171,7 +171,7 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
 );
 SingleImageDropzone.displayName = 'SingleImageDropzone';
 
-function formatFileSize(bytes?: number) {
+function formatFileSize(bytes?: number): string {
   if (!bytes) {
     return '0 Bytes';
   }
