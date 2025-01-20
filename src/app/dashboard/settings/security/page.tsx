@@ -1,6 +1,6 @@
-import React from 'react'
-import SecurityInfo from '../_components/security'
- 
-const Security = () => <SecurityInfo/>
+import React from 'react';
+import SecurityInfo from '../_components/security';
 
-export default Security
+const Security = () => <SecurityInfo />;
+
+export default Security;

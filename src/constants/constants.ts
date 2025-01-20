@@ -179,7 +179,7 @@ export const ADMIN_SIDE_BAR: ISidebar = {
           url: `${DASHBOARD_ROUTE}/organization-requests`,
           Icon: Hospital,
           phoneTitle: 'Organization',
-          only: Role.SuperAdmin
+          only: Role.SuperAdmin,
         },
         {
           title: 'Manage S,M,I',
@@ -258,7 +258,7 @@ export const DOCTOR_SETTINGS_SIDEBAR: ISidebar = {
           Icon: CreditCard,
         },
       ],
-    }
+    },
   ],
 };
 

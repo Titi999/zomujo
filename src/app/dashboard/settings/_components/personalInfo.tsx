@@ -11,7 +11,6 @@ import React, { JSX } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-
 interface IPersonalInfo {
   name: string;
 }

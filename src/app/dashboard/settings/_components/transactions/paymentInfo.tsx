@@ -49,35 +49,35 @@ const Card = ({ number, name, type }: CardProps) => (
 );
 
 const PaymentMethod = () => (
-    <div>
-      <p className="text-2xl font-bold"> Add Method</p>
-      <hr className="my-6" />
-      <Tabs defaultValue="card" className="">
-        <TabsList>
-          <TabsTrigger value="card" className="rounded-2xl">
-            Add card
-          </TabsTrigger>
-          <TabsTrigger value="mobileMoney" className="rounded-2xl">
-            Add mobile wallet
-          </TabsTrigger>
-        </TabsList>
+  <div>
+    <p className="text-2xl font-bold"> Add Method</p>
+    <hr className="my-6" />
+    <Tabs defaultValue="card" className="">
+      <TabsList>
+        <TabsTrigger value="card" className="rounded-2xl">
+          Add card
+        </TabsTrigger>
+        <TabsTrigger value="mobileMoney" className="rounded-2xl">
+          Add mobile wallet
+        </TabsTrigger>
+      </TabsList>
 
-        <TabsContent className="mt-6" value="card">
-          <Input labelName="Card Number" className="mb-8" wrapperClassName="max-w-none" />
-          <Input labelName="Card holder" wrapperClassName="max-w-none" />
-          <div className="mt-8 flex gap-[10px]">
-            <Input labelName="Date of Birth" />
-            <Input labelName="CVC" />
-          </div>
-        </TabsContent>
+      <TabsContent className="mt-6" value="card">
+        <Input labelName="Card Number" className="mb-8" wrapperClassName="max-w-none" />
+        <Input labelName="Card holder" wrapperClassName="max-w-none" />
+        <div className="mt-8 flex gap-[10px]">
+          <Input labelName="Date of Birth" />
+          <Input labelName="CVC" />
+        </div>
+      </TabsContent>
 
-        <TabsContent className="mt-6" value="mobileMoney">
-          <Input labelName="Name" className="mb-8" wrapperClassName="max-w-none" />
-          <Input labelName="Number" className="mb-8" wrapperClassName="max-w-none" />
-        </TabsContent>
-      </Tabs>
-      <div className="mt-5 flex justify-end">
-        <Button child="Save" />
-      </div>
+      <TabsContent className="mt-6" value="mobileMoney">
+        <Input labelName="Name" className="mb-8" wrapperClassName="max-w-none" />
+        <Input labelName="Number" className="mb-8" wrapperClassName="max-w-none" />
+      </TabsContent>
+    </Tabs>
+    <div className="mt-5 flex justify-end">
+      <Button child="Save" />
     </div>
-  );
+  </div>
+);

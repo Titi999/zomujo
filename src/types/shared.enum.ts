@@ -40,5 +40,5 @@ export enum ToastStatus {
 }
 
 export enum SidebarType {
-  Settings ='settings'
+  Settings = 'settings',
 }

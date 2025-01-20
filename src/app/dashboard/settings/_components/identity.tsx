@@ -8,7 +8,6 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 const Identity = (): JSX.Element => {
-
   const identificationSchema = z.object({});
   const doctorIdentification = useAppSelector(
     ({ authentication }) => authentication.doctorIdentification,

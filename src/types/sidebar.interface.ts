@@ -17,5 +17,5 @@ interface ISidebarMenu {
   Icon?: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
   subMenu?: ISidebarMenu[];
   phoneTitle?: string;
-  only?:Role
+  only?: Role;
 }
