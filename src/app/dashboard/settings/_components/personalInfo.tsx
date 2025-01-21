@@ -49,11 +49,11 @@ const PersonalInfo = (): JSX.Element => {
       </section>
       <hr className="my-[30px]" />
       <section>
-        <div className="flex-warp flex gap-8">
+        <div className="flex-warp flex flex-wrap gap-8 sm:flex-nowrap">
           <Input labelName="Full name" className="bg-transparent" placeholder="John doe" />
           <Input labelName="Email" className="bg-transparent" placeholder="johndoe@email.com" />
         </div>
-        <div className="flex-warp mt-8 flex gap-8">
+        <div className="mt-8 flex flex-wrap gap-8 sm:flex-nowrap">
           <div className="w-full max-w-[384px]">
             <SelectInput
               label="School attended"
@@ -79,7 +79,7 @@ const PersonalInfo = (): JSX.Element => {
             />
           </div>
         </div>
-        <div className="flex-warp mt-8 flex gap-8">
+        <div className=" mt-8 flex flex-wrap gap-8 sm:flex-nowrap">
           <Input labelName="Phone Number" className="bg-transparent" placeholder="0208880000" />
           <Input
             labelName="MDC Registration Number"

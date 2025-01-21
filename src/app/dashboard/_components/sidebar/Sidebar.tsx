@@ -201,6 +201,44 @@ export const PhoneNavbar = ({ type }: SideBarProps): JSX.Element => {
   );
 };
 
+export const SettingsNavbar = (): JSX.Element => {
+  const pathName = usePathname();
+  const role = useAppSelector(selectUserRole);
+  const flattenedMenu = getSidebarByRole(role, SidebarType.Settings).sidebarGroup.flatMap(
+    (group) => group.menu,
+  );
+
+  return (
+    <>
+      <div className="flex justify-evenly overflow-x-scroll bg-white me:hidden">
+        {flattenedMenu.map(({ title, phoneTitle, url }) => (
+          <div key={title} title={title}>
+            <SidebarMenuButton
+              isActive={pathName === url}
+              title={title}
+              className="relative h-12 px-0 hover:bg-transparent data-[active=true]/menu-action:z-50 data-[active=true]/menu-action:rounded-none data-[active=true]/menu-action:border-b-2 data-[active=true]/menu-action:border-primary data-[active=true]/menu-action:bg-transparent"
+            >
+              <Link href={url} className="flex flex-col items-center justify-center px-2">
+                <div>
+                  <span
+                    className={cn(
+                      'w-5 truncate text-xs font-bold',
+                      pathName === url && 'text-primary',
+                    )}
+                  >
+                    {phoneTitle ?? title}
+                  </span>
+                </div>
+              </Link>
+            </SidebarMenuButton>
+          </div>
+        ))}
+      </div>
+      <hr className="relative mx-[2%] -mt-2.5 w-auto border-b sm:mx-[5%]" />
+    </>
+  );
+};
+
 const getSidebarByRole = (role?: Role, type?: SidebarType): ISidebar => {
   if (type === SidebarType.Settings) {
     switch (role) {

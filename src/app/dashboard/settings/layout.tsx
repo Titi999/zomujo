@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { SidebarLayout } from '../_components/sidebar/Sidebar';
+import { SettingsNavbar, SidebarLayout } from '../_components/sidebar/Sidebar';
 import { SidebarType } from '@/types/shared.enum';
 import { Bell } from 'lucide-react';
 
@@ -9,11 +9,12 @@ export default function Layout({
   children: ReactNode;
 }>): React.JSX.Element {
   return (
-    <div className="relative -ml-6 -mr-6 flex h-full flex-col">
-      <div className="flex h-[97px] items-center justify-between bg-white px-6">
-        <h2 className="text-[32px] font-bold">Settings</h2>
+    <div className="relative -ml-6 flex h-full flex-col">
+      <div className="flex items-center justify-between bg-white px-6 sm:h-[97px]">
+        <h2 className="py-2 text-xl font-bold sm:py-0 sm:text-[32px]">Settings</h2>
         <Bell />
       </div>
+      <SettingsNavbar />
       <div className="relative flex h-[calc(100vh-99px)] overflow-hidden">
         <SidebarLayout
           type={SidebarType.Settings}

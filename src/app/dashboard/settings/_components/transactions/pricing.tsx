@@ -25,7 +25,7 @@ const Pricing = (): JSX.Element => {
     return value * multiplier + offset;
   }
   return (
-    <div className="ml-6 flex w-[454px] flex-col items-end gap-24">
+    <div className="flex w-full flex-col items-end gap-24 sm:ml-6 sm:w-[454px]">
       <div className="relative flex w-full flex-1 flex-col gap-4">
         <p className="text-sm">Select amount</p>
         <Slider
@@ -37,7 +37,7 @@ const Pricing = (): JSX.Element => {
         />
         <motion.div
           style={{
-            x: `${sliderPosition(amount, 'amount')}px`,
+            x: `${sliderPosition(window.innerWidth < 430 ? 20 : amount, 'amount')}px`,
           }}
           className="absolute top-[calc(100%+8px)] flex h-8 w-16 items-center justify-center rounded-full bg-primary"
         >
@@ -55,7 +55,7 @@ const Pricing = (): JSX.Element => {
         />
         <motion.div
           style={{
-            x: `${sliderPosition(lengthOfSession, 'sessionLength')}px`,
+            x: `${sliderPosition(window.innerWidth < 430 ? 20 : lengthOfSession, 'sessionLength')}px`,
           }}
           className="absolute top-[calc(100%+8px)] flex h-8 items-center justify-center rounded-full bg-primary px-2.5"
         >

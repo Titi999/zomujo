@@ -36,15 +36,15 @@ const SecurityInfo = (): JSX.Element => (
     </div>
     <hr className="my-8" />
 
-    <div className="flex max-w-[635px] items-center justify-between">
+    <div className="flex max-w-[635px] items-center justify-between flex-wrap">
       <div>
         <h2 className="font-bold">Delete account</h2>
-        <p className="max-w-[297px] text-xs text-gray-500">
+        <p className="sm:max-w-[297px] text-xs text-gray-500">
           We&rsquo;ll delete your account and data permanently. Thanks for being part of Zomujo!
           You&rsquo;re always welcome back if you change your mind.
         </p>
       </div>
-      <div className="flex gap-2">
+      <div className="flex gap-2 pb-28 pt-3 sm:pb-0 sm:pt-0">
         <Button child={'Delete account'} variant={'destructive'} />
         <Button child={'Learn more'} variant={'outline'} />
       </div>

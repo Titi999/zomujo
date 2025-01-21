@@ -11,7 +11,7 @@ const NotificationPreference = (): JSX.Element => (
       </p>
       <hr className="my-7 gap-4" />
     </div>
-    <div className="flex gap-[89px]">
+    <div className="flex gap-[89px] flex-wrap">
       <div className="max-w-[258px]">
         <p className="font-medium">Email Notification</p>
         <p className="text-sm text-gray-500">
