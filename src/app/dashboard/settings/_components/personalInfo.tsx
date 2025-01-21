@@ -79,7 +79,7 @@ const PersonalInfo = (): JSX.Element => {
             />
           </div>
         </div>
-        <div className=" mt-8 flex flex-wrap gap-8 sm:flex-nowrap">
+        <div className="mt-8 flex flex-wrap gap-8 sm:flex-nowrap">
           <Input labelName="Phone Number" className="bg-transparent" placeholder="0208880000" />
           <Input
             labelName="MDC Registration Number"

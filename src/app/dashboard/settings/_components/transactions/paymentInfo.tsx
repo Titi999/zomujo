@@ -18,7 +18,7 @@ const PaymentInfo = (): JSX.Element => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <>
-      <div className="flex gap-6 flex-wrap">
+      <div className="flex flex-wrap gap-6">
         <Card name="Lapopo" number="11111111111" type="card" />
         <Card name="King" number="44411111" type="mobileMoney" />
         <div

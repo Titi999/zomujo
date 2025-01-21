@@ -32,7 +32,7 @@ const Identity = (): JSX.Element => {
         <hr className="my-7 gap-4" />
       </div>
       <div className="max-w-[650px]">
-        <div className="flex flex-row flex-wrap sm:justify-between justify-center">
+        <div className="flex flex-row flex-wrap justify-center sm:justify-between">
           <SingleImageDropzone
             height={280}
             width={300}
@@ -51,7 +51,7 @@ const Identity = (): JSX.Element => {
             onChange={(file) => setValue('back', file!, { shouldValidate: true })}
           />
         </div>
-        <div className="flex justify-end mb-16 mt-4 sm:mt-0 sm:mb-0">
+        <div className="mb-16 mt-4 flex justify-end sm:mb-0 sm:mt-0">
           <Button child="Save Changes" />
         </div>
       </div>
