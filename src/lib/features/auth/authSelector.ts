@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '@/lib/store';
-import { Role } from '@/types/shared.enum';
+import { Role, Status } from '@/types/shared.enum';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const selectAuthentication = (state: RootState) => state.authentication;
@@ -30,6 +30,8 @@ export const selectUserFirstName = createSelector(
 );
 
 export const selectUser = createSelector(selectAuthentication, ({ user }) => user);
+
+export const selectMustUpdatePassword = createSelector(selectAuthentication, ({ user }) => user?.status === Status.Incomplete);
 
 export const selectThunkState = createSelector(
   selectIsLoading,

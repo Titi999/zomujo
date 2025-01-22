@@ -52,8 +52,11 @@ export interface ILogin {
   password: string;
 }
 
-export interface IResetPassword {
+export interface IResetPassword extends IUpdatePassword {
+  token: string;
+}
+
+export interface IUpdatePassword {
   newPassword: string;
   confirmPassword: string;
-  token: string;
 }
