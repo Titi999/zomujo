@@ -31,7 +31,10 @@ export const selectUserFirstName = createSelector(
 
 export const selectUser = createSelector(selectAuthentication, ({ user }) => user);
 
-export const selectMustUpdatePassword = createSelector(selectAuthentication, ({ user }) => user?.status === Status.Incomplete);
+export const selectMustUpdatePassword = createSelector(
+  selectAuthentication,
+  ({ user }) => user?.status === Status.Incomplete,
+);
 
 export const selectThunkState = createSelector(
   selectIsLoading,

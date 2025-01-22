@@ -1,5 +1,5 @@
 'use client';
-import { passwordSchema } from '@/schemas/zod.schemas';
+import { passwordSchema, requiredStringSchema } from '@/schemas/zod.schemas';
 import { MODE, unMatchingPasswords } from '@/constants/constants';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -17,6 +17,7 @@ const UpdatePassword = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const updatePasswordSchema = z
     .object({
+      currentPassword: requiredStringSchema(),
       newPassword: passwordSchema,
       confirmPassword: passwordSchema,
     })
@@ -47,6 +48,14 @@ const UpdatePassword = (): JSX.Element => {
       className="mx-5 flex flex-col items-center justify-center space-y-8"
     >
       <h2 className="text-center text-2xl font-bold">Update Password</h2>
+      <Input
+        labelName="Current Password"
+        type="password"
+        error={errors.currentPassword?.message || ''}
+        placeholder="***********************"
+        enablePasswordToggle={true}
+        {...register('currentPassword')}
+      />
       <Input
         labelName="New Password"
         type="password"

@@ -153,7 +153,7 @@ export const updatePassword = createAsyncThunk(
   async (passwordCredentials: IUpdatePassword, { dispatch }): Promise<Toast> => {
     try {
       const { data } = await axios.patch<IResponse>(
-        `${authPath}renew-password`,
+        `${authPath}reset-password`,
         passwordCredentials,
       );
       dispatch(updateStatus(Status.Verified));
