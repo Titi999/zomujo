@@ -42,8 +42,8 @@ export const SidebarLayout = (): JSX.Element => {
   const pathName = usePathname();
 
   return (
-    <Sidebar className="hidden me:block">
-      <SidebarHeader className="pb-[50px] pt-3.5">
+    <Sidebar className="me:block hidden">
+      <SidebarHeader className="pt-3.5 pb-[50px]">
         <SidebarTrigger child={<Image src={Logo} alt="Zyptyk-logo" />} className="h-10 w-10" />
       </SidebarHeader>
       <SidebarContent>
@@ -59,7 +59,7 @@ export const SidebarLayout = (): JSX.Element => {
                         <CollapsibleTrigger asChild>
                           <SidebarMenuButton>
                             {Icon && <Icon />} {title}
-                            <ChevronDown className="ml-auto mr-1" />
+                            <ChevronDown className="mr-1 ml-auto" />
                           </SidebarMenuButton>
                         </CollapsibleTrigger>
 
@@ -106,12 +106,12 @@ export const SidebarLayout = (): JSX.Element => {
               <Avatar />
               <div className="flex flex-col text-xs font-medium">
                 <span>{userName}</span>
-                <span className="rounded-lg py-1.5 text-badge">{role}</span>
+                <span className="text-badge rounded-lg py-1.5">{role}</span>
               </div>
               <EllipsisVertical className="ml-auto" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
-          <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
+          <DropdownMenuContent side="top" className="w-(--radix-popper-anchor-width)">
             <DropdownMenuItem>
               <span>Profile</span>
             </DropdownMenuItem>
@@ -133,7 +133,7 @@ export const PhoneNavbar = (): JSX.Element => {
     'h-full p-2 hover:bg-transparent data-[active=true]:bg-transparent relative before:absolute before:left-1/2 before:top-0 before:-translate-x-1/2 before:transform rounded-lg before:h-[3px] before:w-[30px] before:rounded before:bg-primary before:opacity-0 data-[active=true]/menu-action:before:opacity-100';
 
   return (
-    <div className="fixed bottom-0 z-50 flex h-[69px] w-full items-center justify-evenly gap-6 overflow-x-scroll bg-white me:hidden">
+    <div className="me:hidden fixed bottom-0 z-50 flex h-[69px] w-full items-center justify-evenly gap-6 overflow-x-scroll bg-white">
       {flattenedMenu.map(({ title, Icon, phoneTitle, url }) => (
         <div key={title} title={title}>
           <SidebarMenuButton isActive={pathName === url} title={title} className={style}>
@@ -153,7 +153,7 @@ export const PhoneNavbar = (): JSX.Element => {
           </SidebarMenuButton>
         </div>
       ))}
-      <SidebarMenuButton title="your profile" className={cn(style, 'min-w-16 max-w-16')}>
+      <SidebarMenuButton title="your profile" className={cn(style, 'max-w-16 min-w-16')}>
         <Link href="#" className="flex flex-col items-center justify-center">
           <Avatar className="h-6" />
           <div>
