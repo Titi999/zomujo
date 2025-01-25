@@ -11,18 +11,18 @@ const axios = axiosClient.create({
   withCredentials: true,
 });
 
-axios.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (isAxiosError(error)) {
-      if (error.response?.status === 401) {
-        window.localStorage.clear();
-        window.location.reload();
-      }
-    }
-    return Promise.reject(error);
-  },
-);
+// TODO: Find a solution to ensure that the user is logged out when the token expires and not for some endpoints
+// axios.interceptors.response.use(
+//   (response) => response,
+//   (error) =>
+// if (isAxiosError(error)) {
+//   if (error.response?.status === 401) {
+//     window.localStorage.clear();
+//     window.location.reload();
+//   }
+// }
+//     Promise.reject(error),
+// );
 
 export const axiosErrorHandler = (error: unknown, toast = false): string | Toast => {
   const message = isAxiosError(error)
