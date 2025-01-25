@@ -25,7 +25,7 @@ import Location from '@/components/location/location';
 import { Option } from 'react-google-places-autocomplete/build/types';
 
 const SignUpForm = (): JSX.Element => {
-  const DoctorsSchema = z
+  const doctorsSchema = z
     .object({
       firstName: nameSchema,
       lastName: nameSchema,
@@ -34,12 +34,12 @@ const SignUpForm = (): JSX.Element => {
       confirmPassword: passwordSchema,
       role: requiredStringSchema(),
     })
-    .refine((data) => data.password === data.confirmPassword, {
+    .refine(({ password, confirmPassword }) => password === confirmPassword, {
       message: unMatchingPasswords,
       path: ['confirmPassword'],
     });
 
-  const OrganizationsSchema = z.object({
+  const organizationsSchema = z.object({
     name: nameSchema,
     email: emailSchema(),
     role: requiredStringSchema(),
@@ -48,7 +48,7 @@ const SignUpForm = (): JSX.Element => {
     lat: coordinatesSchema,
   });
 
-  const PatientSchema = z
+  const patientSchema = z
     .object({
       firstName: nameSchema,
       lastName: nameSchema,
@@ -74,10 +74,10 @@ const SignUpForm = (): JSX.Element => {
       const { role } = data;
       const schema =
         role === Role.Doctor
-          ? DoctorsSchema
+          ? doctorsSchema
           : role === Role.Admin
-            ? OrganizationsSchema
-            : PatientSchema;
+            ? organizationsSchema
+            : patientSchema;
       return zodResolver(schema)(data, context, options);
     },
     defaultValues: {

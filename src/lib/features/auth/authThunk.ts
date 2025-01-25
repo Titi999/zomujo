@@ -1,6 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { axiosErrorHandler } from '@/lib/axios';
-import { setErrorMessage, setUserInfo, updateExtra } from '@/lib/features/auth/authSlice';
+import {
+  setErrorMessage,
+  setUserInfo,
+  updateExtra,
+  updateStatus,
+} from '@/lib/features/auth/authSlice';
 import {
   DoctorOnboarding,
   IDoctorPhotoUpload,
@@ -8,10 +13,14 @@ import {
   ILoginResponse,
   IResetPassword,
   ISignUp,
+  IUpdatePassword,
 } from '@/types/auth.interface';
 import { IResponse } from '@/types/shared.interface';
 import { RootState } from '@/lib/store';
 import { IDoctor } from '@/types/doctor.interface';
+import { generateSuccessToast } from '@/lib/utils';
+import { Toast } from '@/hooks/use-toast';
+import { Status } from '@/types/shared.enum';
 
 const authPath = 'auth/' as const;
 export const login = createAsyncThunk(
@@ -135,6 +144,22 @@ export const verifyEmail = createAsyncThunk(
     } catch (error) {
       dispatch(setErrorMessage(axiosErrorHandler(error)));
       return false;
+    }
+  },
+);
+
+export const updatePassword = createAsyncThunk(
+  'authentication/updatePassword',
+  async (passwordCredentials: IUpdatePassword, { dispatch }): Promise<Toast> => {
+    try {
+      const { data } = await axios.patch<IResponse>(
+        `${authPath}reset-password`,
+        passwordCredentials,
+      );
+      dispatch(updateStatus(Status.Verified));
+      return generateSuccessToast(data.message);
+    } catch (error) {
+      return axiosErrorHandler(error, true) as Toast;
     }
   },
 );

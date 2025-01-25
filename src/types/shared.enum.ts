@@ -8,6 +8,7 @@ export enum Status {
   Verified = 'verified',
   Unverified = 'unverified',
   Pending = 'pending',
+  Incomplete = 'incomplete',
 }
 
 export enum ApproveDeclineStatus {
