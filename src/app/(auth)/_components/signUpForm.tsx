@@ -155,12 +155,12 @@ const SignUpForm = (): JSX.Element => {
           />
         )}
       </div>
-      <div className="mb-5 mt-4 flex justify-center space-x-6">
+      <div className="mt-4 mb-5 flex justify-center space-x-6">
         <label className="flex items-center space-x-2">
           <input
             type="radio"
             value={Role.Patient}
-            className="h-4 w-4 accent-primary"
+            className="accent-primary h-4 w-4"
             {...register('role')}
           />
           <span>Patient</span>
@@ -170,7 +170,7 @@ const SignUpForm = (): JSX.Element => {
             type="radio"
             value={Role.Doctor}
             {...register('role')}
-            className="h-4 w-4 accent-primary"
+            className="accent-primary h-4 w-4"
           />
           <span>Doctor</span>
         </label>
@@ -179,7 +179,7 @@ const SignUpForm = (): JSX.Element => {
             type="radio"
             value={Role.Admin}
             {...register('role')}
-            className="h-4 w-4 accent-primary"
+            className="accent-primary h-4 w-4"
           />
           <span>Organization</span>
         </label>
@@ -254,7 +254,7 @@ const SignUpForm = (): JSX.Element => {
         />
         <div className="text-center">
           <span>Already have an account?</span>
-          <Link href="/login" className="pl-1 text-primary">
+          <Link href="/login" className="text-primary pl-1">
             Login
           </Link>
         </div>
