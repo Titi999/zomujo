@@ -9,6 +9,7 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuItem,
+  ISelected,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { PaginationData, TableData } from '@/components/ui/table';
@@ -19,11 +20,10 @@ import {
 } from '@/lib/features/doctors/doctorsThunk';
 import { useAppDispatch } from '@/lib/hooks';
 import { IDoctor } from '@/types/doctor.interface';
-import { Gender } from '@/types/shared.enum';
+import { AcceptDeclineStatus, Gender } from '@/types/shared.enum';
 import { IPagination, IQueryParams } from '@/types/shared.interface';
 import { ColumnDef } from '@tanstack/react-table';
 import {
-  ArrowDownAZ,
   Binoculars,
   CalendarX,
   Ellipsis,
@@ -39,19 +39,39 @@ import DoctorDetails from '../../../_components/doctorDetails';
 import { toast } from '@/hooks/use-toast';
 import { showErrorToast } from '@/lib/utils';
 import { useSearch } from '@/hooks/useSearch';
+import { useDropdownAction } from '@/hooks/useDropdownAction';
+
+const statusFilterOptions: ISelected[] = [
+  {
+    value: '',
+    label: 'All',
+  },
+  {
+    value: AcceptDeclineStatus.Accepted,
+    label: 'Approved',
+  },
+  {
+    value: AcceptDeclineStatus.Pending,
+    label: 'Pending',
+  },
+  {
+    value: AcceptDeclineStatus.Declined,
+    label: 'Rejected',
+  },
+];
 
 const DoctorPanel = (): JSX.Element => {
   const [paginationData, setPaginationData] = useState<PaginationData | undefined>(undefined);
   const [selectedDoctor, setSelectedDoctor] = useState<IDoctor | undefined>();
   const [openModal, setModalOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const [isConfirmationLoading, setIsConfirmationLoading] = useState(false);
   const dispatch = useAppDispatch();
   const [tableData, setTableData] = useState<IDoctor[]>([]);
-  const [queryParameters, setQueryParameters] = useState<IQueryParams>({
+  const [queryParameters, setQueryParameters] = useState<IQueryParams<AcceptDeclineStatus | ''>>({
     page: 1,
     orderDirection: 'desc',
     orderBy: 'createdAt',
+    status: '',
     search: '',
   });
   const [confirmation, setConfirmation] = useState<ConfirmationProps>({
@@ -61,31 +81,7 @@ const DoctorPanel = (): JSX.Element => {
     open: false,
   });
   const { searchTerm, handleSearch } = useSearch(handleSubmit);
-  const sortOptions = [
-    {
-      value: 'asc',
-      label: 'Ascending',
-    },
-    {
-      value: 'desc',
-      label: 'Descending',
-    },
-  ];
 
-  const filterOptions = [
-    {
-      value: 'MDCRegistration',
-      label: 'MDCRegistration',
-    },
-    {
-      value: 'firstName',
-      label: 'Name',
-    },
-    {
-      value: 'createdAt',
-      label: 'Recent',
-    },
-  ];
   const columns: ColumnDef<IDoctor>[] = [
     {
       accessorKey: 'MDCRegistration',
@@ -117,22 +113,14 @@ const DoctorPanel = (): JSX.Element => {
       accessorKey: 'status',
       header: 'Status',
       cell: ({ row }): JSX.Element => {
-        const status: string = row.getValue('status');
-        const variant = (status: string): 'default' | 'brown' | 'destructive' => {
-          switch (status) {
-            case 'Approved':
-              return 'default';
-            case 'Declined':
-              return 'brown';
-            default:
-              return 'destructive';
-          }
-        };
-        return (
-          <div>
-            <Badge variant={variant(status)}>{status}</Badge>
-          </div>
-        );
+        switch (row.getValue('status')) {
+          case AcceptDeclineStatus.Accepted:
+            return <Badge variant="default">Approved</Badge>;
+          case AcceptDeclineStatus.Declined:
+            return <Badge variant="destructive">Declined</Badge>;
+          default:
+            return <Badge variant="brown">Pending</Badge>;
+        }
       },
     },
     {
@@ -170,98 +158,111 @@ const DoctorPanel = (): JSX.Element => {
     {
       id: 'actions',
       header: 'Action',
-      cell: ({ row }) => (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div className="flex w-11 cursor-pointer items-center justify-center text-center text-sm text-black">
-              <Ellipsis />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem onClick={() => handleView(row.getValue('MDCRegistration'))}>
-              <Binoculars /> View
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() =>
-                setConfirmation((prev) => ({
-                  ...prev,
-                  open: true,
-                  acceptCommand: () => handleDropdownAction('activate', String(row.getValue('id'))),
-                  acceptTitle: 'Activate',
-                  declineTitle: 'Cancel',
-                  rejectCommand: () =>
+      cell: ({ row }): JSX.Element => {
+        const isPending = row.getValue('status') === AcceptDeclineStatus.Pending;
+        const isApproved = row.getValue('status') === AcceptDeclineStatus.Accepted;
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <div className="flex w-11 cursor-pointer items-center justify-center text-center text-sm text-black">
+                <Ellipsis />
+              </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => handleView(row.getValue('MDCRegistration'))}>
+                <Binoculars /> View
+              </DropdownMenuItem>
+              {isApproved && ( //An extra condition to be added to also show when doctor has been deactivated
+                <DropdownMenuItem
+                  onClick={() =>
                     setConfirmation((prev) => ({
                       ...prev,
-                      open: false,
-                    })),
-                  description: `Are you sure you want to activate ${row.getValue('firstName')}'s account?`,
-                }))
-              }
-            >
-              <ShieldCheck /> Activate
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() =>
-                setConfirmation((prev) => ({
-                  ...prev,
-                  open: true,
-                  acceptCommand: () => handleDropdownAction('approve', String(row.getValue('id'))),
-                  acceptTitle: 'Approve',
-                  declineTitle: 'Cancel',
-                  rejectCommand: () =>
+                      open: true,
+                      acceptCommand: () => console.info('Activate: yet to be implemented'),
+                      acceptTitle: 'Activate',
+                      declineTitle: 'Cancel',
+                      rejectCommand: () =>
+                        setConfirmation((prev) => ({
+                          ...prev,
+                          open: false,
+                        })),
+                      description: `Are you sure you want to activate ${row.getValue('firstName')}'s account?`,
+                    }))
+                  }
+                >
+                  <ShieldCheck /> Activate
+                </DropdownMenuItem>
+              )}
+              {isPending && (
+                <>
+                  <DropdownMenuItem
+                    onClick={() =>
+                      setConfirmation((prev) => ({
+                        ...prev,
+                        open: true,
+                        acceptCommand: () =>
+                          handleDropdownAction(approveDoctorRequest, String(row.getValue('id'))),
+                        acceptTitle: 'Approve',
+                        declineTitle: 'Cancel',
+                        rejectCommand: () =>
+                          setConfirmation((prev) => ({
+                            ...prev,
+                            open: false,
+                          })),
+                        description: `Are you sure you want to approve ${row.getValue('firstName')}'s account?`,
+                      }))
+                    }
+                  >
+                    <Signature /> Approve
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() =>
+                      setConfirmation((prev) => ({
+                        ...prev,
+                        open: true,
+                        acceptCommand: () =>
+                          handleDropdownAction(declineDoctor, String(row.getValue('id'))),
+                        acceptTitle: 'Decline',
+                        declineTitle: 'Cancel',
+                        rejectCommand: () =>
+                          setConfirmation((prev) => ({
+                            ...prev,
+                            open: false,
+                          })),
+                        description: `Are you sure you want to decline ${row.getValue('firstName')}'s request?`,
+                      }))
+                    }
+                  >
+                    <MessageSquareX /> Decline
+                  </DropdownMenuItem>
+                </>
+              )}
+              {isApproved && ( //An extra condition to be added to also show when doctor has been is currently active
+                <DropdownMenuItem
+                  className="text-red-600"
+                  onClick={() =>
                     setConfirmation((prev) => ({
                       ...prev,
-                      open: false,
-                    })),
-                  description: `Are you sure you want to approve ${row.getValue('firstName')}'s account?`,
-                }))
-              }
-            >
-              <Signature /> Approve
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() =>
-                setConfirmation((prev) => ({
-                  ...prev,
-                  open: true,
-                  acceptCommand: () => handleDropdownAction('decline', String(row.getValue('id'))),
-                  acceptTitle: 'Decline',
-                  declineTitle: 'Cancel',
-                  rejectCommand: () =>
-                    setConfirmation((prev) => ({
-                      ...prev,
-                      open: false,
-                    })),
-                  description: `Are you sure you want to decline ${row.getValue('firstName')}'s request?`,
-                }))
-              }
-            >
-              <MessageSquareX /> Decline
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className="text-red-600"
-              onClick={() =>
-                setConfirmation((prev) => ({
-                  ...prev,
-                  open: true,
-                  acceptCommand: () =>
-                    handleDropdownAction('deactivate', String(row.getValue('id'))),
-                  acceptTitle: 'Deactivate',
-                  declineTitle: 'Cancel',
-                  rejectCommand: () =>
-                    setConfirmation((prev) => ({
-                      ...prev,
-                      open: false,
-                    })),
-                  description: `Are you sure you want to deactivate ${row.getValue('firstName')}'s account?`,
-                }))
-              }
-            >
-              <CalendarX /> Deactivate
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ),
+                      open: true,
+                      acceptCommand: () => console.info('Deactivate yet to be implemented'),
+                      acceptTitle: 'Deactivate',
+                      declineTitle: 'Cancel',
+                      rejectCommand: () =>
+                        setConfirmation((prev) => ({
+                          ...prev,
+                          open: false,
+                        })),
+                      description: `Are you sure you want to deactivate ${row.getValue('firstName')}'s account?`,
+                    }))
+                  }
+                >
+                  <CalendarX /> Deactivate
+                </DropdownMenuItem>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
       enableHiding: false,
     },
   ];
@@ -277,13 +278,8 @@ const DoctorPanel = (): JSX.Element => {
       }
 
       const { rows, ...pagination } = payload as IPagination<IDoctor>;
-      // Todo: Status of the doctors are all approved; should be changed to their respective statuses once it is available from the backend
-      const tableData = rows.map((doctorDetails) => ({
-        ...doctorDetails,
-        status: 'Approved',
-      }));
 
-      setTableData(tableData);
+      setTableData(rows);
       setPaginationData(pagination);
       setLoading(false);
     };
@@ -308,32 +304,10 @@ const DoctorPanel = (): JSX.Element => {
     }));
   }
 
-  async function handleDropdownAction(
-    action: 'activate' | 'approve' | 'deactivate' | 'decline',
-    id: string,
-  ): Promise<void> {
-    setIsConfirmationLoading(true);
-    switch (action) {
-      case 'approve':
-        {
-          const { payload } = await dispatch(approveDoctorRequest(id));
-          if (payload) {
-            toast(payload);
-          }
-        }
-        break;
-      case 'decline':
-        {
-          const { payload } = await dispatch(declineDoctor(id));
-          if (payload) {
-            toast(payload);
-          }
-        }
-        break;
-    }
-
-    setIsConfirmationLoading(false);
-  }
+  const { handleDropdownAction, isConfirmationLoading } = useDropdownAction({
+    setConfirmation,
+    setQueryParameters,
+  });
 
   return (
     <>
@@ -344,7 +318,7 @@ const DoctorPanel = (): JSX.Element => {
               <form className="flex" onSubmit={handleSubmit}>
                 <Input
                   error=""
-                  placeholder="Search Patient"
+                  placeholder="Search Doctor"
                   className="max-w-[333px] sm:w-[333px]"
                   type="search"
                   leftIcon={<Search className="text-gray-500" size={20} />}
@@ -353,34 +327,20 @@ const DoctorPanel = (): JSX.Element => {
                 {searchTerm && <Button child={<SendHorizontal />} className="ml-2" />}
               </form>
               <OptionsMenu
-                options={filterOptions}
+                options={statusFilterOptions}
                 Icon={ListFilter}
                 menuTrigger="Filter"
-                selected={queryParameters.orderBy}
+                selected={queryParameters.status}
                 setSelected={(value: string) =>
                   setQueryParameters((prev) => ({
                     ...prev,
                     page: 1,
-                    orderBy: value,
+                    status: value as AcceptDeclineStatus,
                   }))
                 }
-                className="h-10 bg-gray-50 sm:flex"
+                className="h-10 cursor-pointer bg-gray-50 sm:flex"
               />
             </div>
-            <OptionsMenu
-              options={sortOptions}
-              Icon={ArrowDownAZ}
-              menuTrigger="Sort By"
-              selected={queryParameters.orderDirection}
-              setSelected={(value: string) =>
-                setQueryParameters((prev) => ({
-                  ...prev,
-                  page: 1,
-                  orderDirection: value,
-                }))
-              }
-              className="hidden h-10 bg-gray-50 sm:flex"
-            />
           </div>
           <TableData
             columns={columns}

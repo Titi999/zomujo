@@ -1,4 +1,4 @@
-import { Gender } from './shared.enum';
+import { AcceptDeclineStatus, Gender } from './shared.enum';
 
 export interface IDoctor {
   id: string;
@@ -35,4 +35,5 @@ export interface IDoctor {
   updatedAt: Date;
   signaturePath: string;
   hospitalId: string;
+  status: AcceptDeclineStatus;
 }
