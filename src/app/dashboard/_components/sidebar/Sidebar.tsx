@@ -111,7 +111,7 @@ export const SidebarLayout = (): JSX.Element => {
               <EllipsisVertical className="ml-auto" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
-          <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
+          <DropdownMenuContent side="top" className="w-(--radix-popper-anchor-width)">
             <DropdownMenuItem>
               <span>Profile</span>
             </DropdownMenuItem>

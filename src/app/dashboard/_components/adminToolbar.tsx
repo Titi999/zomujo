@@ -17,7 +17,7 @@ const AdminToolbar = (): JSX.Element => (
       </div>
       <div>
         <Button
-          className="border border-success-300 bg-white text-black hover:!bg-success-300 hover:text-white"
+          className="border border-success-300 bg-white text-black hover:bg-success-300! hover:text-white"
           child={
             <div className="flex items-center gap-x-1">
               <Settings />
