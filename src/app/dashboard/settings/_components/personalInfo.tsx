@@ -1,7 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { SelectInput, SelectOption } from '@/components/ui/select';
+import { SelectInput } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { genderOptions, MODE } from '@/constants/constants';
 import { nameSchema } from '@/schemas/zod.schemas';
@@ -19,7 +19,6 @@ const PersonalInfo = (): JSX.Element => {
   const PersonalDetailsSchema = z.object({
     name: nameSchema,
   });
-
 
   const { register, control } = useForm<IPersonalInfo>({
     resolver: zodResolver(PersonalDetailsSchema),
