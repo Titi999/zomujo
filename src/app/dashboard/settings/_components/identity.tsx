@@ -1,21 +1,37 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import SingleImageDropzone from '@/components/ui/singleFileDropzone';
-import { useAppSelector } from '@/lib/hooks';
+import { Toast, toast } from '@/hooks/use-toast';
+import { uploadDoctorId } from '@/lib/features/doctors/doctorsThunk';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { fileSchema } from '@/schemas/zod.schemas';
+import { IDoctorIdentification } from '@/types/auth.interface';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { JSX } from 'react';
+import { JSX, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 const Identity = (): JSX.Element => {
-  const identificationSchema = z.object({});
+  const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(false);
   const doctorIdentification = useAppSelector(
     ({ authentication }) => authentication.doctorIdentification,
   );
-  const { register, setValue, watch } = useForm({
+  const identificationSchema = z.object({
+    front: fileSchema,
+    back: fileSchema,
+  });
+  const { register, setValue, watch, handleSubmit, getValues } = useForm<IDoctorIdentification>({
     resolver: zodResolver(identificationSchema),
     defaultValues: doctorIdentification,
   });
+
+  async function onSubmit(): Promise<void> {
+    setIsLoading(true);
+    const { payload } = await dispatch(uploadDoctorId(getValues()));
+    toast(payload as Toast);
+    setIsLoading(false);
+  }
 
   return (
     <div>
@@ -31,7 +47,7 @@ const Identity = (): JSX.Element => {
         </p>
         <hr className="my-7 gap-4" />
       </div>
-      <div className="max-w-[650px]">
+      <form className="max-w-[650px]" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-row flex-wrap justify-center sm:justify-between">
           <SingleImageDropzone
             height={280}
@@ -52,9 +68,9 @@ const Identity = (): JSX.Element => {
           />
         </div>
         <div className="mb-16 mt-4 flex justify-end sm:mb-0 sm:mt-0">
-          <Button child="Save Changes" />
+          <Button child="Save Changes" isLoading={isLoading} disabled={isLoading} />
         </div>
-      </div>
+      </form>
     </div>
   );
 };

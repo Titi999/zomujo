@@ -57,7 +57,7 @@ const DoctorStats = (): JSX.Element => {
   return (
     <div>
       <section className="flex items-center justify-between">
-        <p className="text-[20px] font-bold sm:text-[32px]"> Registered Doctor</p>
+        <p className="text-[20px] font-bold sm:text-[32px]"> Registered Doctors</p>
         <Button
           child={
             <>

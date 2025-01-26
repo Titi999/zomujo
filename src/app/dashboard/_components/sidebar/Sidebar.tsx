@@ -14,14 +14,6 @@ import {
   SidebarMenuSub,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import {
-  ADMIN_SETTINGS_SIDEBAR,
-  ADMIN_SIDE_BAR,
-  DOCTOR_SETTINGS_SIDEBAR,
-  DOCTOR_SIDE_BAR,
-  PATIENT_SETTINGS_SIDEBAR,
-  PATIENT_SIDE_BAR,
-} from '@/constants/constants';
 import { CollapsibleTrigger } from '@radix-ui/react-collapsible';
 import { ChevronDown, EllipsisVertical } from 'lucide-react';
 import Image from 'next/image';
@@ -42,6 +34,7 @@ import { selectUserName, selectUserRole } from '@/lib/features/auth/authSelector
 import { Role, SidebarType } from '@/types/shared.enum';
 import { JSX } from 'react';
 import { ISidebar } from '@/types/sidebar.interface';
+import { ADMIN_SETTINGS_SIDEBAR, ADMIN_SIDE_BAR, DOCTOR_SETTINGS_SIDEBAR, DOCTOR_SIDE_BAR, PATIENT_SETTINGS_SIDEBAR, PATIENT_SIDE_BAR } from '@/constants/sidebar.constant';
 
 type SideBarProps = {
   type?: SidebarType;

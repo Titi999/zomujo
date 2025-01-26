@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { SelectInput, SelectOption } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { MODE } from '@/constants/constants';
+import { genderOptions, MODE } from '@/constants/constants';
 import { nameSchema } from '@/schemas/zod.schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trash2 } from 'lucide-react';
@@ -19,11 +19,7 @@ const PersonalInfo = (): JSX.Element => {
   const PersonalDetailsSchema = z.object({
     name: nameSchema,
   });
-  const genderOptions: SelectOption[] = [
-    { label: 'Male', value: 'male' },
-    { label: 'Female', value: 'female' },
-    { label: 'Other', value: 'other' },
-  ];
+
 
   const { register, control } = useForm<IPersonalInfo>({
     resolver: zodResolver(PersonalDetailsSchema),
