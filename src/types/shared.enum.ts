@@ -51,3 +51,7 @@ export enum ToastStatus {
   Success = 'Success',
   Error = 'Error',
 }
+
+export enum SidebarType {
+  Settings = 'settings',
+}

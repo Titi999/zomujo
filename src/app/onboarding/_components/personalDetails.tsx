@@ -5,12 +5,11 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { mdcNumberSchema, phoneNumberSchema, requiredStringSchema } from '@/schemas/zod.schemas';
 import { z } from 'zod';
-import { Gender } from '@/types/shared.enum';
-import { SelectInput, SelectOption } from '@/components/ui/select';
+import { SelectInput } from '@/components/ui/select';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { updatePersonalDetails } from '@/lib/features/auth/authSlice';
 import { IPersonalDetails } from '@/types/auth.interface';
-import { MODE } from '@/constants/constants';
+import { genderOptions, MODE } from '@/constants/constants';
 import { maxDate } from '@/lib/date';
 import { JSX } from 'react';
 
@@ -20,12 +19,6 @@ const PersonalDetailsSchema = z.object({
   contact: phoneNumberSchema,
   gender: requiredStringSchema(),
 });
-
-const genderOptions: SelectOption[] = [
-  { label: 'Male', value: Gender.Male },
-  { label: 'Female', value: Gender.Female },
-  { label: 'Other', value: Gender.Other },
-];
 
 const PersonalDetails = (): JSX.Element => {
   const personalDetails = useAppSelector(

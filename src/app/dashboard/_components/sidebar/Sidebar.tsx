@@ -14,7 +14,6 @@ import {
   SidebarMenuSub,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { ADMIN_SIDE_BAR, DOCTOR_SIDE_BAR, PATIENT_SIDE_BAR } from '@/constants/constants';
 import { CollapsibleTrigger } from '@radix-ui/react-collapsible';
 import { ChevronDown, EllipsisVertical } from 'lucide-react';
 import Image from 'next/image';
@@ -32,103 +31,133 @@ import { cn } from '@/lib/utils';
 import { Avatar } from '@/components/ui/avatar';
 import { useAppSelector } from '@/lib/hooks';
 import { selectUserName, selectUserRole } from '@/lib/features/auth/authSelector';
-import { Role } from '@/types/shared.enum';
+import { Role, SidebarType } from '@/types/shared.enum';
 import { JSX } from 'react';
 import { ISidebar } from '@/types/sidebar.interface';
+import {
+  ADMIN_SETTINGS_SIDEBAR,
+  ADMIN_SIDE_BAR,
+  DOCTOR_SETTINGS_SIDEBAR,
+  DOCTOR_SIDE_BAR,
+  PATIENT_SETTINGS_SIDEBAR,
+  PATIENT_SIDE_BAR,
+} from '@/constants/sidebar.constant';
 
-export const SidebarLayout = (): JSX.Element => {
+type SideBarProps = {
+  type?: SidebarType;
+  sidebarClassName?: string;
+  sidebarContentClassName?: string;
+  sidebarTabClassName?: string;
+};
+export const SidebarLayout = ({
+  type,
+  sidebarClassName,
+  sidebarContentClassName,
+  sidebarTabClassName,
+}: SideBarProps): JSX.Element => {
   const userName = useAppSelector(selectUserName);
   const role = useAppSelector(selectUserRole);
   const pathName = usePathname();
 
   return (
-    <Sidebar className="hidden me:block">
-      <SidebarHeader className="pb-[50px] pt-3.5">
-        <SidebarTrigger child={<Image src={Logo} alt="Zyptyk-logo" />} className="h-10 w-10" />
-      </SidebarHeader>
-      <SidebarContent>
-        {getSidebarByRole(role).sidebarGroup.map((category) => (
+    <Sidebar className={cn('hidden me:block', sidebarClassName)}>
+      {!type && (
+        <SidebarHeader className="pb-[50px] pt-3.5">
+          <SidebarTrigger child={<Image src={Logo} alt="Zyptyk-logo" />} className="h-10 w-10" />
+        </SidebarHeader>
+      )}
+      <SidebarContent className={sidebarContentClassName}>
+        {getSidebarByRole(role, type).sidebarGroup.map((category) => (
           <SidebarGroup key={category.groupTitle}>
             <SidebarGroupLabel>{category.groupTitle}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {category.menu.map(({ title, url, Icon, subMenu }) =>
-                  subMenu ? (
-                    <Collapsible className="group/collapsible" key={title}>
-                      <SidebarMenuItem>
-                        <CollapsibleTrigger asChild>
-                          <SidebarMenuButton>
-                            {Icon && <Icon />} {title}
-                            <ChevronDown className="ml-auto mr-1" />
-                          </SidebarMenuButton>
-                        </CollapsibleTrigger>
+                {category.menu
+                  .filter(({ only }) => !only || only === role)
+                  .map(({ title, url, Icon, subMenu }) =>
+                    subMenu ? (
+                      <Collapsible className="group/collapsible" key={title}>
+                        <SidebarMenuItem>
+                          <CollapsibleTrigger asChild>
+                            <SidebarMenuButton>
+                              {Icon && <Icon />} {title}
+                              <ChevronDown className="ml-auto mr-1" />
+                            </SidebarMenuButton>
+                          </CollapsibleTrigger>
 
-                        <CollapsibleContent>
-                          <SidebarMenuSub>
-                            {subMenu.map(({ url, title }) => (
-                              <SidebarMenuItem key={title}>
-                                <Link href={url}>
-                                  <SidebarMenuButton
-                                    key={title}
-                                    title={title}
-                                    isActive={pathName === url}
-                                    className="data-[active=true]/menu-action:before:opacity-0"
-                                  >
-                                    {title}
-                                  </SidebarMenuButton>
-                                </Link>
-                              </SidebarMenuItem>
-                            ))}
-                          </SidebarMenuSub>
-                        </CollapsibleContent>
+                          <CollapsibleContent>
+                            <SidebarMenuSub>
+                              {subMenu.map(({ url, title }) => (
+                                <SidebarMenuItem key={title}>
+                                  <Link href={url}>
+                                    <SidebarMenuButton
+                                      key={title}
+                                      title={title}
+                                      isActive={pathName === url}
+                                      className={'data-[active=true]/menu-action:before:opacity-0'}
+                                    >
+                                      {title}
+                                    </SidebarMenuButton>
+                                  </Link>
+                                </SidebarMenuItem>
+                              ))}
+                            </SidebarMenuSub>
+                          </CollapsibleContent>
+                        </SidebarMenuItem>
+                      </Collapsible>
+                    ) : (
+                      <SidebarMenuItem key={title}>
+                        <SidebarMenuButton
+                          asChild
+                          isActive={pathName === url}
+                          title={title}
+                          className={sidebarTabClassName}
+                        >
+                          <Link href={url}>
+                            {Icon && <Icon />} {title}
+                          </Link>
+                        </SidebarMenuButton>
                       </SidebarMenuItem>
-                    </Collapsible>
-                  ) : (
-                    <SidebarMenuItem key={title}>
-                      <SidebarMenuButton asChild isActive={pathName === url} title={title}>
-                        <Link href={url}>
-                          {Icon && <Icon />} {title}
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ),
-                )}
+                    ),
+                  )}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
         ))}
       </SidebarContent>
-      <SidebarFooter>
-        <ProfileCompletionCard />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuButton>
-              <Avatar />
-              <div className="flex flex-col text-xs font-medium">
-                <span>{userName}</span>
-                <span className="rounded-lg py-1.5 text-badge">{role}</span>
-              </div>
-              <EllipsisVertical className="ml-auto" />
-            </SidebarMenuButton>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
-            <DropdownMenuItem>
-              <span>Profile</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <span>Log out</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </SidebarFooter>
+      {!type && (
+        <SidebarFooter>
+          <ProfileCompletionCard />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <SidebarMenuButton>
+                <Avatar />
+                <div className="flex flex-col text-xs font-medium">
+                  <span>{userName}</span>
+                  <span className="rounded-lg py-1.5 text-badge">{role}</span>
+                </div>
+                <EllipsisVertical className="ml-auto" />
+              </SidebarMenuButton>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
+              <DropdownMenuItem>
+                <span>Profile</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <span>Log out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </SidebarFooter>
+      )}
     </Sidebar>
   );
 };
 
-export const PhoneNavbar = (): JSX.Element => {
+export const PhoneNavbar = ({ type }: SideBarProps): JSX.Element => {
   const role = useAppSelector(selectUserRole);
   const pathName = usePathname();
-  const flattenedMenu = getSidebarByRole(role).sidebarGroup.flatMap((group) => group.menu);
+  const flattenedMenu = getSidebarByRole(role, type).sidebarGroup.flatMap((group) => group.menu);
   const style =
     'h-full p-2 hover:bg-transparent data-[active=true]:bg-transparent relative before:absolute before:left-1/2 before:top-0 before:-translate-x-1/2 before:transform rounded-lg before:h-[3px] before:w-[30px] before:rounded before:bg-primary before:opacity-0 data-[active=true]/menu-action:before:opacity-100';
 
@@ -172,14 +201,64 @@ export const PhoneNavbar = (): JSX.Element => {
   );
 };
 
-const getSidebarByRole = (role?: Role): ISidebar => {
-  switch (role) {
-    case Role.Admin:
-    case Role.SuperAdmin:
-      return ADMIN_SIDE_BAR;
-    case Role.Doctor:
-      return DOCTOR_SIDE_BAR;
-    default:
-      return PATIENT_SIDE_BAR;
+export const SettingsNavbar = (): JSX.Element => {
+  const pathName = usePathname();
+  const role = useAppSelector(selectUserRole);
+  const flattenedMenu = getSidebarByRole(role, SidebarType.Settings).sidebarGroup.flatMap(
+    (group) => group.menu,
+  );
+
+  return (
+    <>
+      <div className="flex justify-evenly overflow-x-scroll bg-white me:hidden">
+        {flattenedMenu.map(({ title, phoneTitle, url }) => (
+          <div key={title} title={title}>
+            <SidebarMenuButton
+              isActive={pathName === url}
+              title={title}
+              className="relative h-12 px-0 hover:bg-transparent data-[active=true]/menu-action:z-50 data-[active=true]/menu-action:rounded-none data-[active=true]/menu-action:border-b-2 data-[active=true]/menu-action:border-primary data-[active=true]/menu-action:bg-transparent"
+            >
+              <Link href={url} className="flex flex-col items-center justify-center px-2">
+                <div>
+                  <span
+                    className={cn(
+                      'w-5 truncate text-xs font-bold',
+                      pathName === url && 'text-primary',
+                    )}
+                  >
+                    {phoneTitle ?? title}
+                  </span>
+                </div>
+              </Link>
+            </SidebarMenuButton>
+          </div>
+        ))}
+      </div>
+      <hr className="relative mx-[2%] -mt-2.5 w-auto border-b sm:mx-[5%]" />
+    </>
+  );
+};
+
+const getSidebarByRole = (role?: Role, type?: SidebarType): ISidebar => {
+  if (type === SidebarType.Settings) {
+    switch (role) {
+      case Role.Admin:
+      case Role.SuperAdmin:
+        return ADMIN_SETTINGS_SIDEBAR;
+      case Role.Doctor:
+        return DOCTOR_SETTINGS_SIDEBAR;
+      default:
+        return PATIENT_SETTINGS_SIDEBAR;
+    }
+  } else {
+    switch (role) {
+      case Role.Admin:
+      case Role.SuperAdmin:
+        return ADMIN_SIDE_BAR;
+      case Role.Doctor:
+        return DOCTOR_SIDE_BAR;
+      default:
+        return PATIENT_SIDE_BAR;
+    }
   }
 };

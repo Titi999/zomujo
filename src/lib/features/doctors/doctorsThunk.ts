@@ -6,6 +6,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { generateSuccessToast } from '@/lib/utils';
 import { Toast } from '@/hooks/use-toast';
 import { AcceptDeclineStatus } from '@/types/shared.enum';
+import { IDoctorIdentification } from '@/types/auth.interface';
 
 export const getAllDoctors = createAsyncThunk(
   'doctors/allDoctors',
@@ -61,6 +62,24 @@ export const countAllDoctors = createAsyncThunk(
     try {
       const { data } = await axios.get<IResponse<IDoctorCountResponse>>(`dashboard/doctor-count`);
       return data.data;
+    } catch (error) {
+      return axiosErrorHandler(error, true) as Toast;
+    }
+  },
+);
+
+export const uploadDoctorId = createAsyncThunk(
+  'settings/uploadDoctorsId',
+  async (doctorIdentification: IDoctorIdentification) => {
+    try {
+      const {
+        data: { message },
+      } = await axios.post<IResponse>('doctors/upload-id', doctorIdentification, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return generateSuccessToast(message);
     } catch (error) {
       return axiosErrorHandler(error, true) as Toast;
     }

@@ -6,7 +6,7 @@ import { AvatarGreetings } from '../avatarGreetings';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const DoctorHome = (): JSX.Element => (
-  <div className="mx-4 sm:mx-6">
+  <div className="mx-4">
     <AvatarGreetings />
     <div className="flex w-full items-center justify-center md:hidden">
       <Tabs defaultValue="appointment" className="w-full text-center text-sm md:hidden">
