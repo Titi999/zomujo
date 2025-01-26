@@ -5,13 +5,18 @@ import { IDoctorCountResponse } from '@/types/stats.interface';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { generateSuccessToast } from '@/lib/utils';
 import { Toast } from '@/hooks/use-toast';
+import { AcceptDeclineStatus } from '@/types/shared.enum';
 
 export const getAllDoctors = createAsyncThunk(
   'doctors/allDoctors',
-  async ({ page, search }: IQueryParams): Promise<IPagination<IDoctor> | Toast> => {
+  async ({
+    page,
+    search,
+    status,
+  }: IQueryParams<AcceptDeclineStatus | ''>): Promise<IPagination<IDoctor> | Toast> => {
     try {
       const { data } = await axios.get<IResponse<IPagination<IDoctor>>>(
-        `doctors?page=${page}&search=${search}`,
+        `doctors?page=${page}&search=${search}&status=${status}`,
       );
       return data.data;
     } catch (error) {

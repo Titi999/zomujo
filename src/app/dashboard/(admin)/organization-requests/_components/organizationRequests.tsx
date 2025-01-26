@@ -23,13 +23,13 @@ import {
 } from '@/lib/features/organization-requests/organizationRequestsThunk';
 import OrganizationRequestsStats from '@/app/dashboard/(admin)/organization-requests/_components/organizationRequestsStats';
 import { showErrorToast } from '@/lib/utils';
-import { Toast, toast } from '@/hooks/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useSearch } from '@/hooks/useSearch';
 import { Confirmation, ConfirmationProps } from '@/components/ui/dialog';
 import { getFormattedDate } from '@/lib/date';
-import { AsyncThunk } from '@reduxjs/toolkit';
+import { useDropdownAction } from '@/hooks/useDropdownAction';
 
 const statusFilterOptions: ISelected[] = [
   {
@@ -52,7 +52,6 @@ const statusFilterOptions: ISelected[] = [
 
 const OrganizationRequests = (): JSX.Element => {
   const [requests, setRequests] = useState<IHospital[]>([]);
-  const [isConfirmationLoading, setIsConfirmationLoading] = useState(false);
   const [paginationData, setPaginationData] = useState<PaginationData | undefined>(undefined);
   const [confirmation, setConfirmation] = useState<ConfirmationProps>({
     acceptCommand: () => {},
@@ -69,6 +68,10 @@ const OrganizationRequests = (): JSX.Element => {
     orderBy: 'createdAt',
     search: '',
     status: '',
+  });
+  const { handleDropdownAction, isConfirmationLoading } = useDropdownAction({
+    setConfirmation,
+    setQueryParameters,
   });
 
   useEffect(() => {
@@ -94,38 +97,6 @@ const OrganizationRequests = (): JSX.Element => {
       page: 1,
       search: search ?? searchTerm,
     }));
-  }
-
-  async function handleDropdownAction(action: 'approve' | 'decline', id: string): Promise<void> {
-    setIsConfirmationLoading(true);
-
-    const handleAction = async (actionThunk: AsyncThunk<Toast, string, object>): Promise<void> => {
-      const { payload } = await dispatch(actionThunk(id));
-      if (payload) {
-        toast(payload);
-      }
-      if (!showErrorToast(payload)) {
-        setConfirmation((prev) => ({
-          ...prev,
-          open: false,
-        }));
-        setQueryParameters((prev) => ({
-          ...prev,
-          page: 1,
-        }));
-      }
-    };
-
-    switch (action) {
-      case 'approve':
-        await handleAction(approveOrganizationRequest);
-        break;
-      case 'decline':
-        await handleAction(declineOrganizationRequest);
-        break;
-    }
-
-    setIsConfirmationLoading(false);
   }
 
   const columns: ColumnDef<IHospital>[] = [
@@ -182,7 +153,10 @@ const OrganizationRequests = (): JSX.Element => {
                       ...prev,
                       open: true,
                       acceptCommand: () =>
-                        handleDropdownAction('approve', String(row.getValue('id'))),
+                        handleDropdownAction(
+                          approveOrganizationRequest,
+                          String(row.getValue('id')),
+                        ),
                       acceptButtonTitle: 'Yes, Approve',
                       rejectButtonTitle: 'Cancel',
                       rejectCommand: () =>
@@ -204,7 +178,10 @@ const OrganizationRequests = (): JSX.Element => {
                       ...prev,
                       open: true,
                       acceptCommand: () =>
-                        handleDropdownAction('decline', String(row.getValue('id'))),
+                        handleDropdownAction(
+                          declineOrganizationRequest,
+                          String(row.getValue('id')),
+                        ),
                       rejectButtonTitle: 'Cancel',
                       acceptButtonTitle: 'Yes, Decline',
                       rejectCommand: () =>
