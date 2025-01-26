@@ -23,14 +23,12 @@ const EmailVerification = (): JSX.Element => {
       if (payload) {
         setMessage(String(payload));
         const interval = setInterval(() => {
-          if (countdown > 0) {
-            setCountdown((prev) => prev - 1);
-          }
+          setCountdown((prev) => (prev > 0 ? prev - 1 : 0));
         }, 1000);
 
         const timeout = setTimeout(() => {
           router.push('/dashboard');
-        }, 7000);
+        }, 6000);
 
         return (): void => {
           clearInterval(interval);

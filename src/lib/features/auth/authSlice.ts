@@ -56,6 +56,9 @@ const authSlice = createSlice({
     updateExtra: (state, { payload }) => {
       state.extra = payload;
     },
+    updateStatus: (state, { payload }) => {
+      state.user!.status = payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -124,5 +127,6 @@ export const {
   updateCurrentStep,
   setUserInfo,
   updateExtra,
+  updateStatus,
 } = authSlice.actions;
 export default authSlice.reducer;
