@@ -7,8 +7,8 @@ import Pricing from '../_components/transactions/pricing';
 const Payment = (): JSX.Element => (
   <div>
     <div>
-      <h2 className="text-2xl font-bold">Security</h2>
-      <p className="text-gray-500"> Change your profile</p>
+      <h2 className="text-2xl font-bold">Payment</h2>
+      <p className="text-gray-500"> Monitor your payment transactions efficiently.</p>
       <hr className="my-7 gap-4" />
     </div>
     <Tabs defaultValue="paymentInfo" className="">

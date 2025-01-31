@@ -26,6 +26,11 @@ export const nameSchema = z
   .min(3, 'Field should be more than 3 characters')
   .regex(/^[A-Za-z\s]+$/, 'Field should only contain alphabets');
 
+export const nameArraySchema = z
+  .array(nameSchema)
+  .nonempty('Must have at least one item')
+  .max(10, 'Must not exceed 10 items');
+
 export const mdcNumberSchema = requiredStringSchema().regex(
   /^MDC\/(RN|PN)\/\d{5}$/,
   'Invalid MDC Registration Number',
@@ -34,3 +39,16 @@ export const mdcNumberSchema = requiredStringSchema().regex(
 export const phoneNumberSchema = requiredStringSchema().regex(/^\d{10}$/, 'Invalid phone number');
 
 export const coordinatesSchema = z.number().optional();
+
+export const textAreaSchema = z
+  .string()
+  .nonempty('Field is required')
+  .min(10, 'Field should have at least 10 characters')
+  .max(500, 'Field should not exceed 500 characters')
+  .regex(/^[A-Za-z0-9\s.,!?'"-]+$/, 'Field contains invalid characters');
+
+export const cardNumberSchema = z
+  .string()
+  .min(13, 'Credit card number must be at least 13 digits')
+  .max(19, 'Credit card number must be at most 19 digits')
+  .regex(/^\d{13,19}$/, 'Credit card number must contain only digits');

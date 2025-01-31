@@ -234,7 +234,7 @@ export const SettingsNavbar = (): JSX.Element => {
           </div>
         ))}
       </div>
-      <hr className="relative mx-[2%] -mt-2.5 w-auto border-b sm:mx-[5%]" />
+      <hr className="relative mx-[2%] -mt-2.5 block w-auto border-b sm:mx-[5%] me:hidden" />
     </>
   );
 };

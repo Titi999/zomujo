@@ -2,10 +2,12 @@
 import { Button } from '@/components/ui/button';
 import SingleImageDropzone from '@/components/ui/singleFileDropzone';
 import { Toast, toast } from '@/hooks/use-toast';
+import { selectExtra } from '@/lib/features/auth/authSelector';
 import { uploadDoctorId } from '@/lib/features/doctors/doctorsThunk';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { fileSchema } from '@/schemas/zod.schemas';
 import { IDoctorIdentification } from '@/types/auth.interface';
+import { AcceptDeclineStatus } from '@/types/shared.enum';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { JSX, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -14,16 +16,15 @@ import { z } from 'zod';
 const Identity = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const doctorIdentification = useAppSelector(
-    ({ authentication }) => authentication.doctorIdentification,
-  );
+  const { IDs, status } = useAppSelector(selectExtra)!;
+
   const identificationSchema = z.object({
     front: fileSchema,
     back: fileSchema,
   });
   const { register, setValue, watch, handleSubmit, getValues } = useForm<IDoctorIdentification>({
     resolver: zodResolver(identificationSchema),
-    defaultValues: doctorIdentification,
+    defaultValues: IDs,
   });
 
   async function onSubmit(): Promise<void> {
@@ -38,9 +39,11 @@ const Identity = (): JSX.Element => {
       <div>
         <div className="flex items-center gap-2.5">
           <h2 className="text-2xl font-bold">Identification</h2>
-          <span className="rounded-sm bg-success-50 p-2 text-xs text-primary">
-            Your ID has been verified
-          </span>
+          {status === AcceptDeclineStatus.Accepted && (
+            <span className="rounded-sm bg-success-50 p-2 text-xs text-primary">
+              Your ID has been verified
+            </span>
+          )}
         </div>
         <p className="text-gray-500">
           Stay in the loop! Receive updates, and important news directly to your inbox.
@@ -57,6 +60,7 @@ const Identity = (): JSX.Element => {
             {...register('front')}
             onChange={(file) => setValue('front', file!, { shouldValidate: true })}
             className="mb-4"
+            showDeleteIcon={status !== AcceptDeclineStatus.Accepted ? true : false}
           />
           <SingleImageDropzone
             height={280}
@@ -65,11 +69,14 @@ const Identity = (): JSX.Element => {
             value={watch('back')}
             {...register('back')}
             onChange={(file) => setValue('back', file!, { shouldValidate: true })}
+            showDeleteIcon={status !== AcceptDeclineStatus.Accepted ? true : false}
           />
         </div>
-        <div className="mb-16 mt-4 flex justify-end sm:mb-0 sm:mt-0">
-          <Button child="Save Changes" isLoading={isLoading} disabled={isLoading} />
-        </div>
+        {status !== AcceptDeclineStatus.Accepted && (
+          <div className="mb-16 mt-4 flex justify-end sm:mb-0 sm:mt-0">
+            <Button child="Save Changes" isLoading={isLoading} disabled={isLoading} />
+          </div>
+        )}
       </form>
     </div>
   );

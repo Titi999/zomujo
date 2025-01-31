@@ -43,3 +43,5 @@ export const selectThunkState = createSelector(
 );
 
 export const selectExtra = createSelector(selectAuthentication, ({ extra }) => extra);
+
+export const selectUserId = createSelector(selectAuthentication, ({ user }) => user?.id);
