@@ -3,7 +3,7 @@ import { toast } from '@/hooks/use-toast';
 import { ToastStatus } from '@/types/shared.enum';
 
 export const useCSVReader = <T extends object>(
-  processRow: (row: string[]) => T | null,
+  processRow: (row: string[]) => T,
   duplicateKey?: keyof T,
 ): {
   readCSV: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -44,7 +44,23 @@ export const useCSVReader = <T extends object>(
         if (index === 0) {
           return;
         }
-        const duplicate = !!duplicateKey && data.some((item) => item[duplicateKey] === row[0]);
+
+        const processedRow = processRow(row);
+
+        const invalid = Object.values(processedRow).every((value) => !value);
+
+        if (invalid) {
+          toast({
+            title: ToastStatus.Error,
+            description: `Invalid value at row ${index + 1}. Skipping...`,
+            variant: 'default',
+          });
+          return;
+        }
+
+        const duplicate =
+          !!duplicateKey && data.some((item) => item[duplicateKey] === processedRow[duplicateKey]);
+
         if (duplicate) {
           toast({
             title: ToastStatus.Error,
@@ -53,7 +69,6 @@ export const useCSVReader = <T extends object>(
           });
           return;
         }
-        const processedRow = processRow(row);
         if (processedRow) {
           data.push(processedRow);
         } else {
