@@ -282,7 +282,10 @@ export const TableData = <TData, TValue>({
             variant="outline"
             size="sm"
             onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage() || isLoading}
+            disabled={
+              (manualPagination ? record.endRecord === record.total : !table.getCanNextPage()) ||
+              isLoading
+            }
             child={'Next'}
           />
         </div>
