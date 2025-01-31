@@ -5,6 +5,7 @@ import {
   flexRender,
   functionalUpdate,
   getCoreRowModel,
+  getPaginationRowModel,
   PaginationState,
   SortingState,
   useReactTable,
@@ -127,13 +128,12 @@ export const TableData = <TData, TValue>({
   userPaginationChange,
   columnVisibility,
   page,
-  pageCount,
   paginationData,
   isLoading,
 }: DataTableProps<TData, TValue>): JSX.Element => {
   const [pagination, setPagination] = useState({
     pageIndex: page ? page - 1 : 0,
-    pageSize: 1,
+    pageSize: rowCount,
   });
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -141,10 +141,11 @@ export const TableData = <TData, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    manualPagination: manualPagination,
+    getPaginationRowModel: getPaginationRowModel(),
+    manualPagination,
     rowCount,
-    pageCount: paginationData ? paginationData.total : pageCount,
-    autoResetPageIndex: autoResetPageIndex,
+    pageCount: paginationData ? paginationData.totalPages : Math.ceil(data.length / rowCount),
+    autoResetPageIndex,
     onSortingChange: setSorting,
     onPaginationChange: (updater) => {
       const updatedPagination = (old: PaginationState): PaginationState =>
@@ -245,8 +246,27 @@ export const TableData = <TData, TValue>({
       <div className="mr-2 flex items-center justify-between space-x-2 py-4">
         <div>
           <p className="text-sm text-gray-400">
-            Showing {record.startRecord} to {record.endRecord} of {record.total} entries
+            {manualPagination ? (
+              <>
+                Showing {record.startRecord} to {record.endRecord} of {record.total} entries
+              </>
+            ) : (
+              <>
+                {' '}
+                Showing{' '}
+                {table.getState().pagination.pageIndex * table.getState().pagination.pageSize +
+                  1}{' '}
+                to{' '}
+                {Math.min(
+                  (table.getState().pagination.pageIndex + 1) *
+                    table.getState().pagination.pageSize,
+                  data.length,
+                )}{' '}
+                of {data.length} entries
+              </>
+            )}
           </p>
+          <p className="text-sm text-gray-400"></p>
         </div>
         <div className="flex items-center justify-center gap-2">
           <Button
@@ -262,7 +282,7 @@ export const TableData = <TData, TValue>({
             variant="outline"
             size="sm"
             onClick={() => table.nextPage()}
-            disabled={record.endRecord === record.total || isLoading}
+            disabled={!table.getCanNextPage() || isLoading}
             child={'Next'}
           />
         </div>

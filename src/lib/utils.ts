@@ -59,3 +59,19 @@ export const generateSuccessToast = (message: string): Toast => ({
   description: message,
   variant: 'success',
 });
+
+/**
+ * Used to download file given url and filename
+ * This function creates a link element, sets the href and download attributes,
+ * appends it to the body, clicks the link, and removes it from the body
+ * @param url - The url of the file to download
+ * @param filename - The name of the file to download
+ */
+export const downloadFileWithUrl = (url: string, filename: string): void => {
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
