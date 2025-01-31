@@ -1,5 +1,10 @@
 import axios, { axiosErrorHandler } from '@/lib/axios';
-import { IDoctor, DoctorPersonalInfo, NotificationInfo, IInviteDoctors } from '@/types/doctor.interface';
+import {
+  IDoctor,
+  DoctorPersonalInfo,
+  NotificationInfo,
+  IInviteDoctors,
+} from '@/types/doctor.interface';
 import { IPagination, IQueryParams, IResponse } from '@/types/shared.interface';
 import { IDoctorCountResponse } from '@/types/stats.interface';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -88,9 +93,7 @@ export const uploadDoctorId = createAsyncThunk(
 
 export const updateDoctorProfile = createAsyncThunk(
   'doctors/profile',
-  async (
-    doctorInfo: DoctorPersonalInfo | NotificationInfo,
-  ): Promise<Toast> => {
+  async (doctorInfo: DoctorPersonalInfo | NotificationInfo): Promise<Toast> => {
     try {
       const {
         data: { message },
@@ -101,9 +104,10 @@ export const updateDoctorProfile = createAsyncThunk(
       });
       return generateSuccessToast(message);
     } catch (error) {
-           return axiosErrorHandler(error, true) as Toast;
-    } 
-  })
+      return axiosErrorHandler(error, true) as Toast;
+    }
+  },
+);
 
 export const inviteDoctors = createAsyncThunk(
   'doctor/inviteDoctors',

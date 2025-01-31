@@ -8,6 +8,7 @@ import { setPaymentRate } from '@/lib/features/payments/payments.thunk';
 import { toast } from '@/hooks/use-toast';
 import { selectExtra } from '@/lib/features/auth/authSelector';
 import { IRate } from '@/types/payment.interface';
+import { IDoctor } from '@/types/doctor.interface';
 
 const Pricing = (): JSX.Element => {
   const MIN_AMOUNT = 20;
@@ -20,7 +21,7 @@ const Pricing = (): JSX.Element => {
   const [lengthOfSession, setCurrentSessionLength] = useState(MIN_SESSION);
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const { rate } = useAppSelector(selectExtra)!;
+  const { rate } = useAppSelector(selectExtra)! as IDoctor;
   async function updateRate(rate: IRate): Promise<void> {
     setIsLoading(true);
     const { payload } = await dispatch(setPaymentRate(rate));
