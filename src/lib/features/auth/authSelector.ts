@@ -52,6 +52,6 @@ export const selectThunkState = createSelector(
   (isLoading, errorMessage) => ({ isLoading, errorMessage }),
 );
 
-export const selectExtra = createSelector(selectAuthentication, ({ extra }) => extra);
+export const selectExtra = createSelector(selectAuthentication, ({ extra }) => extra!);
 
 export const selectUserId = createSelector(selectAuthentication, ({ user }) => user?.id);

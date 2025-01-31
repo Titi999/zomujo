@@ -7,6 +7,7 @@ import { uploadDoctorId } from '@/lib/features/doctors/doctorsThunk';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { fileSchema } from '@/schemas/zod.schemas';
 import { IDoctorIdentification } from '@/types/auth.interface';
+import { IDoctor } from '@/types/doctor.interface';
 import { AcceptDeclineStatus } from '@/types/shared.enum';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { JSX, useState } from 'react';
@@ -16,7 +17,7 @@ import { z } from 'zod';
 const Identity = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const { IDs, status } = useAppSelector(selectExtra)!;
+  const { IDs, status } = useAppSelector(selectExtra) as IDoctor;
 
   const identificationSchema = z.object({
     front: fileSchema,
@@ -60,7 +61,7 @@ const Identity = (): JSX.Element => {
             {...register('front')}
             onChange={(file) => setValue('front', file!, { shouldValidate: true })}
             className="mb-4"
-            showDeleteIcon={status !== AcceptDeclineStatus.Accepted ? true : false}
+            showDeleteIcon={status !== AcceptDeclineStatus.Accepted}
           />
           <SingleImageDropzone
             height={280}
@@ -69,7 +70,7 @@ const Identity = (): JSX.Element => {
             value={watch('back')}
             {...register('back')}
             onChange={(file) => setValue('back', file!, { shouldValidate: true })}
-            showDeleteIcon={status !== AcceptDeclineStatus.Accepted ? true : false}
+            showDeleteIcon={status !== AcceptDeclineStatus.Accepted}
           />
         </div>
         {status !== AcceptDeclineStatus.Accepted && (

@@ -31,8 +31,8 @@ export interface IDoctor extends IExtraBase {
   languages: string[];
   awards: string[];
   IDs: {
-    front: File;
-    back: File;
+    front: string;
+    back: string;
   };
   rate: {
     lengthOfSession: string;

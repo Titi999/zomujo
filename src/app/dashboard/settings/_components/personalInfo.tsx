@@ -15,7 +15,7 @@ import {
   requiredStringSchema,
   textAreaSchema,
 } from '@/schemas/zod.schemas';
-import { DoctorPersonalInfo } from '@/types/doctor.interface';
+import { DoctorPersonalInfo, IDoctor } from '@/types/doctor.interface';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trash2 } from 'lucide-react';
 import Image from 'next/image';
@@ -25,7 +25,7 @@ import { z } from 'zod';
 
 const PersonalInfo = (): JSX.Element => {
   const { firstName, lastName, specializations, bio, experience, contact, profilePicture } =
-    useAppSelector(selectExtra)!;
+    useAppSelector(selectExtra) as IDoctor;
   const personalDetails = {
     firstName,
     lastName,
