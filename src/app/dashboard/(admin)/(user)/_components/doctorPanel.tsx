@@ -306,16 +306,11 @@ const DoctorPanel = (): JSX.Element => {
     },
   ];
 
-  const processInviteDoctorRow = (row: string[]): IInviteDoctor | null => {
-    if (row.some((value) => !value)) {
-      return null;
-    }
-    return {
-      firstName: row[0],
-      lastName: row[1],
-      email: row[2],
-    };
-  };
+  const processInviteDoctorRow = (row: string[]): IInviteDoctor => ({
+    firstName: row[0],
+    lastName: row[1],
+    email: row[2],
+  });
 
   const { readCSV, result, setResult } = useCSVReader<IInviteDoctor>(
     processInviteDoctorRow,

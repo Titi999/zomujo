@@ -175,7 +175,6 @@ export const deactivateUser = createAsyncThunk(
   async (id: string): Promise<Toast> => {
     try {
       const { data } = await axios.delete<IResponse>(`${adminPath}deactivate-user/${id}`);
-      // dispatch(updateStatus(Status.Verified));
       return generateSuccessToast(data.message);
     } catch (error) {
       return axiosErrorHandler(error, true) as Toast;
@@ -193,7 +192,6 @@ export const activateUser = createAsyncThunk(
   async (id: string): Promise<Toast> => {
     try {
       const { data } = await axios.patch<IResponse>(`${adminPath}activate-user/${id}`);
-      // dispatch(updateStatus(Status.Verified));
       return generateSuccessToast(data.message);
     } catch (error) {
       return axiosErrorHandler(error, true) as Toast;
