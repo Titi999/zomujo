@@ -23,6 +23,7 @@ import { Toast } from '@/hooks/use-toast';
 import { Status } from '@/types/shared.enum';
 
 const authPath = 'auth/' as const;
+const adminPath = 'admins/' as const;
 export const login = createAsyncThunk(
   'authentication/login',
   async (loginCredentials: ILogin, { dispatch }) => {
@@ -157,6 +158,40 @@ export const updatePassword = createAsyncThunk(
         passwordCredentials,
       );
       dispatch(updateStatus(Status.Verified));
+      return generateSuccessToast(data.message);
+    } catch (error) {
+      return axiosErrorHandler(error, true) as Toast;
+    }
+  },
+);
+
+/**
+ * @param id
+ * Admin deactivates user based on their role so technically not the id from the user entity.
+ * This is id from either Doctor, Patient or Admins entity
+ */
+export const deactivateUser = createAsyncThunk(
+  'authentication/deactivateUser',
+  async (id: string): Promise<Toast> => {
+    try {
+      const { data } = await axios.delete<IResponse>(`${adminPath}deactivate-user/${id}`);
+      return generateSuccessToast(data.message);
+    } catch (error) {
+      return axiosErrorHandler(error, true) as Toast;
+    }
+  },
+);
+
+/**
+ * @param id
+ * Admin activates a deactivated user based on their role so technically not the id from the user entity.
+ * This is id from either Doctor, Patient or Admins entity
+ */
+export const activateUser = createAsyncThunk(
+  'authentication/activateUser',
+  async (id: string): Promise<Toast> => {
+    try {
+      const { data } = await axios.patch<IResponse>(`${adminPath}activate-user/${id}`);
       return generateSuccessToast(data.message);
     } catch (error) {
       return axiosErrorHandler(error, true) as Toast;

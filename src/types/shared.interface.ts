@@ -26,3 +26,10 @@ export interface IQueryParams<T = undefined> {
 export interface IAction<T = undefined> {
   payload: T;
 }
+
+export interface IExtraBase {
+  id: string;
+  orgId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}

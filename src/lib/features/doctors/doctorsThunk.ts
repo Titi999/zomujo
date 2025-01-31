@@ -1,5 +1,5 @@
 import axios, { axiosErrorHandler } from '@/lib/axios';
-import { IDoctor } from '@/types/doctor.interface';
+import { IDoctor, IInviteDoctors } from '@/types/doctor.interface';
 import { IPagination, IQueryParams, IResponse } from '@/types/shared.interface';
 import { IDoctorCountResponse } from '@/types/stats.interface';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -70,7 +70,7 @@ export const countAllDoctors = createAsyncThunk(
 
 export const uploadDoctorId = createAsyncThunk(
   'settings/uploadDoctorsId',
-  async (doctorIdentification: IDoctorIdentification) => {
+  async (doctorIdentification: IDoctorIdentification): Promise<Toast> => {
     try {
       const {
         data: { message },
@@ -80,6 +80,18 @@ export const uploadDoctorId = createAsyncThunk(
         },
       });
       return generateSuccessToast(message);
+    } catch (error) {
+      return axiosErrorHandler(error, true) as Toast;
+    }
+  },
+);
+
+export const inviteDoctors = createAsyncThunk(
+  'doctor/inviteDoctors',
+  async (inviteDoctors: IInviteDoctors): Promise<Toast> => {
+    try {
+      const { data } = await axios.post<IResponse>(`admins/invite-doctors`, inviteDoctors);
+      return generateSuccessToast(data.message);
     } catch (error) {
       return axiosErrorHandler(error, true) as Toast;
     }

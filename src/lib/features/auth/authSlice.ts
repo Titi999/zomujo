@@ -10,6 +10,8 @@ import {
 } from '@/lib/features/auth/authThunk';
 import { IDoctorIdentification, IPersonalDetails, IUser } from '@/types/auth.interface';
 import { IDoctor } from '@/types/doctor.interface';
+import { IAdmin } from '@/types/admin.interface';
+import { IPatient } from '@/types/patient.interface';
 
 interface AuthenticationState {
   errorMessage: string;
@@ -18,7 +20,7 @@ interface AuthenticationState {
   doctorPersonalDetails: IPersonalDetails | undefined;
   doctorIdentification: IDoctorIdentification | undefined;
   user: IUser | undefined;
-  extra: IDoctor | undefined; // TODO: we will create union when other roles are ready
+  extra: IDoctor | IAdmin | IPatient | undefined;
 }
 
 const initialState: AuthenticationState = {
