@@ -25,6 +25,7 @@ type InputProps = {
   onChange?: (file?: File) => void | Promise<void>;
   disabled?: boolean;
   dropzoneOptions?: Omit<DropzoneOptions, 'disabled'>;
+  showDeleteIcon?: boolean;
 };
 
 const ERROR_MESSAGES = {
@@ -60,6 +61,7 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
       className,
       disabled,
       onChange,
+      showDeleteIcon = true,
       ...props
     },
     ref,
@@ -152,7 +154,7 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
               <p className="leading-4 text-gray-500">Supports PNG, JPG, JPEG</p>
             </div>
           )}
-          {imageUrl && !disabled && (
+          {imageUrl && !disabled && showDeleteIcon && (
             <div
               className="group absolute right-5 top-5 z-50 -translate-y-1/4 translate-x-1/4 transform"
               onClick={(e) => {

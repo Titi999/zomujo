@@ -1,8 +1,14 @@
 'use client';
 import { Slider } from '@/components/ui/slider';
-import React, { JSX, useState } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { setPaymentRate } from '@/lib/features/payments/payments.thunk';
+import { toast } from '@/hooks/use-toast';
+import { selectExtra } from '@/lib/features/auth/authSelector';
+import { IRate } from '@/types/payment.interface';
+import { IDoctor } from '@/types/doctor.interface';
 
 const Pricing = (): JSX.Element => {
   const MIN_AMOUNT = 20;
@@ -13,7 +19,27 @@ const Pricing = (): JSX.Element => {
 
   const [amount, setCurrentAmount] = useState(MIN_AMOUNT);
   const [lengthOfSession, setCurrentSessionLength] = useState(MIN_SESSION);
+  const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const { rate } = useAppSelector(selectExtra)! as IDoctor;
+  async function updateRate(rate: IRate): Promise<void> {
+    setIsLoading(true);
+    const { payload } = await dispatch(setPaymentRate(rate));
+    if (payload) {
+      toast(payload);
+    }
 
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
+    const { amount, lengthOfSession } = rate;
+    const sectionLength = lengthOfSession.split(' ')[0];
+    if (amount) {
+      setCurrentAmount(amount);
+      setCurrentSessionLength(Number(sectionLength));
+    }
+  }, []);
   function sliderPosition(value: number, type: 'amount' | 'sessionLength'): number {
     if (type === 'amount') {
       const multiplier = 1.3;
@@ -62,7 +88,12 @@ const Pricing = (): JSX.Element => {
           <p className="text-sm text-white">{lengthOfSession} mins</p>
         </motion.div>
       </div>
-      <Button child="Save Changes" />
+      <Button
+        child="Save Changes"
+        isLoading={isLoading}
+        disabled={isLoading}
+        onClick={() => updateRate({ amount, lengthOfSession: `${lengthOfSession} mins` })}
+      />
     </div>
   );
 };

@@ -1,23 +1,37 @@
 'use client';
+import { selectExtra } from '@/lib/features/auth/authSelector';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
-import React, { JSX } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const ProfileCompletionCard = (): JSX.Element => {
   const router = useRouter();
-  const filledPercent = (10 / 100) * 100;
+  const extra = useSelector(selectExtra);
+  const [completionRate, setCompletionRate] = useState(0);
 
+  useEffect(() => {
+    if (extra) {
+      const values = Object.values(extra);
+      const total = values.length;
+      const userProvidedFields = values.filter(
+        (value) => Boolean(value) && (!Array.isArray(value) || value.length > 0),
+      );
+
+      setCompletionRate(Math.floor((userProvidedFields.length / total) * 100));
+    }
+  }, [extra]);
   return (
     <div
       className={cn(
         'relative hidden w-full flex-col items-center justify-center gap-6 rounded-lg bg-gradient-to-t from-teal-800 to-emerald-500 px-5 py-4',
-        filledPercent === 100 ? 'hidden' : 'flex',
+        completionRate === 100 ? 'hidden' : 'flex',
       )}
     >
       <div className="z-20 flex h-14 w-full flex-col items-start justify-start gap-2">
         <div className="flex w-full flex-row items-center justify-between">
           <p className="text-base font-medium text-white">Getting Started</p>
-          <p className="text-sm font-bold text-white">{Math.floor(filledPercent)}%</p>
+          <p className="text-sm font-bold text-white">{completionRate}%</p>
         </div>
         <div className="text-xs font-normal text-white">
           Complete profile to unlock other superb features
@@ -26,7 +40,7 @@ const ProfileCompletionCard = (): JSX.Element => {
       <div className="z-20 h-1 w-full rounded-full bg-white/10">
         <div
           style={{
-            width: `${filledPercent}%`,
+            width: `${completionRate}%`,
           }}
           className="h-1 rounded-full bg-white"
         ></div>

@@ -1,5 +1,10 @@
 import axios, { axiosErrorHandler } from '@/lib/axios';
-import { IDoctor, IInviteDoctors } from '@/types/doctor.interface';
+import {
+  IDoctor,
+  DoctorPersonalInfo,
+  NotificationInfo,
+  IInviteDoctors,
+} from '@/types/doctor.interface';
 import { IPagination, IQueryParams, IResponse } from '@/types/shared.interface';
 import { IDoctorCountResponse } from '@/types/stats.interface';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -75,6 +80,24 @@ export const uploadDoctorId = createAsyncThunk(
       const {
         data: { message },
       } = await axios.post<IResponse>('doctors/upload-id', doctorIdentification, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return generateSuccessToast(message);
+    } catch (error) {
+      return axiosErrorHandler(error, true) as Toast;
+    }
+  },
+);
+
+export const updateDoctorProfile = createAsyncThunk(
+  'doctors/profile',
+  async (doctorInfo: DoctorPersonalInfo | NotificationInfo): Promise<Toast> => {
+    try {
+      const {
+        data: { message },
+      } = await axios.patch<IResponse<DoctorPersonalInfo>>(`doctors/me`, doctorInfo, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

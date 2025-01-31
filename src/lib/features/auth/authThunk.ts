@@ -153,12 +153,25 @@ export const updatePassword = createAsyncThunk(
   'authentication/updatePassword',
   async (passwordCredentials: IUpdatePassword, { dispatch }): Promise<Toast> => {
     try {
-      const { data } = await axios.patch<IResponse>(
-        `${authPath}reset-password`,
-        passwordCredentials,
-      );
+      const {
+        data: { message },
+      } = await axios.patch<IResponse>(`${authPath}reset-password`, passwordCredentials);
       dispatch(updateStatus(Status.Verified));
-      return generateSuccessToast(data.message);
+      return generateSuccessToast(message);
+    } catch (error) {
+      return axiosErrorHandler(error, true) as Toast;
+    }
+  },
+);
+
+export const deleteAccount = createAsyncThunk(
+  'authentication/deleteAccount',
+  async (): Promise<Toast> => {
+    try {
+      const {
+        data: { message },
+      } = await axios.delete<IResponse>(`${authPath}delete-account`);
+      return generateSuccessToast(message);
     } catch (error) {
       return axiosErrorHandler(error, true) as Toast;
     }

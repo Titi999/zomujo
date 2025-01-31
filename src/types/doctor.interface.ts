@@ -15,10 +15,17 @@ export interface IDoctor extends IExtraBase {
   city: string;
   qualifications: string[];
   specializations: string[];
+  schoolsAttended: string[];
   experience: number;
   education: {
     school: string;
     degree: string;
+  };
+  notifications: {
+    email: boolean;
+    appointments: boolean;
+    messages: boolean;
+    fileRecordRequest: boolean;
   };
   bio: string;
   languages: string[];
@@ -28,7 +35,7 @@ export interface IDoctor extends IExtraBase {
     back: string;
   };
   rate: {
-    lengthOfSession: number;
+    lengthOfSession: string;
     amount: number;
   };
   balance: number | null;
@@ -36,6 +43,20 @@ export interface IDoctor extends IExtraBase {
   status: AcceptDeclineStatus;
 }
 
+export type DoctorPersonalInfo = Pick<
+  IDoctor,
+  | 'firstName'
+  | 'lastName'
+  | 'contact'
+  | 'experience'
+  | 'languages'
+  | 'awards'
+  | 'specializations'
+  | 'bio'
+  | 'schoolsAttended'
+>;
+
+export type NotificationInfo = Pick<IDoctor, 'notifications'>;
 export type IInviteDoctor = Pick<ISignUp, 'email' | 'lastName' | 'firstName'>;
 
 export interface IInviteDoctors extends Pick<IExtraBase, 'orgId'> {
