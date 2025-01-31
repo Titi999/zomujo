@@ -94,7 +94,7 @@ const DoctorPanel = (): JSX.Element => {
     open: false,
   });
   const { searchTerm, handleSearch } = useSearch(handleSubmit);
-  const IsOrganizationAdmin = useAppSelector(selectIsOrganizationAdmin);
+  const isOrganizationAdmin = useAppSelector(selectIsOrganizationAdmin);
   const orgId = useAppSelector(selectOrganizationId);
 
   useEffect(() => {
@@ -317,7 +317,10 @@ const DoctorPanel = (): JSX.Element => {
     };
   };
 
-  const { readCSV, result, setResult } = useCSVReader<IInviteDoctor>(processInviteDoctorRow);
+  const { readCSV, result, setResult } = useCSVReader<IInviteDoctor>(
+    processInviteDoctorRow,
+    'email',
+  );
 
   useEffect(() => {
     if (!result.length) {
@@ -365,8 +368,6 @@ const DoctorPanel = (): JSX.Element => {
     setConfirmation,
     setQueryParameters,
   });
-
-  //       const duplicateEmail = data.some(({ email }) => email === row[2]);
 
   const removeInvitation = (removeEmail: string): void => {
     const newInvitations = result.filter(({ email }) => email !== removeEmail);
@@ -432,7 +433,7 @@ const DoctorPanel = (): JSX.Element => {
                 className="h-10 cursor-pointer bg-gray-50 sm:flex"
               />
             </div>
-            {IsOrganizationAdmin && (
+            {isOrganizationAdmin && (
               <div className="space-x-4">
                 <Button
                   onClick={() => setInviteModalOpen(true)}

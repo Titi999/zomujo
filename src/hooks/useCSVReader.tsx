@@ -4,6 +4,7 @@ import { ToastStatus } from '@/types/shared.enum';
 
 export const useCSVReader = <T extends object>(
   processRow: (row: string[]) => T | null,
+  duplicateKey?: keyof T,
 ): {
   readCSV: (event: React.ChangeEvent<HTMLInputElement>) => void;
   result: T[];
@@ -41,6 +42,15 @@ export const useCSVReader = <T extends object>(
       const data: T[] = [];
       rows.forEach((row, index) => {
         if (index === 0) {
+          return;
+        }
+        const duplicate = !!duplicateKey && data.some((item) => item[duplicateKey] === row[0]);
+        if (duplicate) {
+          toast({
+            title: ToastStatus.Error,
+            description: `Duplicate key found at row ${index + 1}. Skipping...`,
+            variant: 'default',
+          });
           return;
         }
         const processedRow = processRow(row);
