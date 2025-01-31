@@ -21,6 +21,7 @@ export enum AcceptDeclineStatus {
   Accepted = 'accepted',
   Declined = 'declined',
   Pending = 'pending',
+  Deactivated = 'deactivated',
 }
 
 export enum Role {

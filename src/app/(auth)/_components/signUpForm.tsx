@@ -115,10 +115,6 @@ const SignUpForm = (): JSX.Element => {
 
   const [openModal, setOpenModal] = useState(false);
   const handleLocationValue = ({ value }: Option): void => {
-    setValue('location', value.description || '', {
-      shouldValidate: true,
-    });
-
     const service = new google.maps.places.PlacesService(document.createElement('div'));
     const placeId = value.place_id;
 
@@ -129,6 +125,9 @@ const SignUpForm = (): JSX.Element => {
 
       setValue('lat', place.geometry.location.lat());
       setValue('long', place.geometry.location.lng());
+      setValue('location', value.description, {
+        shouldValidate: true,
+      });
     });
   };
 

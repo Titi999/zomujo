@@ -1,7 +1,8 @@
 import { AcceptDeclineStatus, Gender } from './shared.enum';
+import { ISignUp } from '@/types/auth.interface';
+import { IExtraBase } from '@/types/shared.interface';
 
-export interface IDoctor {
-  id: string;
+export interface IDoctor extends IExtraBase {
   email: string;
   profilePicture: string;
   firstName: string;
@@ -38,10 +39,7 @@ export interface IDoctor {
     amount: number;
   };
   balance: number | null;
-  createdAt: Date;
-  updatedAt: Date;
   signaturePath: string;
-  hospitalId: string;
   status: AcceptDeclineStatus;
 }
 
@@ -59,3 +57,8 @@ export type DoctorPersonalInfo = Pick<
 >;
 
 export type NotificationInfo = Pick<IDoctor, 'notifications'>;
+export type IInviteDoctor = Pick<ISignUp, 'email' | 'lastName' | 'firstName'>;
+
+export interface IInviteDoctors extends Pick<IExtraBase, 'orgId'> {
+  users: IInviteDoctor[];
+}

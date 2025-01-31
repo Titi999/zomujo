@@ -12,6 +12,16 @@ export const selectIsAdmin = createSelector(
   (role) => role === Role.Admin || role === Role.SuperAdmin,
 );
 
+export const selectIsOrganizationAdmin = createSelector(
+  selectUserRole,
+  (role) => role === Role.Admin,
+);
+
+export const selectOrganizationId = createSelector(
+  selectAuthentication,
+  ({ extra }) => extra!.orgId, //extra is not undefined for logged-in users,
+);
+
 export const selectErrorMessage = createSelector(
   selectAuthentication,
   ({ errorMessage }) => errorMessage || '',
