@@ -23,3 +23,8 @@ export interface IOrganizationRequestsCountResponse extends BaseCountResponse {
   rejected: number;
   rejectedInc: number;
 }
+
+export interface IPatientCountResponse extends IDoctorCountResponse {
+  deactivated: number;
+  deactivatedInc: number;
+}

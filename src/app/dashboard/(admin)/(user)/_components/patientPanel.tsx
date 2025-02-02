@@ -13,14 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { PaginationData, TableData } from '@/components/ui/table';
-import {
-  approveDoctorRequest,
-  declineDoctor,
-  getAllDoctors,
-  inviteDoctors,
-} from '@/lib/features/doctors/doctorsThunk';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { IDoctor, IInviteDoctor } from '@/types/doctor.interface';
+import { useAppDispatch } from '@/lib/hooks';
 import { AcceptDeclineStatus } from '@/types/shared.enum';
 import { IPagination, IQueryParams } from '@/types/shared.interface';
 import { ColumnDef } from '@tanstack/react-table';
@@ -28,28 +21,20 @@ import {
   Binoculars,
   CalendarX,
   Ellipsis,
-  FileDown,
-  FileUp,
   ListFilter,
-  MessageSquareX,
   Search,
   SendHorizontal,
   ShieldCheck,
-  Signature,
-  SquareArrowOutUpRight,
-  UserRoundPlus,
 } from 'lucide-react';
 import React, { FormEvent, JSX, useEffect, useState } from 'react';
-import DoctorDetails from '../../../_components/doctorDetails';
-import { Toast, toast } from '@/hooks/use-toast';
-import { downloadFileWithUrl, showErrorToast } from '@/lib/utils';
+import { toast } from '@/hooks/use-toast';
+import { showErrorToast } from '@/lib/utils';
 import { useSearch } from '@/hooks/useSearch';
 import { useDropdownAction } from '@/hooks/useDropdownAction';
 import { activateUser, deactivateUser } from '@/lib/features/auth/authThunk';
-import { selectIsOrganizationAdmin, selectOrganizationId } from '@/lib/features/auth/authSelector';
-import InviteDoctor from '@/app/dashboard/_components/inviteDoctor';
-import InvitationPreview from '@/app/dashboard/(admin)/(user)/_components/invitationPreview';
-import { useCSVReader } from '@/hooks/useCSVReader';
+import { getAllPatients } from '@/lib/features/patients/patientsThunk';
+import { IPatient } from '@/types/patient.interface';
+import PatientRecord from '@/app/dashboard/_components/patient/patientRecord';
 import GenderBadge from '@/app/dashboard/_components/genderBadge';
 
 const statusFilterOptions: ISelected[] = [
@@ -62,29 +47,20 @@ const statusFilterOptions: ISelected[] = [
     label: 'Approved',
   },
   {
-    value: AcceptDeclineStatus.Pending,
-    label: 'Pending',
-  },
-  {
-    value: AcceptDeclineStatus.Declined,
-    label: 'Rejected',
+    value: AcceptDeclineStatus.Deactivated,
+    label: 'Deactivated',
   },
 ];
 
-const DoctorPanel = (): JSX.Element => {
+const PatientPanel = (): JSX.Element => {
   const [paginationData, setPaginationData] = useState<PaginationData | undefined>(undefined);
-  const [openInvitationsPreview, setOpenInvitationsPreview] = useState(false);
-  const [selectedDoctor, setSelectedDoctor] = useState<IDoctor>();
+  const [selectedPatient, setSelectedPatient] = useState<IPatient>();
   const [openModal, setModalOpen] = useState(false);
-  const [openInviteModal, setInviteModalOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const [isInviting, setIsInviting] = useState(false);
   const dispatch = useAppDispatch();
-  const [tableData, setTableData] = useState<IDoctor[]>([]);
+  const [tableData, setTableData] = useState<IPatient[]>([]);
   const [queryParameters, setQueryParameters] = useState<IQueryParams<AcceptDeclineStatus | ''>>({
     page: 1,
-    orderDirection: 'desc',
-    orderBy: 'createdAt',
     status: '',
     search: '',
   });
@@ -95,33 +71,8 @@ const DoctorPanel = (): JSX.Element => {
     open: false,
   });
   const { searchTerm, handleSearch } = useSearch(handleSubmit);
-  const isOrganizationAdmin = useAppSelector(selectIsOrganizationAdmin);
-  const orgId = useAppSelector(selectOrganizationId);
 
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      setLoading(true);
-      const { payload } = await dispatch(getAllDoctors(queryParameters));
-      if (payload && showErrorToast(payload)) {
-        toast(payload);
-        setLoading(false);
-        return;
-      }
-
-      const { rows, ...pagination } = payload as IPagination<IDoctor>;
-
-      setTableData(rows);
-      setPaginationData(pagination);
-      setLoading(false);
-    };
-    void fetchData();
-  }, [queryParameters]);
-
-  const columns: ColumnDef<IDoctor>[] = [
-    {
-      accessorKey: 'MDCRegistration',
-      header: 'MDC Registration',
-    },
+  const columns: ColumnDef<IPatient>[] = [
     {
       accessorKey: 'profilePicture',
     },
@@ -147,12 +98,10 @@ const DoctorPanel = (): JSX.Element => {
     {
       accessorKey: 'status',
       header: 'Status',
-      cell: ({ row: { original } }): JSX.Element => {
-        switch (original.status) {
+      cell: ({ row }): JSX.Element => {
+        switch (row.getValue('status')) {
           case AcceptDeclineStatus.Accepted:
             return <Badge variant="default">Approved</Badge>;
-          case AcceptDeclineStatus.Declined:
-            return <Badge variant="destructive">Declined</Badge>;
           case AcceptDeclineStatus.Deactivated:
             return <Badge variant="destructive">Deactivated</Badge>;
           default:
@@ -176,7 +125,6 @@ const DoctorPanel = (): JSX.Element => {
       header: 'Action',
       cell: ({ row: { original } }): JSX.Element => {
         const { status, id, firstName } = original;
-        const isPending = status === AcceptDeclineStatus.Pending;
         const isApproved = status === AcceptDeclineStatus.Accepted;
         const isDeactivated = status === AcceptDeclineStatus.Deactivated;
         return (
@@ -196,7 +144,7 @@ const DoctorPanel = (): JSX.Element => {
                     setConfirmation((prev) => ({
                       ...prev,
                       open: true,
-                      acceptCommand: () => handleDropdownAction(activateUser, String(id)),
+                      acceptCommand: () => handleDropdownAction(activateUser, id),
                       acceptTitle: 'Activate',
                       declineTitle: 'Cancel',
                       rejectCommand: () =>
@@ -210,48 +158,6 @@ const DoctorPanel = (): JSX.Element => {
                 >
                   <ShieldCheck /> Activate
                 </DropdownMenuItem>
-              )}
-              {isPending && (
-                <>
-                  <DropdownMenuItem
-                    onClick={() =>
-                      setConfirmation((prev) => ({
-                        ...prev,
-                        open: true,
-                        acceptCommand: () => handleDropdownAction(approveDoctorRequest, id),
-                        acceptTitle: 'Approve',
-                        declineTitle: 'Cancel',
-                        rejectCommand: () =>
-                          setConfirmation((prev) => ({
-                            ...prev,
-                            open: false,
-                          })),
-                        description: `Are you sure you want to approve ${firstName}'s account?`,
-                      }))
-                    }
-                  >
-                    <Signature /> Approve
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() =>
-                      setConfirmation((prev) => ({
-                        ...prev,
-                        open: true,
-                        acceptCommand: () => handleDropdownAction(declineDoctor, id),
-                        acceptTitle: 'Decline',
-                        declineTitle: 'Cancel',
-                        rejectCommand: () =>
-                          setConfirmation((prev) => ({
-                            ...prev,
-                            open: false,
-                          })),
-                        description: `Are you sure you want to decline ${firstName}'s request?`,
-                      }))
-                    }
-                  >
-                    <MessageSquareX /> Decline
-                  </DropdownMenuItem>
-                </>
               )}
               {isApproved && (
                 <DropdownMenuItem
@@ -283,46 +189,30 @@ const DoctorPanel = (): JSX.Element => {
     },
   ];
 
-  const processInviteDoctorRow = (row: string[]): IInviteDoctor => ({
-    firstName: row[0],
-    lastName: row[1],
-    email: row[2],
-  });
-
-  const { readCSV, result, setResult } = useCSVReader<IInviteDoctor>(
-    processInviteDoctorRow,
-    'email',
-  );
-
   useEffect(() => {
-    if (!result.length) {
-      setOpenInvitationsPreview(false);
-    } else {
-      if (!openInvitationsPreview) {
-        setOpenInvitationsPreview(true);
+    const fetchData = async (): Promise<void> => {
+      setLoading(true);
+      const { payload } = await dispatch(getAllPatients(queryParameters));
+      if (payload && showErrorToast(payload)) {
+        toast(payload);
+        setLoading(false);
+        return;
       }
-    }
-  }, [result]);
 
-  const onSubmit = async (inviteDoctorData: IInviteDoctor[]): Promise<void> => {
-    setIsInviting(true);
-    const { payload } = await dispatch(inviteDoctors({ orgId, users: inviteDoctorData }));
-    setIsInviting(false);
-    if (payload && !showErrorToast(payload)) {
-      setInviteModalOpen(false);
-      setOpenInvitationsPreview(false);
-    }
-    setQueryParameters((prev) => ({
-      ...prev,
-      page: 1,
-    }));
-    toast(payload as Toast);
-  };
+      const { rows, ...pagination } = payload as IPagination<IPatient>;
 
-  function handleView(doctorId: string): void {
-    const doctor = tableData.find(({ id }) => id === doctorId);
-    if (doctor) {
-      setSelectedDoctor(doctor);
+      setTableData(rows);
+      setPaginationData(pagination);
+      setLoading(false);
+    };
+
+    void fetchData();
+  }, [queryParameters]);
+
+  function handleView(patientId: string): void {
+    const patient = tableData.find(({ id }) => id === patientId);
+    if (patient) {
+      setSelectedPatient(patient);
       setModalOpen(true);
     }
   }
@@ -341,40 +231,8 @@ const DoctorPanel = (): JSX.Element => {
     setQueryParameters,
   });
 
-  const removeInvitation = (removeEmail: string): void => {
-    const newInvitations = result.filter(({ email }) => email !== removeEmail);
-    setResult(newInvitations);
-  };
-
   return (
     <>
-      <Modal
-        className="max-w-xl"
-        setState={setInviteModalOpen}
-        open={openInviteModal}
-        content={
-          <InviteDoctor
-            submit={(inviteDoctor) => onSubmit([inviteDoctor])}
-            isLoading={isInviting}
-          />
-        }
-        showClose={!isInviting}
-      />
-      <Modal
-        className="max-w-xl"
-        setState={setOpenInvitationsPreview}
-        open={openInvitationsPreview}
-        showClose={!isInviting}
-        content={
-          <InvitationPreview
-            invitations={result}
-            removeInvitation={removeInvitation}
-            cancel={() => setOpenInvitationsPreview(false)}
-            submit={() => onSubmit(result)}
-            isLoading={isInviting}
-          />
-        }
-      />
       <div className="mt-4 rounded-lg bg-white">
         <div className="p-6">
           <div className="mb-4 flex flex-wrap justify-between">
@@ -382,7 +240,7 @@ const DoctorPanel = (): JSX.Element => {
               <form className="flex" onSubmit={handleSubmit}>
                 <Input
                   error=""
-                  placeholder="Search Doctor"
+                  placeholder="Search Patient"
                   className="max-w-[333px] sm:w-[333px]"
                   type="search"
                   leftIcon={<Search className="text-gray-500" size={20} />}
@@ -405,53 +263,6 @@ const DoctorPanel = (): JSX.Element => {
                 className="h-10 cursor-pointer bg-gray-50 sm:flex"
               />
             </div>
-            {isOrganizationAdmin && (
-              <div className="space-x-4">
-                <Button
-                  onClick={() => setInviteModalOpen(true)}
-                  child={
-                    <>
-                      <UserRoundPlus /> Invite Doctor
-                    </>
-                  }
-                  className="h-10"
-                />
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="secondary"
-                      child={
-                        <>
-                          <input
-                            type="file"
-                            id="fileUploadInput"
-                            className="hidden"
-                            accept=".csv"
-                            onChange={(event) => readCSV(event)}
-                          />
-                          <SquareArrowOutUpRight /> Bulk Invite
-                        </>
-                      }
-                      className="h-10"
-                    />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem>
-                      <label className="flex w-full gap-x-2" htmlFor="fileUploadInput">
-                        <FileUp /> Upload
-                      </label>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() =>
-                        downloadFileWithUrl('/csv/doctor-invitation.csv', 'doctor-invitation.csv')
-                      }
-                    >
-                      <FileDown /> Download Template
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            )}
           </div>
           <TableData
             columns={columns}
@@ -472,7 +283,7 @@ const DoctorPanel = (): JSX.Element => {
 
       <Modal
         open={openModal}
-        content={<DoctorDetails {...selectedDoctor!} />}
+        content={<PatientRecord patient={selectedPatient!} />}
         className="max-w-screen max-h-screen overflow-y-scroll md:max-h-[90vh] md:max-w-[80vw]"
         setState={setModalOpen}
         showClose={true}
@@ -493,4 +304,4 @@ const DoctorPanel = (): JSX.Element => {
   );
 };
 
-export default DoctorPanel;
+export default PatientPanel;

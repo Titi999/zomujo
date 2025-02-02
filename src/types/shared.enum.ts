@@ -56,3 +56,28 @@ export enum ToastStatus {
 export enum SidebarType {
   Settings = 'settings',
 }
+
+export enum MaritalStatus {
+  Single = 'single',
+  Married = 'married',
+  Divorced = 'divorced',
+  Widowed = 'widowed',
+}
+
+export enum Denomination {
+  Christian = 'christian',
+  Muslim = 'muslim',
+  Traditional = 'traditional',
+  Other = 'other',
+}
+
+export enum BloodGroup {
+  APositive = 'A+',
+  ANegative = 'A-',
+  BPositive = 'B+',
+  BNegative = 'B-',
+  ABPositive = 'AB+',
+  ABNegative = 'AB-',
+  OPositive = 'O+',
+  ONegative = '0-',
+}

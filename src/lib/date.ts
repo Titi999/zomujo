@@ -71,3 +71,16 @@ export function getFormattedDate(date: Date | string): string {
     year: 'numeric',
   });
 }
+
+/**
+ * Converts a date to the format DD/MM/YYYY
+ * @param date - The date to format
+ * @returns The formatted date string
+ */
+export function formatDateToDDMMYYYY(date: Date | string): string {
+  const formattedDate = new Date(date);
+  const day = String(formattedDate.getDate()).padStart(2, '0');
+  const month = String(formattedDate.getMonth() + 1).padStart(2, '0');
+  const year = formattedDate.getFullYear();
+  return `${day}/${month}/${year}`;
+}

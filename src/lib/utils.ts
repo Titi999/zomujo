@@ -75,3 +75,11 @@ export const downloadFileWithUrl = (url: string, filename: string): void => {
   link.click();
   document.body.removeChild(link);
 };
+
+/**
+ * Converts a string or sentence to capitalized version
+ * @param text - The string or sentence to capitalize
+ * @returns The capitalized string or sentence
+ */
+export const capitalize = (text: string): string =>
+  text.replace(/\b\w/g, (char) => char.toUpperCase());

@@ -19,7 +19,7 @@ export const selectIsOrganizationAdmin = createSelector(
 
 export const selectOrganizationId = createSelector(
   selectAuthentication,
-  ({ extra }) => extra!.orgId, //extra is not undefined for logged-in users,
+  ({ extra }) => extra?.orgId ?? '', //extra is not undefined for logged-in users except for super admin where it will not be used anyway
 );
 
 export const selectErrorMessage = createSelector(
