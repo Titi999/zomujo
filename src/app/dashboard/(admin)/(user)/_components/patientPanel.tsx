@@ -85,12 +85,12 @@ const PatientPanel = (): JSX.Element => {
     {
       accessorKey: 'firstName',
       header: 'Name',
-      cell: ({ row }): JSX.Element => {
-        const image = String(row.getValue('profilePicture'));
-        const name = `${row.getValue('firstName')} ${row.getValue('lastName')}`;
+      cell: ({ row: { original } }): JSX.Element => {
+        const { profilePicture, firstName, lastName } = original;
+        const name = `${firstName} ${lastName}`;
         return (
           <div className="flex items-center justify-start gap-2">
-            <AvatarComp imageSrc={image} name={name} className="h-7 w-7" /> {name}
+            <AvatarComp imageSrc={profilePicture} name={name} className="h-7 w-7" /> {name}
           </div>
         );
       },
@@ -98,8 +98,8 @@ const PatientPanel = (): JSX.Element => {
     {
       accessorKey: 'status',
       header: 'Status',
-      cell: ({ row }): JSX.Element => {
-        switch (row.getValue('status')) {
+      cell: ({ row: { original } }): JSX.Element => {
+        switch (original.status) {
           case AcceptDeclineStatus.Accepted:
             return <Badge variant="default">Approved</Badge>;
           case AcceptDeclineStatus.Deactivated:
