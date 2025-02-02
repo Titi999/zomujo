@@ -196,7 +196,7 @@ const DoctorPanel = (): JSX.Element => {
                     setConfirmation((prev) => ({
                       ...prev,
                       open: true,
-                      acceptCommand: () => handleDropdownAction(activateUser, String(id)),
+                      acceptCommand: () => handleDropdownAction(activateUser, id),
                       acceptTitle: 'Activate',
                       declineTitle: 'Cancel',
                       rejectCommand: () =>
