@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { axiosErrorHandler } from '@/lib/axios';
 import {
+  resetAuthentication,
   setErrorMessage,
   setUserInfo,
   updateExtra,
@@ -208,6 +209,22 @@ export const activateUser = createAsyncThunk(
       return generateSuccessToast(data.message);
     } catch (error) {
       return axiosErrorHandler(error, true) as Toast;
+    }
+  },
+);
+
+export const logout = createAsyncThunk(
+  'authentication/logout',
+  async (_, { dispatch }): Promise<void> => {
+    const cleanUp = (): void => {
+      dispatch(resetAuthentication());
+      window.localStorage.clear();
+    };
+    try {
+      await axios.post(`${authPath}logout`);
+      cleanUp();
+    } catch {
+      cleanUp();
     }
   },
 );
