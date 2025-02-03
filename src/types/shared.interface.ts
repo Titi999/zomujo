@@ -1,3 +1,6 @@
+import { AcceptDeclineStatus, Gender } from '@/types/shared.enum';
+import { IUser } from '@/types/auth.interface';
+
 export interface IResponse<T = undefined> {
   data: T;
   status: number;
@@ -27,8 +30,15 @@ export interface IAction<T = undefined> {
   payload: T;
 }
 
-export interface IExtraBase {
+export interface IExtraBase extends Pick<IUser, 'email'> {
   id: string;
+  firstName: string;
+  lastName: string;
+  status: AcceptDeclineStatus;
+  contact: string;
+  profilePicture: string;
+  gender: Gender;
+  dob: Date;
   orgId: string;
   createdAt: Date;
   updatedAt: Date;

@@ -21,7 +21,7 @@ import {
 } from '@/lib/features/doctors/doctorsThunk';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { IDoctor, IInviteDoctor } from '@/types/doctor.interface';
-import { AcceptDeclineStatus, Gender } from '@/types/shared.enum';
+import { AcceptDeclineStatus } from '@/types/shared.enum';
 import { IPagination, IQueryParams } from '@/types/shared.interface';
 import { ColumnDef } from '@tanstack/react-table';
 import {
@@ -50,6 +50,7 @@ import { selectIsOrganizationAdmin, selectOrganizationId } from '@/lib/features/
 import InviteDoctor from '@/app/dashboard/_components/inviteDoctor';
 import InvitationPreview from '@/app/dashboard/(admin)/(user)/_components/invitationPreview';
 import { useCSVReader } from '@/hooks/useCSVReader';
+import GenderBadge from '@/app/dashboard/_components/genderBadge';
 
 const statusFilterOptions: ISelected[] = [
   {
@@ -73,7 +74,7 @@ const statusFilterOptions: ISelected[] = [
 const DoctorPanel = (): JSX.Element => {
   const [paginationData, setPaginationData] = useState<PaginationData | undefined>(undefined);
   const [openInvitationsPreview, setOpenInvitationsPreview] = useState(false);
-  const [selectedDoctor, setSelectedDoctor] = useState<IDoctor | undefined>();
+  const [selectedDoctor, setSelectedDoctor] = useState<IDoctor>();
   const [openModal, setModalOpen] = useState(false);
   const [openInviteModal, setInviteModalOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -146,8 +147,8 @@ const DoctorPanel = (): JSX.Element => {
     {
       accessorKey: 'status',
       header: 'Status',
-      cell: ({ row }): JSX.Element => {
-        switch (row.getValue('status')) {
+      cell: ({ row: { original } }): JSX.Element => {
+        switch (original.status) {
           case AcceptDeclineStatus.Accepted:
             return <Badge variant="default">Approved</Badge>;
           case AcceptDeclineStatus.Declined:
@@ -167,37 +168,17 @@ const DoctorPanel = (): JSX.Element => {
     {
       accessorKey: 'gender',
       header: 'Gender',
-      cell: ({ row }): JSX.Element => {
-        const gender: string = row.getValue('gender');
-        const genderProperties = (
-          gender: string,
-        ): { title: string; variant: 'brown' | 'blue' | 'destructive' } => {
-          switch (gender) {
-            case Gender.Male:
-              return { title: 'Male', variant: 'brown' };
-            case Gender.Female:
-              return { title: 'Female', variant: 'blue' };
-            default:
-              return { title: 'Other', variant: 'destructive' };
-          }
-        };
-
-        const { title, variant } = genderProperties(gender);
-        return (
-          <div>
-            <Badge variant={variant}>{title}</Badge>
-          </div>
-        );
-      },
+      cell: ({ row: { original } }): JSX.Element => <GenderBadge gender={original.gender} />,
     },
 
     {
       id: 'actions',
       header: 'Action',
-      cell: ({ row }): JSX.Element => {
-        const isPending = row.getValue('status') === AcceptDeclineStatus.Pending;
-        const isApproved = row.getValue('status') === AcceptDeclineStatus.Accepted;
-        const isDeactivated = row.getValue('status') === AcceptDeclineStatus.Deactivated;
+      cell: ({ row: { original } }): JSX.Element => {
+        const { status, id, firstName } = original;
+        const isPending = status === AcceptDeclineStatus.Pending;
+        const isApproved = status === AcceptDeclineStatus.Accepted;
+        const isDeactivated = status === AcceptDeclineStatus.Deactivated;
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -206,7 +187,7 @@ const DoctorPanel = (): JSX.Element => {
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => handleView(row.getValue('MDCRegistration'))}>
+              <DropdownMenuItem onClick={() => handleView(id)}>
                 <Binoculars /> View
               </DropdownMenuItem>
               {isDeactivated && (
@@ -215,8 +196,7 @@ const DoctorPanel = (): JSX.Element => {
                     setConfirmation((prev) => ({
                       ...prev,
                       open: true,
-                      acceptCommand: () =>
-                        handleDropdownAction(activateUser, String(row.getValue('id'))),
+                      acceptCommand: () => handleDropdownAction(activateUser, id),
                       acceptTitle: 'Activate',
                       declineTitle: 'Cancel',
                       rejectCommand: () =>
@@ -224,7 +204,7 @@ const DoctorPanel = (): JSX.Element => {
                           ...prev,
                           open: false,
                         })),
-                      description: `Are you sure you want to activate ${row.getValue('firstName')}'s account?`,
+                      description: `Are you sure you want to activate ${firstName}'s account?`,
                     }))
                   }
                 >
@@ -238,8 +218,7 @@ const DoctorPanel = (): JSX.Element => {
                       setConfirmation((prev) => ({
                         ...prev,
                         open: true,
-                        acceptCommand: () =>
-                          handleDropdownAction(approveDoctorRequest, String(row.getValue('id'))),
+                        acceptCommand: () => handleDropdownAction(approveDoctorRequest, id),
                         acceptTitle: 'Approve',
                         declineTitle: 'Cancel',
                         rejectCommand: () =>
@@ -247,7 +226,7 @@ const DoctorPanel = (): JSX.Element => {
                             ...prev,
                             open: false,
                           })),
-                        description: `Are you sure you want to approve ${row.getValue('firstName')}'s account?`,
+                        description: `Are you sure you want to approve ${firstName}'s account?`,
                       }))
                     }
                   >
@@ -258,8 +237,7 @@ const DoctorPanel = (): JSX.Element => {
                       setConfirmation((prev) => ({
                         ...prev,
                         open: true,
-                        acceptCommand: () =>
-                          handleDropdownAction(declineDoctor, String(row.getValue('id'))),
+                        acceptCommand: () => handleDropdownAction(declineDoctor, id),
                         acceptTitle: 'Decline',
                         declineTitle: 'Cancel',
                         rejectCommand: () =>
@@ -267,7 +245,7 @@ const DoctorPanel = (): JSX.Element => {
                             ...prev,
                             open: false,
                           })),
-                        description: `Are you sure you want to decline ${row.getValue('firstName')}'s request?`,
+                        description: `Are you sure you want to decline ${firstName}'s request?`,
                       }))
                     }
                   >
@@ -282,8 +260,7 @@ const DoctorPanel = (): JSX.Element => {
                     setConfirmation((prev) => ({
                       ...prev,
                       open: true,
-                      acceptCommand: () =>
-                        handleDropdownAction(deactivateUser, String(row.getValue('id'))),
+                      acceptCommand: () => handleDropdownAction(deactivateUser, id),
                       acceptTitle: 'Deactivate',
                       declineTitle: 'Cancel',
                       rejectCommand: () =>
@@ -291,7 +268,7 @@ const DoctorPanel = (): JSX.Element => {
                           ...prev,
                           open: false,
                         })),
-                      description: `Are you sure you want to deactivate ${row.getValue('firstName')}'s account?`,
+                      description: `Are you sure you want to deactivate ${firstName}'s account?`,
                     }))
                   }
                 >
@@ -342,8 +319,8 @@ const DoctorPanel = (): JSX.Element => {
     toast(payload as Toast);
   };
 
-  function handleView(MCDRegistration: string): void {
-    const doctor = tableData.find((doctor) => doctor.MDCRegistration === MCDRegistration);
+  function handleView(doctorId: string): void {
+    const doctor = tableData.find(({ id }) => id === doctorId);
     if (doctor) {
       setSelectedDoctor(doctor);
       setModalOpen(true);
