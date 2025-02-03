@@ -28,7 +28,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Logo } from '@/assets/images';
 import { cn } from '@/lib/utils';
-import { Avatar } from '@/components/ui/avatar';
+import { AvatarComp } from '@/components/ui/avatar';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { selectUserName, selectUserRole } from '@/lib/features/auth/authSelector';
 import { Role, SidebarType } from '@/types/shared.enum';
@@ -59,12 +59,20 @@ export const SidebarLayout = ({
   const userName = useAppSelector(selectUserName);
   const role = useAppSelector(selectUserRole);
   const pathName = usePathname();
-  const dispatch = useAppDispatch();
-  const router = useRouter();
 
-  const logoutHandler = async (): Promise<void> => {
-    await dispatch(logout());
-    router.refresh();
+  const getRole = (): string => {
+    switch (role) {
+      case Role.SuperAdmin:
+        return 'Super Admin';
+      case Role.Admin:
+        return 'Admin';
+      case Role.Doctor:
+        return 'Doctor';
+      case Role.Patient:
+        return 'Patient';
+      default:
+        return '';
+    }
   };
 
   return (
@@ -138,23 +146,16 @@ export const SidebarLayout = ({
           <ProfileCompletionCard />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <SidebarMenuButton>
-                <Avatar />
+              <SidebarMenuButton className="h-full">
+                <AvatarComp name={userName} />
                 <div className="flex flex-col text-xs font-medium">
                   <span>{userName}</span>
-                  <span className="rounded-lg py-1.5 text-badge">{role}</span>
+                  <span className="rounded-lg py-1.5 text-badge">{getRole()}</span>
                 </div>
                 <EllipsisVertical className="ml-auto" />
               </SidebarMenuButton>
             </DropdownMenuTrigger>
-            <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
-              <DropdownMenuItem>
-                <span>Profile</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => logoutHandler()}>
-                <span>Log out</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
+            <ProfileDropdownMenu />
           </DropdownMenu>
         </SidebarFooter>
       )}
@@ -164,6 +165,7 @@ export const SidebarLayout = ({
 
 export const PhoneNavbar = ({ type }: SideBarProps): JSX.Element => {
   const role = useAppSelector(selectUserRole);
+  const userName = useAppSelector(selectUserName);
   const pathName = usePathname();
   const flattenedMenu = getSidebarByRole(role, type).sidebarGroup.flatMap((group) => group.menu);
   const style =
@@ -191,19 +193,14 @@ export const PhoneNavbar = ({ type }: SideBarProps): JSX.Element => {
         </div>
       ))}
       <SidebarMenuButton title="your profile" className={cn(style, 'min-w-16 max-w-16')}>
-        <Link href="#" className="flex flex-col items-center justify-center">
-          <Avatar className="h-6" />
-          <div>
-            <span
-              className={cn(
-                'w-5 truncate text-xs font-bold',
-                pathName === 'profile' && 'text-primary',
-              )}
-            >
-              You
-            </span>
-          </div>
-        </Link>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <div className="flex flex-col items-center justify-center">
+              <AvatarComp name={userName} />
+            </div>
+          </DropdownMenuTrigger>
+          <ProfileDropdownMenu />
+        </DropdownMenu>
       </SidebarMenuButton>
     </div>
   );
@@ -243,6 +240,29 @@ export const SettingsNavbar = (): JSX.Element => {
         ))}
       </div>
       <hr className="relative mx-[2%] -mt-2.5 block w-auto border-b sm:mx-[5%] me:hidden" />
+    </>
+  );
+};
+
+const ProfileDropdownMenu = (): JSX.Element => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const logoutHandler = async (): Promise<void> => {
+    await dispatch(logout());
+    router.refresh();
+  };
+
+  return (
+    <>
+      <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
+        <DropdownMenuItem>
+          <span>Profile</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => logoutHandler()}>
+          <span>Log out</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
     </>
   );
 };
