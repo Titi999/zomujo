@@ -1,7 +1,7 @@
 'use client';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { JSX, ReactNode } from 'react';
-import { PhoneNavbar, SidebarLayout } from './_components/sidebar/Sidebar';
+import { PhoneNavbar, SidebarLayout } from './_components/sidebar/sidebarLayout';
 import AdminToolbar from '@/app/dashboard/_components/adminToolbar';
 import { useAppSelector } from '@/lib/hooks';
 import { selectIsAdmin, selectMustUpdatePassword } from '@/lib/features/auth/authSelector';

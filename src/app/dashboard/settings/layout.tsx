@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { SettingsNavbar, SidebarLayout } from '../_components/sidebar/Sidebar';
+import { SettingsNavbar, SidebarLayout } from '../_components/sidebar/sidebarLayout';
 import { SidebarType } from '@/types/shared.enum';
 import { Bell } from 'lucide-react';
 

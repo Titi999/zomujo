@@ -18,7 +18,7 @@ import { CollapsibleTrigger } from '@radix-ui/react-collapsible';
 import { ChevronDown, EllipsisVertical } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import ProfileCompletionCard from '../profileCompletionCard/ProfileCompletionCard';
 import {
   DropdownMenu,
@@ -29,7 +29,7 @@ import {
 import { Logo } from '@/assets/images';
 import { cn } from '@/lib/utils';
 import { Avatar } from '@/components/ui/avatar';
-import { useAppSelector } from '@/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { selectUserName, selectUserRole } from '@/lib/features/auth/authSelector';
 import { Role, SidebarType } from '@/types/shared.enum';
 import { JSX } from 'react';
@@ -42,6 +42,7 @@ import {
   PATIENT_SETTINGS_SIDEBAR,
   PATIENT_SIDE_BAR,
 } from '@/constants/sidebar.constant';
+import { logout } from '@/lib/features/auth/authThunk';
 
 type SideBarProps = {
   type?: SidebarType;
@@ -58,6 +59,13 @@ export const SidebarLayout = ({
   const userName = useAppSelector(selectUserName);
   const role = useAppSelector(selectUserRole);
   const pathName = usePathname();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const logoutHandler = async (): Promise<void> => {
+    await dispatch(logout());
+    router.refresh();
+  };
 
   return (
     <Sidebar className={cn('hidden me:block', sidebarClassName)}>
@@ -143,7 +151,7 @@ export const SidebarLayout = ({
               <DropdownMenuItem>
                 <span>Profile</span>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => logoutHandler()}>
                 <span>Log out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
