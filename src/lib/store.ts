@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import authReducer from '@/lib/features/auth/authSlice';
 import hospitalReducer from '@/lib/features/hospitals/hospitalSlice';
 import organizationRequestsReducer from '@/lib/features/organization-requests/organizationRequestsSlice';
+import notificationsReducer from '@/lib/features/notifications/notificationsSlice';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   authentication: persistReducer(authPersistConfig, authReducer),
   hospital: hospitalReducer,
   organizationRequests: organizationRequestsReducer,
+  notifications: notificationsReducer,
 });
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

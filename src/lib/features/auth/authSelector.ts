@@ -3,7 +3,7 @@ import { RootState } from '@/lib/store';
 import { Role, Status } from '@/types/shared.enum';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const selectAuthentication = (state: RootState) => state.authentication;
+const selectAuthentication = ({ authentication }: RootState) => authentication;
 
 export const selectUserRole = createSelector(selectAuthentication, ({ user }) => user?.role);
 
