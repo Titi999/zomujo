@@ -221,7 +221,7 @@ export const logout = createAsyncThunk(
       window.localStorage.clear();
     };
     try {
-      await axios.post(`${authPath}logout`);
+      await axios.delete(`${authPath}logout`);
       cleanUp();
     } catch {
       cleanUp();
