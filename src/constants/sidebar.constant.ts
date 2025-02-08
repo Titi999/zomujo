@@ -163,6 +163,10 @@ export const ADMIN_SIDE_BAR: ISidebar = {
               title: 'Patient',
               url: `${DASHBOARD_ROUTE}/patient`,
             },
+            {
+              title: 'Admin',
+              url: `${DASHBOARD_ROUTE}/admin`,
+            },
           ],
         },
         {

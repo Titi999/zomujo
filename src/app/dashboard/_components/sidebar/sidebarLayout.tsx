@@ -30,7 +30,7 @@ import { Logo } from '@/assets/images';
 import { cn } from '@/lib/utils';
 import { AvatarComp } from '@/components/ui/avatar';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { selectUserName, selectUserRole } from '@/lib/features/auth/authSelector';
+import { selectIsAnAdmin, selectUserName, selectUserRole } from '@/lib/features/auth/authSelector';
 import { Role, SidebarType } from '@/types/shared.enum';
 import { JSX } from 'react';
 import { ISidebar } from '@/types/sidebar.interface';
@@ -57,6 +57,7 @@ export const SidebarLayout = ({
   sidebarTabClassName,
 }: SideBarProps): JSX.Element => {
   const userName = useAppSelector(selectUserName);
+  const isAnAdmin = useAppSelector(selectIsAnAdmin);
   const role = useAppSelector(selectUserRole);
   const pathName = usePathname();
 
@@ -143,7 +144,7 @@ export const SidebarLayout = ({
       </SidebarContent>
       {!type && (
         <SidebarFooter>
-          <ProfileCompletionCard />
+          {!isAnAdmin && <ProfileCompletionCard />}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <SidebarMenuButton className="h-full">

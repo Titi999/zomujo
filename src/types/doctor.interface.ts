@@ -1,4 +1,4 @@
-import { ISignUp } from '@/types/auth.interface';
+import { IBaseUser } from '@/types/auth.interface';
 import { IExtraBase } from '@/types/shared.interface';
 
 export interface IDoctor extends IExtraBase {
@@ -50,8 +50,7 @@ export type DoctorPersonalInfo = Pick<
 >;
 
 export type NotificationInfo = Pick<IDoctor, 'notifications'>;
-export type IInviteDoctor = Pick<ISignUp, 'email' | 'lastName' | 'firstName'>;
 
 export interface IInviteDoctors extends Pick<IExtraBase, 'orgId'> {
-  users: IInviteDoctor[];
+  users: IBaseUser[];
 }

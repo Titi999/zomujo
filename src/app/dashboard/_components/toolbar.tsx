@@ -1,5 +1,4 @@
-import { Bell, Megaphone, Settings, SquareCheck } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Bell } from 'lucide-react';
 import { JSX, useEffect, useState } from 'react';
 import Notifications from '@/app/dashboard/_components/notifications';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -22,7 +21,7 @@ const Toolbar = (): JSX.Element => {
       <div className="flex gap-x-3">
         <Popover>
           <PopoverTrigger className="outline-none">
-            <div className="relative rounded-full border border-gray-200 bg-white p-2">
+            <div className="relative cursor-pointer rounded-full border border-gray-200 bg-white p-2">
               <Bell className="text-grayscale-500" />
               {unreadNotifications > 0 && (
                 <span className="absolute -right-2 -top-1 inline-flex h-4 w-4 items-center justify-center rounded-full bg-red-500 p-2.5 text-xs text-white">
@@ -38,21 +37,6 @@ const Toolbar = (): JSX.Element => {
             />
           </PopoverContent>
         </Popover>
-        <div className="rounded-full border border-gray-200 bg-white p-2">
-          <Megaphone className="text-grayscale-500" />
-        </div>
-        <div>
-          <Button
-            className="border border-success-300 bg-white text-black hover:!bg-success-300 hover:text-white"
-            child={
-              <div className="flex items-center gap-x-1">
-                <Settings />
-                <span>System Operation</span>
-                <SquareCheck radius={12} fill="#16A34A" className="text-white" />
-              </div>
-            }
-          />
-        </div>
       </div>
     </div>
   );
