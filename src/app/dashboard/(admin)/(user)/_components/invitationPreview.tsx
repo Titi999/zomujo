@@ -1,12 +1,12 @@
-import { IInviteDoctor } from '@/types/doctor.interface';
 import React, { JSX } from 'react';
 import { TableData } from '@/components/ui/table';
 import { ColumnDef } from '@tanstack/react-table';
 import { Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { IBaseUser } from '@/types/auth.interface';
 
 type InvitationPreviewProps = {
-  invitations: IInviteDoctor[];
+  invitations: IBaseUser[];
   removeInvitation: (email: string) => void;
   cancel: () => void;
   submit: () => void;
@@ -20,7 +20,7 @@ const InvitationPreview = ({
   submit,
   isLoading,
 }: InvitationPreviewProps): JSX.Element => {
-  const columns: ColumnDef<IInviteDoctor>[] = [
+  const columns: ColumnDef<IBaseUser>[] = [
     {
       header: 'First Name',
       accessorKey: 'firstName',
