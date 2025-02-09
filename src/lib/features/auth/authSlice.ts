@@ -56,6 +56,7 @@ const authSlice = createSlice({
     setUserInfo: (state, { payload }) => {
       state.user = payload.user;
       state.extra = payload.extra;
+      //Redux does not consider Date as a serializable value hence the need to stringify it
       state.loggedInAt = JSON.stringify(new Date());
     },
     updateExtra: (state, { payload }) => {
