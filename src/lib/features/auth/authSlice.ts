@@ -21,6 +21,7 @@ interface AuthenticationState {
   doctorIdentification: IDoctorIdentification | undefined;
   user: IUser | undefined;
   extra: IDoctor | IAdmin | IPatient | undefined;
+  loggedInAt: undefined | string;
 }
 
 const initialState: AuthenticationState = {
@@ -31,6 +32,7 @@ const initialState: AuthenticationState = {
   doctorIdentification: undefined,
   user: undefined,
   extra: undefined,
+  loggedInAt: undefined,
 };
 
 const authSlice = createSlice({
@@ -54,6 +56,7 @@ const authSlice = createSlice({
     setUserInfo: (state, { payload }) => {
       state.user = payload.user;
       state.extra = payload.extra;
+      state.loggedInAt = JSON.stringify(new Date());
     },
     updateExtra: (state, { payload }) => {
       state.extra = payload;

@@ -1,6 +1,7 @@
 import { ToastStatus } from '@/types/shared.enum';
 import axiosClient, { isAxiosError } from 'axios';
 import { Toast } from '@/hooks/use-toast';
+import { timeDifferenceChecker } from '@/lib/date';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -11,18 +12,25 @@ const axios = axiosClient.create({
   withCredentials: true,
 });
 
-// TODO: Find a solution to ensure that the user is logged out when the token expires and not for some endpoints
-// axios.interceptors.response.use(
-//   (response) => response,
-//   (error) =>
-// if (isAxiosError(error)) {
-//   if (error.response?.status === 401) {
-//     window.localStorage.clear();
-//     window.location.reload();
-//   }
-// }
-//     Promise.reject(error),
-// );
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (isAxiosError(error)) {
+      const user = localStorage.getItem('persist:user');
+      if (error.response?.status === 401 && user) {
+        const { loggedInAt } = JSON.parse(user);
+        // Session usually expires after 24 hours
+        // Let's allow a 30 minutes backup time to gracefully log out the user
+        // Hence reason for 23.5 hours
+        if (timeDifferenceChecker(JSON.parse(loggedInAt), 23.5)) {
+          window.localStorage.clear();
+          window.location.reload();
+        }
+      }
+    }
+    return Promise.reject(error);
+  },
+);
 
 export const axiosErrorHandler = (error: unknown, toast = false): string | Toast => {
   const message = isAxiosError(error)
