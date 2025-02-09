@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { JSX, ReactNode, useMemo } from 'react';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { IPatient } from '@/types/patient.interface';
+import { IDoctor } from '@/types/doctor.interface';
 
 // TODO: We will replace this with real requests
 
@@ -40,7 +41,7 @@ const mockDoctors = [
     noOfConsultations: 200,
     rate: { amount: 200 },
   },
-];
+] as IDoctor[];
 
 // TODO: We will replace this with live requests
 const mockHospitals = [
@@ -83,7 +84,7 @@ const PatientHome = (): JSX.Element => {
         </Suggested>
         <Suggested title={'Suggested Doctors'}>
           {mockDoctors.map((doctor) => (
-            <DoctorCard key={doctor.id} doctor={doctor} />
+            <DoctorCard key={doctor.id} {...doctor} />
           ))}
         </Suggested>
       </>
@@ -110,7 +111,7 @@ const PatientHome = (): JSX.Element => {
             <CarouselContent>
               {mockDoctors.map((doctor) => (
                 <CarouselItem key={doctor.id}>
-                  <DoctorCard key={doctor.id} doctor={doctor} />
+                  <DoctorCard key={doctor.id} {...doctor} />
                 </CarouselItem>
               ))}
             </CarouselContent>
@@ -162,15 +163,18 @@ const PatientHome = (): JSX.Element => {
 type SuggestedProps = {
   title: string;
   children: ReactNode;
+  showViewAll?: boolean;
 };
 
-const Suggested = ({ title, children }: SuggestedProps): JSX.Element => (
+export const Suggested = ({ title, children, showViewAll = true }: SuggestedProps): JSX.Element => (
   <div className="flex w-full flex-col gap-6 max-md:mt-10">
     <div className="flex flex-row items-center justify-between">
       <p className="text-xl font-bold leading-5">{title}</p>
-      <Link href="/" className="flex flex-row items-center text-sm">
-        View All <ChevronRight size={16} />
-      </Link>
+      {showViewAll && (
+        <Link href="/" className="flex flex-row items-center text-sm">
+          View All <ChevronRight size={16} />
+        </Link>
+      )}
     </div>
     <div className="flex-row flex-wrap gap-6 md:flex">{children}</div>
   </div>
