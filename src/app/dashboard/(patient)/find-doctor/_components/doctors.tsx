@@ -1,7 +1,7 @@
 import DoctorCard from '@/app/dashboard/_components/patientHome/_component/doctorCard';
 import { Suggested } from '@/app/dashboard/_components/patientHome/home';
 import { NotFound } from '@/assets/images';
-import SkeletonDoctorPatientCard from '@/components/sketeton/cardSkeleton';
+import SkeletonDoctorPatientCard from '@/components/skeleton/skeletonDoctorPatientCard';
 import { Button } from '@/components/ui/button';
 import { ISelected, OptionsMenu } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
@@ -50,14 +50,9 @@ const Doctors = (): JSX.Element => {
   const observerCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
-
-      if (
-        target.isIntersecting &&
-        paginationData?.totalPages &&
-        queryParameters &&
-        queryParameters.page < paginationData.totalPages &&
-        !isLoading
-      ) {
+      const hasMorePages = paginationData && queryParameters?.page < paginationData?.totalPages;
+      const canLoadMore = target.isIntersecting && hasMorePages && !isLoading;
+      if (canLoadMore) {
         setQueryParameters((prev) => ({
           ...prev,
           page: prev.page + 1,

@@ -22,7 +22,7 @@ const DoctorCard = ({
       <div className="flex flex-col">
         <div className="mb-4 flex w-full flex-row gap-3">
           <Image
-            className="h-[56px] w-[56px] rounded-full object-cover"
+            className="h-14 w-14 rounded-full object-cover"
             src={profilePicture ?? DummyDoctorProfile}
             width={56}
             height={56}
