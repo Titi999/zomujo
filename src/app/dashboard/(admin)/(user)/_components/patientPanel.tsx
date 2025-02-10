@@ -9,7 +9,6 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuItem,
-  ISelected,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { PaginationData, TableData } from '@/components/ui/table';
@@ -36,21 +35,7 @@ import { getAllPatients } from '@/lib/features/patients/patientsThunk';
 import { IPatient } from '@/types/patient.interface';
 import PatientRecord from '@/app/dashboard/_components/patient/patientRecord';
 import GenderBadge from '@/app/dashboard/_components/genderBadge';
-
-const statusFilterOptions: ISelected[] = [
-  {
-    value: '',
-    label: 'All',
-  },
-  {
-    value: AcceptDeclineStatus.Accepted,
-    label: 'Approved',
-  },
-  {
-    value: AcceptDeclineStatus.Deactivated,
-    label: 'Deactivated',
-  },
-];
+import { statusFilterOptions } from '@/constants/constants';
 
 const PatientPanel = (): JSX.Element => {
   const [paginationData, setPaginationData] = useState<PaginationData | undefined>(undefined);

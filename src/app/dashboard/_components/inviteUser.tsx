@@ -7,14 +7,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React, { JSX } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { IInviteDoctor } from '@/types/doctor.interface';
+import { IBaseUser } from '@/types/auth.interface';
 
-type InviteDoctorProps = {
+type InviteUserProps = {
+  title: string;
   isLoading?: boolean;
-  submit: (inviteDoctor: IInviteDoctor) => void;
+  submit: (inviteUser: IBaseUser) => void;
+  buttonTitle: string;
 };
 
-const InviteDoctor = ({ isLoading, submit }: InviteDoctorProps): JSX.Element => {
+const InviteUser = ({ isLoading, submit, title, buttonTitle }: InviteUserProps): JSX.Element => {
   const inviteDoctorSchema = z.object({
     firstName: requiredStringSchema(),
     lastName: requiredStringSchema(),
@@ -24,7 +26,7 @@ const InviteDoctor = ({ isLoading, submit }: InviteDoctorProps): JSX.Element => 
     handleSubmit,
     register,
     formState: { errors, isValid },
-  } = useForm<IInviteDoctor>({
+  } = useForm<IBaseUser>({
     resolver: zodResolver(inviteDoctorSchema),
     mode: MODE.ON_TOUCH,
   });
@@ -34,7 +36,7 @@ const InviteDoctor = ({ isLoading, submit }: InviteDoctorProps): JSX.Element => 
       onSubmit={handleSubmit(submit)}
       className="mx-5 flex flex-col items-center justify-center space-y-8"
     >
-      <h2 className="text-center text-2xl font-bold">Invite Doctor</h2>
+      <h2 className="text-center text-2xl font-bold">{title}</h2>
       <Input
         labelName="First Name"
         error={errors.firstName?.message || ''}
@@ -56,7 +58,7 @@ const InviteDoctor = ({ isLoading, submit }: InviteDoctorProps): JSX.Element => 
       <Button
         type="submit"
         className="mt-4 w-full max-w-sm"
-        child="Invite Doctor"
+        child={buttonTitle}
         disabled={!isValid || isLoading}
         isLoading={isLoading}
       />
@@ -64,4 +66,4 @@ const InviteDoctor = ({ isLoading, submit }: InviteDoctorProps): JSX.Element => 
   );
 };
 
-export default InviteDoctor;
+export default InviteUser;

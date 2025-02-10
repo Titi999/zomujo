@@ -1,5 +1,6 @@
 import { SelectOption } from '@/components/ui/select';
-import { Gender } from '@/types/shared.enum';
+import { AcceptDeclineStatus, Gender } from '@/types/shared.enum';
+import { ISelected } from '@/components/ui/dropdown-menu';
 
 export const MODE = {
   ON_TOUCH: 'onTouched',
@@ -27,4 +28,19 @@ export const genderOptions: SelectOption[] = [
   { label: 'Male', value: Gender.Male },
   { label: 'Female', value: Gender.Female },
   { label: 'Other', value: Gender.Other },
+];
+
+export const statusFilterOptions: ISelected[] = [
+  {
+    value: '',
+    label: 'All',
+  },
+  {
+    value: AcceptDeclineStatus.Accepted,
+    label: 'Approved',
+  },
+  {
+    value: AcceptDeclineStatus.Deactivated,
+    label: 'Deactivated',
+  },
 ];

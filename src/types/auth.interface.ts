@@ -23,25 +23,25 @@ export interface ILoginResponse {
   extra: unknown;
 }
 
-export interface IUser {
-  id: string;
+export interface IBaseUser {
   email: string;
   firstName: string;
   lastName: string;
+}
+
+export interface IUser extends IBaseUser {
+  id: string;
   status: Status;
   isActive: boolean;
   role: Role;
   createdAt: Date;
 }
 
-export interface ISignUp {
-  email: string;
+export interface ISignUp extends IBaseUser {
   password: string;
   confirmPassword: string;
   name: string;
   location: string;
-  firstName: string;
-  lastName: string;
   role: Role;
   lat: number;
   long: number;

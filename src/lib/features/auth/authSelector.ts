@@ -7,7 +7,7 @@ const selectAuthentication = ({ authentication }: RootState) => authentication;
 
 export const selectUserRole = createSelector(selectAuthentication, ({ user }) => user?.role);
 
-export const selectIsAdmin = createSelector(
+export const selectIsAnAdmin = createSelector(
   selectUserRole,
   (role) => role === Role.Admin || role === Role.SuperAdmin,
 );
