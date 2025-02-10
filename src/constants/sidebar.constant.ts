@@ -36,7 +36,7 @@ export const PATIENT_SIDE_BAR: ISidebar = {
         },
         {
           title: 'Find Doctors',
-          url: '#',
+          url: `${DASHBOARD_ROUTE}/find-doctor`,
           Icon: Compass,
           phoneTitle: 'Doctors',
         },

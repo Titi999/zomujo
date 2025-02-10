@@ -12,6 +12,7 @@ export interface InputProps extends React.ComponentProps<'input'> {
   leftIcon?: ReactNode;
   error?: string;
   wrapperClassName?: string;
+  defaultMaxWidth?: boolean;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -28,6 +29,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       rightIcon,
       leftIcon,
       wrapperClassName,
+      defaultMaxWidth = true,
       ...props
     },
     ref,
@@ -37,7 +39,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     type = revealPassword ? 'text' : type;
 
     return (
-      <div className={cn('relative grid w-full max-w-sm items-center gap-2', wrapperClassName)}>
+      <div
+        className={cn(
+          'relative grid w-full items-center gap-2',
+          wrapperClassName,
+          defaultMaxWidth ? 'max-w-sm' : '',
+        )}
+      >
         {labelName && (
           <Label htmlFor={name} className={labelClassName}>
             {labelName}

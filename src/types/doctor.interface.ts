@@ -34,6 +34,8 @@ export interface IDoctor extends IExtraBase {
   };
   balance: number | null;
   signaturePath: string;
+  noOfConsultations?: number;
+  ratings: number;
 }
 
 export type DoctorPersonalInfo = Pick<
