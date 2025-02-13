@@ -22,7 +22,8 @@ axios.interceptors.response.use(
         // Session usually expires after 24 hours
         // Let's allow a 30 minutes backup time to gracefully log out the user
         // Hence reason for 23.5 hours
-        if (timeDifferenceChecker(JSON.parse(loggedInAt), 23.5)) {
+        // We stringify before persisting to local storage hence the need to parse twice
+        if (timeDifferenceChecker(JSON.parse(JSON.parse(loggedInAt)), 23.5)) {
           window.localStorage.clear();
           window.location.reload();
         }

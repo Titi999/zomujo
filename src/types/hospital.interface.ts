@@ -6,5 +6,18 @@ export interface IHospital {
   location: string;
   email: string;
   status: ApproveDeclineStatus;
+  specialties?: string[];
+  distance: number;
+  gpslink: string;
+  supportedInsurance: string[];
+  regularFee: string;
+  image: string | null;
+  updatedAt: Date;
   createdAt: Date;
+}
+
+export interface INearByQueryParams {
+  lat: number;
+  long: number;
+  radius: number;
 }

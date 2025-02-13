@@ -4,20 +4,18 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { JSX, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { IHospital } from '@/types/hospital.interface';
+import { METERS_TO_KM_FACTOR } from '@/constants/constants';
 
 const HospitalCard = ({
-  hospital,
-}: {
-  hospital: {
-    id: string;
-    name: string;
-    location: string;
-    specialities: string[];
-    distance: number;
-    googleMapsUrl: string;
-    imageUrl?: string;
-  };
-}): JSX.Element => {
+  id,
+  name,
+  location,
+  gpslink,
+  specialties,
+  image,
+  distance,
+}: IHospital): JSX.Element => {
   const router = useRouter();
   const [showPreview, setShowPreview] = useState(false);
 
@@ -25,7 +23,7 @@ const HospitalCard = ({
 
   return (
     <>
-      {showPreview && hospital.imageUrl && (
+      {showPreview && image && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
           onClick={() => setShowPreview(false)}
@@ -38,8 +36,8 @@ const HospitalCard = ({
               <X size={20} />
             </button>
             <Image
-              src={hospital.imageUrl}
-              alt={hospital.name}
+              src={image}
+              alt={name}
               width={800}
               height={600}
               className="rounded-lg object-contain"
@@ -49,11 +47,11 @@ const HospitalCard = ({
       )}
 
       <div className="flex w-full max-w-[360px] shrink-0 flex-col rounded-[14px] border border-gray-200 bg-white">
-        {hospital.imageUrl ? (
+        {image ? (
           <div className="relative h-48 w-full cursor-pointer" onClick={() => setShowPreview(true)}>
             <Image
-              src={hospital.imageUrl}
-              alt={hospital.name}
+              src={image}
+              alt={name}
               fill
               className="rounded-t-[14px] object-cover transition-opacity duration-200 hover:opacity-90"
             />
@@ -66,10 +64,10 @@ const HospitalCard = ({
         <div className="flex flex-col gap-2 p-6">
           <div className="flex flex-col">
             <div className="mb-4 flex w-full flex-col gap-2">
-              <p className="text-lg font-bold">{hospital.name}</p>
+              <p className="text-lg font-bold">{name}</p>
               <div className="flex items-center gap-1 text-sm font-medium text-gray-400">
                 <MapPin size={14} />
-                {hospital.location}
+                {location}
               </div>
               <hr className="mt-2 w-full" />
             </div>
@@ -77,19 +75,19 @@ const HospitalCard = ({
               <div className="shadow-xs flex h-fit w-fit flex-row items-center gap-1 rounded-full border border-gray-100 px-2 py-1">
                 <Navigation size={14} className="text-primary" />
                 <p className="text-sm font-medium leading-3">
-                  {hospital.distance.toFixed(1)} km away
+                  {(distance / METERS_TO_KM_FACTOR).toFixed(1)} km away
                 </p>
               </div>
               <div className="flex flex-col gap-4">
-                {hospital.specialities.slice(0, 2).map((specialty, index) => (
+                {specialties?.slice(0, 2).map((specialty, index) => (
                   <div key={index} className="flex flex-row items-center gap-1.5">
                     <div className="h-[5px] w-[5px] rounded-full bg-primary"></div>
                     <p className="text-sm leading-[14px]">{specialty}</p>
                   </div>
                 ))}
-                {hospital.specialities.length > 2 && (
+                {(specialties?.length || 0) > 2 && (
                   <p className="text-sm text-gray-400">
-                    +{hospital.specialities.length - 2} more specialities
+                    +{(specialties?.length || 0) - 2} more specialities
                   </p>
                 )}
               </div>
@@ -98,11 +96,11 @@ const HospitalCard = ({
           <div className="flex flex-row items-center justify-between">
             <Button
               variant="secondary"
-              onClick={() => router.push(`/hospitals/${hospital.id}`)}
+              onClick={() => router.push(`/hospitals/${id}`)}
               child="View Details"
             />
             <Button
-              onClick={() => handleOpenMap(hospital.googleMapsUrl)}
+              onClick={() => handleOpenMap(gpslink)}
               child={
                 <>
                   <ExternalLink size={14} />
