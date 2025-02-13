@@ -1,16 +1,34 @@
 'use client';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import React, { JSX, useState } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import Doctors from './doctors';
+import Hospitals from '@/app/dashboard/(patient)/find-doctor/_components/hospitals';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 enum DoctorHospital {
   Doctors = 'doctors',
   Hospital = 'hospital',
 }
 const FindDoctorHospital = (): JSX.Element => {
-  const [selectDoctorHospital, setSelectedDoctorHospital] = useState<DoctorHospital>(
-    DoctorHospital.Doctors,
-  );
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParam = useSearchParams();
+  const [selectDoctorHospital, setSelectedDoctorHospital] = useState<DoctorHospital>();
+
+  useEffect(() => {
+    setSelectedDoctorHospital(
+      searchParam.get('tab') === DoctorHospital.Hospital
+        ? DoctorHospital.Hospital
+        : DoctorHospital.Doctors,
+    );
+  }, []);
+
+  const handleTabChange = (tab: DoctorHospital): void => {
+    setSelectedDoctorHospital(tab);
+    const updatedSearchParams = new URLSearchParams(searchParam.toString());
+    updatedSearchParams.set('tab', tab);
+    router.push(`${pathname}?${updatedSearchParams.toString()}`);
+  };
 
   return (
     <div>
@@ -21,26 +39,39 @@ const FindDoctorHospital = (): JSX.Element => {
       </section>
 
       <section className="mt-4">
-        <Tabs defaultValue="doctor" className="">
+        <Tabs value={selectDoctorHospital} className="">
           <TabsList>
             <TabsTrigger
-              value="doctor"
+              value={DoctorHospital.Doctors}
               className="rounded-2xl"
-              onClick={() => setSelectedDoctorHospital(DoctorHospital.Doctors)}
+              onClick={() => handleTabChange(DoctorHospital.Doctors)}
             >
               Doctors
             </TabsTrigger>
             <TabsTrigger
-              value="wallet"
+              value={DoctorHospital.Hospital}
               className="rounded-2xl"
-              onClick={() => setSelectedDoctorHospital(DoctorHospital.Hospital)}
+              onClick={() => handleTabChange(DoctorHospital.Hospital)}
             >
               Hospital
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent className="mt-2" value="doctor">
+          <TabsContent
+            hidden={selectDoctorHospital !== DoctorHospital.Doctors}
+            forceMount={true}
+            className="mt-2"
+            value={DoctorHospital.Doctors}
+          >
             <Doctors />
+          </TabsContent>
+          <TabsContent
+            hidden={selectDoctorHospital !== DoctorHospital.Hospital}
+            forceMount={true}
+            className="mt-2"
+            value={DoctorHospital.Hospital}
+          >
+            <Hospitals />
           </TabsContent>
         </Tabs>
       </section>

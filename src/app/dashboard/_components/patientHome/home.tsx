@@ -11,6 +11,7 @@ import { JSX, ReactNode, useMemo } from 'react';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { IPatient } from '@/types/patient.interface';
 import { IDoctor } from '@/types/doctor.interface';
+import { IHospital } from '@/types/hospital.interface';
 
 // TODO: We will replace this with real requests
 
@@ -48,7 +49,7 @@ const mockHospitals = [
   {
     id: '1',
     name: 'New Crystal Hospital',
-    specialities: ['Cardiology', 'Pediatrics'],
+    specialties: ['Cardiology', 'Pediatrics'],
     location: 'Effiakwanta, Takoradi',
     distance: 4.5,
     googleMapsUrl: 'https://maps.google.com/?q=...',
@@ -58,20 +59,20 @@ const mockHospitals = [
     id: '2',
     name: 'Korlebu Teaching Hospital',
     location: 'Korlebu, Accra',
-    specialities: ['Dermatology', 'Cosmetology'],
+    specialties: ['Dermatology', 'Cosmetology'],
     distance: 4.8,
     googleMapsUrl: 'https://maps.google.com/?q=...',
   },
   {
     id: '3',
     name: 'New Crystal Hospital',
-    specialities: ['Cardiology', 'Pediatrics'],
+    specialties: ['Cardiology', 'Pediatrics'],
     location: 'Effiakwanta, Takoradi',
     distance: 4.5,
     googleMapsUrl: 'https://maps.google.com/?q=...',
     imageUrl: 'https://thumbs.dreamstime.com/b/hospital-building-modern-parking-lot-59693686.jpg',
   },
-];
+] as unknown as IHospital[];
 
 const PatientHome = (): JSX.Element => {
   const suggest = useMemo(
@@ -79,7 +80,7 @@ const PatientHome = (): JSX.Element => {
       <>
         <Suggested title={'Suggested Hospitals'}>
           {mockHospitals.map((hospital) => (
-            <HospitalCard key={hospital.id} hospital={hospital} />
+            <HospitalCard key={hospital.id} {...hospital} />
           ))}
         </Suggested>
         <Suggested title={'Suggested Doctors'}>
@@ -100,7 +101,7 @@ const PatientHome = (): JSX.Element => {
             <CarouselContent>
               {mockHospitals.map((hospital) => (
                 <CarouselItem key={hospital.id}>
-                  <HospitalCard key={hospital.id} hospital={hospital} />
+                  <HospitalCard key={hospital.id} {...hospital} />
                 </CarouselItem>
               ))}
             </CarouselContent>
