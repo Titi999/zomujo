@@ -126,7 +126,7 @@ const SignUpForm = (): JSX.Element => {
 
       setValue('lat', place.geometry.location.lat());
       setValue('long', place.geometry.location.lng());
-      setValue('gpslink', place?.url || '');
+      setValue('gpslink', place.url || '');
       setValue('location', value.description, {
         shouldValidate: true,
       });
