@@ -39,7 +39,7 @@ const FindDoctorHospital = (): JSX.Element => {
       </section>
 
       <section className="mt-4">
-        <Tabs value={selectDoctorHospital} className="">
+        <Tabs value={selectDoctorHospital}>
           <TabsList>
             <TabsTrigger
               value={DoctorHospital.Doctors}
