@@ -1,12 +1,9 @@
 import { IExtraBase } from '@/types/shared.interface';
 import { IBaseUser } from '@/types/auth.interface';
+import { IHospital } from '@/types/hospital.interface';
 
-export interface IOrganization {
-  id: string;
-  name: string;
-}
 export interface IAdmin extends IExtraBase {
-  org: IOrganization;
+  org: IHospital;
 }
 
 export type IInviteAdmin = IBaseUser & Pick<IExtraBase, 'orgId'>;
