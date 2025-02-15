@@ -8,10 +8,10 @@ import Image from 'next/image';
 import React, { JSX, useEffect, useState } from 'react';
 import { IHospital } from '@/types/hospital.interface';
 import { getNearByHospitals } from '@/lib/features/hospitals/hospitalThunk';
-import HospitalCard from '@/app/dashboard/_components/patientHome/_component/hospitalCard';
 import { getCoordinates } from '@/lib/location';
 import { MAX_RADIUS_IN_KM, METERS_TO_KM_FACTOR, reassuringMessages } from '@/constants/constants';
 import { ToastStatus } from '@/types/shared.enum';
+import HospitalCard from '@/app/dashboard/(patient)/_components/hospitalCard';
 
 const Hospitals = (): JSX.Element => {
   const dispatch = useAppDispatch();

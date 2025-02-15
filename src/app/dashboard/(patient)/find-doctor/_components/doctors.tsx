@@ -1,4 +1,3 @@
-import DoctorCard from '@/app/dashboard/_components/patientHome/_component/doctorCard';
 import { Suggested } from '@/app/dashboard/_components/patientHome/home';
 import { NotFound } from '@/assets/images';
 import SkeletonDoctorPatientCard from '@/components/skeleton/skeletonDoctorPatientCard';
@@ -17,6 +16,7 @@ import { IPagination, IQueryParams } from '@/types/shared.interface';
 import { ChevronUp, ListFilter, Search, SendHorizontal } from 'lucide-react';
 import Image from 'next/image';
 import React, { FormEvent, JSX, useCallback, useEffect, useRef, useState } from 'react';
+import DoctorCard from '@/app/dashboard/(patient)/_components/doctorCard';
 
 const Doctors = (): JSX.Element => {
   const dispatch = useAppDispatch();
