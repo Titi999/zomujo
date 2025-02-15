@@ -99,11 +99,7 @@ export const updateDoctorProfile = createAsyncThunk(
     try {
       const {
         data: { message },
-      } = await axios.patch<IResponse<DoctorPersonalInfo>>(`doctors/me`, doctorInfo, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      } = await axios.patchForm<IResponse<DoctorPersonalInfo>>(`doctors/me`, doctorInfo);
       return generateSuccessToast(message);
     } catch (error) {
       return axiosErrorHandler(error, true) as Toast;

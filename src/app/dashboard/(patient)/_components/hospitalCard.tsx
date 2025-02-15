@@ -1,28 +1,28 @@
 'use client';
 import { MapPin, Navigation, ExternalLink, Building2, X } from 'lucide-react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import React, { JSX, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { IHospital } from '@/types/hospital.interface';
 import { METERS_TO_KM_FACTOR } from '@/constants/constants';
+import { Modal } from '@/components/ui/dialog';
+import HospitalPreview from '@/app/dashboard/(patient)/find-doctor/_components/hospitalPreview';
+import { openExternalUrls } from '@/lib/utils';
 
-const HospitalCard = ({
-  id,
-  name,
-  location,
-  gpslink,
-  specialties,
-  image,
-  distance,
-}: IHospital): JSX.Element => {
-  const router = useRouter();
+const HospitalCard = (hospital: IHospital): JSX.Element => {
   const [showPreview, setShowPreview] = useState(false);
-
-  const handleOpenMap = (url: string): Window | null => window.open(url, '_blank');
+  const [showHospitalPreview, setShowHospitalPreview] = useState(false);
+  const { name, location, gpsLink, specialties, image, distance } = hospital;
 
   return (
     <>
+      <Modal
+        open={showHospitalPreview}
+        content={<HospitalPreview {...hospital} />}
+        className="max-w-screen max-h-screen overflow-y-scroll md:max-h-[90vh] md:max-w-[80vw]"
+        setState={setShowHospitalPreview}
+        showClose={true}
+      />
       {showPreview && image && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
@@ -96,11 +96,11 @@ const HospitalCard = ({
           <div className="flex flex-row items-center justify-between">
             <Button
               variant="secondary"
-              onClick={() => router.push(`/hospitals/${id}`)}
+              onClick={() => setShowHospitalPreview(true)}
               child="View Details"
             />
             <Button
-              onClick={() => handleOpenMap(gpslink)}
+              onClick={() => openExternalUrls(gpsLink)}
               child={
                 <>
                   <ExternalLink size={14} />

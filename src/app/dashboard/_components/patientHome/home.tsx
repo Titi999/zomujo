@@ -2,16 +2,16 @@ import SearchDoctorsCard from '@/app/dashboard/_components/patientHome/_componen
 import UpcomingAppointmentCard from '@/app/dashboard/_components/patientHome/_component/upcomingAppointments';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
-import DoctorCard from '@/app/dashboard/_components/patientHome/_component/doctorCard';
 import PatientVitalsCard from '@/app/dashboard/_components/patient/patientVitalsCard';
 import { AvatarGreetings } from '@/app/dashboard/_components/avatarGreetings';
-import HospitalCard from '@/app/dashboard/_components/patientHome/_component/hospitalCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { JSX, ReactNode, useMemo } from 'react';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { IPatient } from '@/types/patient.interface';
 import { IDoctor } from '@/types/doctor.interface';
 import { IHospital } from '@/types/hospital.interface';
+import HospitalCard from '@/app/dashboard/(patient)/_components/hospitalCard';
+import DoctorCard from '@/app/dashboard/(patient)/_components/doctorCard';
 
 // TODO: We will replace this with real requests
 
