@@ -83,3 +83,9 @@ export const downloadFileWithUrl = (url: string, filename: string): void => {
  */
 export const capitalize = (text: string): string =>
   text.replace(/\b\w/g, (char) => char.toUpperCase());
+
+/**
+ * Opens external urls in a new tab
+ * @param url
+ */
+export const openExternalUrls = (url: string): Window | null => window.open(url, '_blank');
