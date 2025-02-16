@@ -52,3 +52,8 @@ export const cardNumberSchema = z
   .min(13, 'Credit card number must be at least 13 digits')
   .max(19, 'Credit card number must be at most 19 digits')
   .regex(/^\d{13,19}$/, 'Credit card number must contain only digits');
+
+export const positiveNumberSchema = z.preprocess(
+  (val) => Number(val),
+  z.number().positive('Value must be greater than zero'),
+);

@@ -1,9 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { axiosErrorHandler } from '@/lib/axios';
 import { IPagination, IQueryParams, IResponse } from '@/types/shared.interface';
-import { IHospital, INearByQueryParams } from '@/types/hospital.interface';
+import { IHospital, IHospitalProfile, INearByQueryParams } from '@/types/hospital.interface';
 import { AcceptDeclineStatus } from '@/types/shared.enum';
 import { Toast } from '@/hooks/use-toast';
+import { generateSuccessToast } from '@/lib/utils';
 
 export const getHospitals = createAsyncThunk(
   'hospitals/getHospitals',
@@ -29,6 +30,21 @@ export const getNearByHospitals = createAsyncThunk(
         `common/nearby-orgs?lat=${lat}&long=${long}&radius=${radius}`,
       );
       return data.data;
+    } catch (error) {
+      return axiosErrorHandler(error, true) as Toast;
+    }
+  },
+);
+
+export const updateHospitalDetails = createAsyncThunk(
+  'hospitals/updateHospitalDetails',
+  async (hospitalProfile: Partial<IHospitalProfile>): Promise<Toast> => {
+    try {
+      const { data } = await axios.patchForm<IResponse<IHospitalProfile>>(
+        'admins/update-org',
+        hospitalProfile,
+      );
+      return generateSuccessToast(data.message);
     } catch (error) {
       return axiosErrorHandler(error, true) as Toast;
     }

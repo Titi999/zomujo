@@ -1,6 +1,6 @@
 import { JSX } from 'react';
-import PersonalInfo from './_components/personalInfo';
+import SettingsHome from '@/app/dashboard/settings/_components/settingsHome';
 
-const Personal = (): JSX.Element => <PersonalInfo />;
+const Settings = (): JSX.Element => <SettingsHome />;
 
-export default Personal;
+export default Settings;

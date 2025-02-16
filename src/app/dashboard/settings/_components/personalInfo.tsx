@@ -77,11 +77,10 @@ const PersonalInfo = (): JSX.Element => {
     setIsLoading(false);
   }
 
-  const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      const fileURL = URL.createObjectURL(file);
-      setProfilePicture(fileURL);
+  const handleProfileChange = ({ target }: React.ChangeEvent<HTMLInputElement>): void => {
+    const file = target.files?.[0];
+    if (file) {
+      setProfilePicture(URL.createObjectURL(file));
     }
   };
 
