@@ -19,7 +19,7 @@ import { DoctorPersonalInfo, IDoctor } from '@/types/doctor.interface';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trash2 } from 'lucide-react';
 import Image from 'next/image';
-import React, { JSX, useRef, useState } from 'react';
+import React, { JSX, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import useImageUpload from '@/hooks/useImageUpload';
@@ -60,6 +60,7 @@ const PersonalInfo = (): JSX.Element => {
   });
 
   const {
+    imageRef,
     imageUrl: userProfilePicture,
     handleImageChange,
     resetImage,
@@ -68,7 +69,6 @@ const PersonalInfo = (): JSX.Element => {
     defaultImageUrl: profilePicture,
   });
 
-  const profileRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const schoolsAttended = watch('schoolsAttended');
@@ -110,13 +110,13 @@ const PersonalInfo = (): JSX.Element => {
                 <span className="text-gray-500">No Image</span>
               </div>
             )}
-            <input className="hidden" ref={profileRef} type="file" onChange={handleImageChange} />
+            <input className="hidden" ref={imageRef} type="file" onChange={handleImageChange} />
           </div>
           <Button
             child={'Upload new profile'}
             variant={'outline'}
             className="bg-transparent"
-            onClick={() => profileRef.current?.click()}
+            onClick={() => imageRef.current?.click()}
           />
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100">
             <Trash2 size={16} onClick={resetImage} />

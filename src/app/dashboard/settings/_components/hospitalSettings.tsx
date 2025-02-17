@@ -8,7 +8,7 @@ import { nameArraySchema, nameSchema, positiveNumberSchema } from '@/schemas/zod
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trash2 } from 'lucide-react';
 import Image from 'next/image';
-import React, { JSX, useRef, useState } from 'react';
+import React, { JSX, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { IHospitalProfile } from '@/types/hospital.interface';
@@ -29,7 +29,6 @@ const hospitalSettingsSchema = z.object({
 const HospitalSettings = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false);
   const { org } = useAppSelector(selectExtra) as IAdmin;
-  const hospitalImageRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
   const {
     register,
@@ -43,6 +42,7 @@ const HospitalSettings = (): JSX.Element => {
     defaultValues: org,
   });
   const {
+    imageRef,
     imageUrl: hospitalImage,
     handleImageChange,
     resetImage,
@@ -91,7 +91,7 @@ const HospitalSettings = (): JSX.Element => {
             <input
               accept="image/*"
               className="hidden"
-              ref={hospitalImageRef}
+              ref={imageRef}
               type="file"
               onChange={handleImageChange}
             />
@@ -100,7 +100,7 @@ const HospitalSettings = (): JSX.Element => {
             child={'Upload Image'}
             variant={'outline'}
             className="bg-transparent"
-            onClick={() => hospitalImageRef.current?.click()}
+            onClick={() => imageRef.current?.click()}
           />
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100">
             <Trash2 className="cursor-pointer" size={16} onClick={() => resetImage()} />

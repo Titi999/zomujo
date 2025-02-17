@@ -1,4 +1,4 @@
-import { useEffect, useState, ChangeEvent } from 'react';
+import { useEffect, useState, ChangeEvent, useRef, RefObject } from 'react';
 import { FieldValues, UseFormSetValue, Path, PathValue } from 'react-hook-form';
 
 interface UseImageUploadProps<T extends FieldValues> {
@@ -11,6 +11,7 @@ interface UseImageUploadReturn {
   imageUrl: string | null;
   handleImageChange: (event: ChangeEvent<HTMLInputElement>) => void;
   resetImage: () => void;
+  imageRef: RefObject<HTMLInputElement | null>;
 }
 
 const useImageUpload = <T extends FieldValues = FieldValues>({
@@ -18,6 +19,7 @@ const useImageUpload = <T extends FieldValues = FieldValues>({
   defaultImageUrl = null,
   fieldName,
 }: UseImageUploadProps<T> = {}): UseImageUploadReturn => {
+  const imageRef = useRef<HTMLInputElement | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(defaultImageUrl);
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -59,6 +61,7 @@ const useImageUpload = <T extends FieldValues = FieldValues>({
     imageUrl,
     handleImageChange,
     resetImage,
+    imageRef,
   };
 };
 
