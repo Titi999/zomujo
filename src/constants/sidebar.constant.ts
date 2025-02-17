@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 
 export const DASHBOARD_ROUTE = '/dashboard';
+export const SETTINGS_ROUTE = 'settings';
 
 export const PATIENT_SIDE_BAR: ISidebar = {
   sidebarGroup: [
@@ -200,7 +201,7 @@ export const ADMIN_SIDE_BAR: ISidebar = {
       menu: [
         {
           title: 'Settings',
-          url: '#',
+          url: `${DASHBOARD_ROUTE}/${SETTINGS_ROUTE}`,
           Icon: Settings,
         },
       ],
@@ -208,7 +209,6 @@ export const ADMIN_SIDE_BAR: ISidebar = {
   ],
 } as const;
 
-export const SETTINGS_ROUTE = 'settings';
 export const DOCTOR_SETTINGS_SIDEBAR: ISidebar = {
   sidebarGroup: [
     {
@@ -250,31 +250,9 @@ export const ADMIN_SETTINGS_SIDEBAR: ISidebar = {
       groupTitle: '',
       menu: [
         {
-          title: 'Personal',
-          url: '#',
+          title: 'Hospital',
+          url: `${DASHBOARD_ROUTE}/${SETTINGS_ROUTE}`,
           Icon: User,
-        },
-        {
-          title: 'Security',
-          url: '#',
-          Icon: ShieldCheck,
-        },
-        {
-          title: 'Notification',
-          url: '#',
-          Icon: Bell,
-        },
-      ],
-    },
-
-    {
-      groupTitle: 'OTHER',
-      menu: [
-        {
-          title: 'Privacy',
-          url: '#',
-          Icon: EarthLock,
-          phoneTitle: 'Help',
         },
       ],
     },

@@ -19,9 +19,10 @@ import { DoctorPersonalInfo, IDoctor } from '@/types/doctor.interface';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trash2 } from 'lucide-react';
 import Image from 'next/image';
-import React, { JSX, useRef, useState } from 'react';
+import React, { JSX, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import useImageUpload from '@/hooks/useImageUpload';
 
 const PersonalInfo = (): JSX.Element => {
   const { firstName, lastName, specializations, bio, experience, contact, profilePicture } =
@@ -58,7 +59,16 @@ const PersonalInfo = (): JSX.Element => {
     defaultValues: personalDetails,
   });
 
-  const profileRef = useRef<HTMLInputElement | null>(null);
+  const {
+    imageRef,
+    imageUrl: userProfilePicture,
+    handleImageChange,
+    resetImage,
+  } = useImageUpload<DoctorPersonalInfo>({
+    setValue,
+    defaultImageUrl: profilePicture,
+  });
+
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const schoolsAttended = watch('schoolsAttended');
@@ -66,7 +76,6 @@ const PersonalInfo = (): JSX.Element => {
   const userAwards = watch('awards');
   const specialization = watch('specializations');
   const userBio = watch('bio');
-  const [userProfilePicture, setProfilePicture] = useState<string | null>(profilePicture);
 
   async function onSubmit(doctorPersonalInfo: DoctorPersonalInfo): Promise<void> {
     setIsLoading(true);
@@ -76,18 +85,6 @@ const PersonalInfo = (): JSX.Element => {
     }
     setIsLoading(false);
   }
-
-  const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      const fileURL = URL.createObjectURL(file);
-      setProfilePicture(fileURL);
-    }
-  };
-
-  const handleRemoveProfile = (): void => {
-    setProfilePicture(null);
-  };
 
   return (
     <>
@@ -113,16 +110,16 @@ const PersonalInfo = (): JSX.Element => {
                 <span className="text-gray-500">No Image</span>
               </div>
             )}
-            <input className="hidden" ref={profileRef} type="file" onChange={handleProfileChange} />
+            <input className="hidden" ref={imageRef} type="file" onChange={handleImageChange} />
           </div>
           <Button
             child={'Upload new profile'}
             variant={'outline'}
             className="bg-transparent"
-            onClick={() => profileRef.current?.click()}
+            onClick={() => imageRef.current?.click()}
           />
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100">
-            <Trash2 size={16} onClick={handleRemoveProfile} />
+            <Trash2 size={16} onClick={resetImage} />
           </div>
         </div>
       </section>

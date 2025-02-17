@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 import { SettingsNavbar, SidebarLayout } from '../_components/sidebar/sidebarLayout';
 import { SidebarType } from '@/types/shared.enum';
-import { Bell } from 'lucide-react';
 
 export default function Layout({
   children,
@@ -12,7 +11,6 @@ export default function Layout({
     <div className="relative -ml-6 flex h-full flex-col">
       <div className="flex items-center justify-between bg-white px-6 sm:h-[97px]">
         <h2 className="py-2 text-xl font-bold sm:py-0 sm:text-[32px]">Settings</h2>
-        <Bell />
       </div>
       <SettingsNavbar />
       <div className="relative flex h-[calc(100vh-99px)] overflow-hidden">
