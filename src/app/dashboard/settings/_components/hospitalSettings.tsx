@@ -16,6 +16,7 @@ import { MultiSelect } from '@/components/ui/multiSelect';
 import { updateHospitalDetails } from '@/lib/features/hospitals/hospitalThunk';
 import { selectExtra } from '@/lib/features/auth/authSelector';
 import { IAdmin } from '@/types/admin.interface';
+import useImageUpload from '@/hooks/useImageUpload';
 
 const hospitalSettingsSchema = z.object({
   image: z.union([z.instanceof(File), z.string().url()]),
@@ -28,8 +29,7 @@ const hospitalSettingsSchema = z.object({
 const HospitalSettings = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false);
   const { org } = useAppSelector(selectExtra) as IAdmin;
-  const [hospitalImage, setHospitalImage] = useState(org.image || '');
-  const profileRef = useRef<HTMLInputElement | null>(null);
+  const hospitalImageRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
   const {
     register,
@@ -41,6 +41,14 @@ const HospitalSettings = (): JSX.Element => {
     resolver: zodResolver(hospitalSettingsSchema),
     mode: MODE.ON_TOUCH,
     defaultValues: org,
+  });
+  const {
+    imageUrl: hospitalImage,
+    handleImageChange,
+    resetImage,
+  } = useImageUpload<IHospitalProfile>({
+    setValue,
+    defaultImageUrl: org.image,
   });
 
   async function onSubmit(hospitalProfile: Partial<IHospitalProfile>): Promise<void> {
@@ -54,14 +62,6 @@ const HospitalSettings = (): JSX.Element => {
     }
     setIsLoading(false);
   }
-
-  const handleProfileChange = ({ target }: React.ChangeEvent<HTMLInputElement>): void => {
-    const file = target.files?.[0];
-    if (file) {
-      setHospitalImage(URL.createObjectURL(file));
-      setValue('image', file, { shouldTouch: true, shouldValidate: true });
-    }
-  };
 
   return (
     <>
@@ -91,26 +91,19 @@ const HospitalSettings = (): JSX.Element => {
             <input
               accept="image/*"
               className="hidden"
-              ref={profileRef}
+              ref={hospitalImageRef}
               type="file"
-              onChange={handleProfileChange}
+              onChange={handleImageChange}
             />
           </div>
           <Button
             child={'Upload Image'}
             variant={'outline'}
             className="bg-transparent"
-            onClick={() => profileRef.current?.click()}
+            onClick={() => hospitalImageRef.current?.click()}
           />
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100">
-            <Trash2
-              className="cursor-pointer"
-              size={16}
-              onClick={() => {
-                setHospitalImage('');
-                setValue('image', null);
-              }}
-            />
+            <Trash2 className="cursor-pointer" size={16} onClick={() => resetImage()} />
           </div>
         </div>
       </section>
